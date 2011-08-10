@@ -22,13 +22,16 @@ typedef enum {
 	DELETE
 } SMHttpVerb;
 
+@protocol SMRequestDelegate;
+
 @interface StackMobRequest : NSObject
 {
 	NSURLConnection*		mConnection;
-	id						mDelegate;
+	id<SMRequestDelegate>	mDelegate;
 	SEL						mSelector;
 	NSString*				mMethod;
 	NSMutableDictionary*	mArguments;
+    NSData*               mBody;
 	NSMutableData*			mConnectionData;
 	NSDictionary*			mResult;
 	BOOL					_requestFinished;
@@ -36,23 +39,32 @@ typedef enum {
 	NSHTTPURLResponse*		mHttpResponse;
 	
 	@protected
+        BOOL userBased;
 		StackMobSession *session;
 }
 
-@property(readwrite, retain) id delegate;
+@property(readwrite, assign) id delegate;
 @property(readwrite, copy) NSString* method;
 @property(readwrite, copy) NSString* httpMethod;
 @property(readwrite, retain) NSURLConnection* connection;
 @property(readwrite, retain) NSDictionary* result;
+@property(readwrite, retain) NSData *body;
 @property(readonly) BOOL finished;
 @property(readonly) NSHTTPURLResponse* httpResponse;
 @property(readonly, getter=getStatusCode) NSInteger statusCode;
 @property(readonly, getter=getURL) NSURL* url;
+@property(nonatomic) BOOL userBased;
 
 + (StackMobRequest*)request;
 + (StackMobRequest*)requestForMethod:(NSString*)method;
 + (StackMobRequest*)requestForMethod:(NSString*)method withHttpVerb:(SMHttpVerb) httpVerb;
 + (StackMobRequest*)requestForMethod:(NSString*)method withArguments:(NSDictionary*)arguments withHttpVerb:(SMHttpVerb) httpVerb;
++ (StackMobRequest *)requestForMethod:(NSString *)method withData:(NSData *)data;
+
+/* User based requests */
++ (StackMobRequest*)userRequest;
++ (StackMobRequest*)userRequestForMethod:(NSString *)method withHttpVerb:(SMHttpVerb)httpVerb;
++ (StackMobRequest*)userRequestForMethod:(NSString*)method withArguments:(NSDictionary*)arguments withHttpVerb:(SMHttpVerb)httpVerb;
 
 + (StackMobRequest*)pushRequestWithArguments:(NSDictionary*)arguments withHttpVerb:(SMHttpVerb) httpVerb;
 
@@ -64,6 +76,7 @@ typedef enum {
 - (void)setBool:(BOOL)value forArgument:(NSString*)argument;
 
 - (void)sendRequest;
+- (void)startSession;
 - (void)cancel;
 
 - (id)sendSynchronousRequestProvidingError:(NSError**)error;

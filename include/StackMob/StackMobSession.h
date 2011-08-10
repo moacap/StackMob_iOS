@@ -22,6 +22,7 @@
 	NSString* _appName;
 	NSString* _subDomain;
 	NSString* _domain;
+    NSString* _userObjectName;
 	NSString* _sessionKey;
 	NSDate* _expirationDate;
 	NSMutableArray* _requestQueue;
@@ -65,6 +66,11 @@
  * Your application's domain name which defaults to stackmob.com or as passed to the constructor.
  */
 @property(nonatomic,readonly) NSString* domain;
+
+/**
+ * Your application's user object name (ie - 'user' or 'account')
+ */
+@property(nonatomic,readonly) NSString* userObjectName;
 
 /**
  * The API version number.
@@ -130,11 +136,49 @@
 					  subDomain:(NSString*)subDomain domain:(NSString*)domain apiVersionNumber:(NSNumber*)apiVersionNumber;
 
 /**
+ * Constructs a session for an application.
+ *
+ * @param key the application api key
+ * @param secret the application secret api key
+ * @param appName the application name
+ * @param subDomain the application subDomain
+ * @param domain overwrites the stackmob.com domain
+ * @userObjectName the name of the user object in your StackMob App
+ */
++ (StackMobSession*)sessionForApplication:(NSString*)key 
+                                   secret:(NSString*)secret 
+                                  appName:(NSString*)appName
+                                subDomain:(NSString*)subDomain 
+                                   domain:(NSString*)domain 
+                           userObjectName:(NSString *)userObjectName
+                         apiVersionNumber:(NSNumber*)apiVersionNumber;
+
+/**
+ * Constructs a session for an application.
+ *
+ * @param key the application api key
+ * @param secret the application secret api key
+ * @param appName the application name
+ * @param subDomain the application subDomain
+ * @param domain overwrites the stackmob.com domain
+ * @param userObjectName the name you gave to your user object on stackmob.com
+ */
+- (StackMobSession*)initWithKey:(NSString*)key 
+                         secret:(NSString*)secret 
+                        appName:(NSString*)appName
+                      subDomain:(NSString*)subDomain 
+                         domain:(NSString*)domain 
+                 userObjectName:(NSString *)userObjectName
+               apiVersionNumber:(NSNumber*)apiVersionNumber;
+
+/**
  * Returns the formatted url for the passedMethod.
  *
- * @param name of the method to be called
+ * @param method name of the method to be called
+ * @param userBasedRequest whether or not to prepend the user with the user
+ * model name
  */
-- (NSMutableString*)urlForMethod:(NSString*)method;
+- (NSMutableString*)urlForMethod:(NSString*)method isUserBased:(BOOL)userBasedRequest;
 
 /**
  * Returns the formatted SSL url for the passedMethod.
@@ -142,6 +186,10 @@
  * @param name of the method to be called
  */
 - (NSMutableString*)secureURLForMethod:(NSString*)method;
+
+/**
+ * returns a a base url for the method
+ */
 
 /**
  * Returns the formatted push url.

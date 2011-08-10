@@ -42,6 +42,7 @@
         encodedParameters = [[NSString alloc] initWithData:[self HTTPBody] encoding:NSASCIIStringEncoding];
     }
     
+    NSLog(@"encodedParameters %@", encodedParameters);
     if ((encodedParameters == nil) || ([encodedParameters isEqualToString:@""]))
         return nil;
     

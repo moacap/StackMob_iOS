@@ -14,6 +14,10 @@
 
 #import "StackMobSession.h"
 
+@interface StackMobSession(Private)
+- (void)setup;
+@end
+
 @implementation StackMobSession
 
 static const int kMaxBurstRequests = 3;
@@ -30,6 +34,7 @@ static StackMobSession* sharedSession = nil;
 @synthesize appName = _appName;
 @synthesize subDomain = _subDomain;
 @synthesize domain = _domain;
+@synthesize userObjectName = _userObjectName;
 @synthesize apiVersionNumber = _apiVersionNumber;
 @synthesize sessionKey = _sessionKey;
 @synthesize expirationDate = _expirationDate;
@@ -57,24 +62,48 @@ static StackMobSession* sharedSession = nil;
                          apiVersionNumber:(NSNumber*)apiVersionNumber
 {
 	StackMobSession* session = [[[StackMobSession alloc] initWithKey:key 
-													secret:secret 
-                         appName:appName
-                       subDomain:subDomain 
-													domain:domain
-                apiVersionNumber:apiVersionNumber] autorelease];
+                                                              secret:secret 
+                                                             appName:appName
+                                                           subDomain:subDomain 
+                                                              domain:domain
+                                                    apiVersionNumber:apiVersionNumber] autorelease];
 	return session;
 }
 
-- (NSMutableString*)urlForMethod:(NSString*)method
++ (StackMobSession*)sessionForApplication:(NSString*)key 
+                                   secret:(NSString*)secret 
+                                  appName:(NSString*)appName
+                                subDomain:(NSString*)subDomain 
+                                   domain:(NSString*)domain 
+                           userObjectName:(NSString *)userObjectName
+                         apiVersionNumber:(NSNumber*)apiVersionNumber
 {
-	NSMutableString* url = nil;
-  NSRange range = [method rangeOfString:@"/login" options:NSLiteralSearch];
-  if (range.location == NSNotFound) {
-    url = [NSMutableString stringWithFormat:@"%@%@/",regularURL, method];
-  } else {
-    url = [NSMutableString stringWithFormat:@"%@%@",regularURL, method];
-  }
-	return url;
+	StackMobSession* session = [[[StackMobSession alloc] initWithKey:key 
+                                                              secret:secret 
+                                                             appName:appName
+                                                           subDomain:subDomain 
+                                                              domain:domain
+                                                      userObjectName:userObjectName
+                                                    apiVersionNumber:apiVersionNumber] autorelease];
+	return session;
+}
+
+- (NSMutableString*)urlForMethod:(NSString*)method isUserBased:(BOOL)userBasedRequest
+{
+    NSMutableArray *parts = [NSMutableArray array];
+    [parts addObject:regularURL];
+    
+    if(userBasedRequest) [parts addObject:self.userObjectName];
+    [parts addObject:method];
+    
+    NSMutableString *url = [NSMutableString stringWithString:[parts componentsJoinedByString:@"/"]];
+    
+    // 'ogin' so it matches facebookLogin as well
+    NSRange range = [method rangeOfString:@"ogin" options:NSLiteralSearch];
+    
+    if (range.location == NSNotFound) [url appendString:@"/"];
+    
+    return url;
 }
 
 - (NSMutableString*)secureURLForMethod:(NSString*)method {
@@ -97,19 +126,47 @@ static StackMobSession* sharedSession = nil;
 		_appName = [appName copy];
 		_subDomain = [subDomain copy];
 		_domain = [domain copy];
-    _apiVersionNumber = [apiVersionNumber copy];
-		_sessionKey = nil;
-		_expirationDate = nil;
-		_requestQueue = [[NSMutableArray alloc] init];
-		_lastRequestTime = nil;
-		_requestBurstCount = 0;
-		_requestTimer = nil; 
-		url = [[NSString stringWithFormat:@"%@.%@/api/%@/%@/",_subDomain,_domain,_apiVersionNumber,_appName] retain];
-		pushURL = [[NSString stringWithFormat:@"http://%@.%@/push/%@/%@/device_tokens",_subDomain,_domain,_apiVersionNumber,_appName] retain];
-		secureURL = [[NSString stringWithFormat:@"https://%@", url] retain];
-		regularURL = [[NSString stringWithFormat:@"http://%@", url] retain];
+        _apiVersionNumber = [apiVersionNumber copy];
+        [self setup];
 	}
 	return self;
+}
+
+- (StackMobSession*)initWithKey:(NSString*)key 
+                         secret:(NSString*)secret 
+                        appName:(NSString*)appName
+                      subDomain:(NSString*)subDomain 
+                         domain:(NSString*)domain 
+                 userObjectName:(NSString *)userObjectName
+               apiVersionNumber:(NSNumber*)apiVersionNumber
+{
+	if ((self = [super init])) {
+		if (!sharedSession) {
+			sharedSession = self;
+		}
+        _apiKey = [key copy];
+        _apiSecret = [secret copy];
+        _appName = [appName copy];
+        _subDomain = [subDomain copy];
+        _domain = [domain copy];
+        _userObjectName = [userObjectName copy];
+        _apiVersionNumber = [apiVersionNumber copy];
+        [self setup];
+	}
+	return self;
+}
+
+- (void)setup{
+    _sessionKey = nil;
+    _expirationDate = nil;
+    _requestQueue = [[NSMutableArray alloc] init];
+    _lastRequestTime = nil;
+    _requestBurstCount = 0;
+    _requestTimer = nil; 
+    url = [[NSString stringWithFormat:@"%@.%@/api/%@/%@",_subDomain,_domain,_apiVersionNumber,_appName] retain];
+    pushURL = [[NSString stringWithFormat:@"http://%@.%@/push/%@/%@/device_tokens",_subDomain,_domain,_apiVersionNumber,_appName] retain];
+    secureURL = [[NSString stringWithFormat:@"https://%@", url] retain];
+    regularURL = [[NSString stringWithFormat:@"http://%@", url] retain];
 }
 
 - (void)dealloc {
@@ -124,6 +181,7 @@ static StackMobSession* sharedSession = nil;
 	[_appName release];
 	[_subDomain release];
 	[_domain release];
+    [_userObjectName release];
   [_apiVersionNumber release];
 	[_sessionKey release];
 	[_expirationDate release];
