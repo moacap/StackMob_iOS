@@ -354,6 +354,9 @@
 		[mConnectionData setLength:0];		
 		result = [textResult yajl_JSON];
 	}
+  
+  self.result = result;
+  
 	return result;
 }
 
