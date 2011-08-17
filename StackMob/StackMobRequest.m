@@ -163,8 +163,7 @@
 		StackMobLog(@"StackMobRequest %p: Sending Asynch Request httpMethod=%@ method=%@ url=%@", self, self.httpMethod, self.method, self.url);
 	}
 				
-	OAConsumer *consumer = [[OAConsumer alloc] initWithKey:session.apiKey
-														secret:session.apiSecret];
+	OAConsumer *consumer = [[OAConsumer alloc] initWithKey:session.apiKey secret:session.apiSecret];
 		
 		//TODO: This should be its own call?
 //		StackMobClientData *data = [StackMobClientData sharedClientData];
@@ -174,7 +173,8 @@
 																   consumer:consumer
 																	  token:nil
 																	  realm:nil
-														  signatureProvider:nil]; // use the default method, HMAC-SHA1
+                        signatureProvider:nil]; // use the default method, HMAC-SHA1
+  [consumer release];
 	[request setHTTPMethod:[self httpMethod]];
 		
 	[request addValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
@@ -196,6 +196,7 @@
 	[mConnectionData setLength:0];		
 	self.result = nil;
 	self.connection = [[[NSURLConnection alloc] initWithRequest:request delegate:self] retain]; // Why retaining this when already retained by synthesized method?
+  [request release];
 }
 
 - (void)cancel
@@ -312,7 +313,7 @@
 																	  token:nil   // we don't need a token
 																	  realm:nil   // should we set a realm?
 														  signatureProvider:nil]; // use the default method, HMAC-SHA1
-	
+	[consumer release];
 	[request setHTTPMethod:[self httpMethod]];
 	
 	[request addValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
@@ -331,6 +332,7 @@
 		StackMobLog(@"StackMobRequest %p: sending synchronous oauth request: %@", self, request);
 	}
 	NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:error];
+  [request release];
 	if (kLogVersbose) {
     if (*error!=nil) {
       StackMobLog(@"StackMobRequest %p: ERROR: %@", self, [*error localizedDescription]);

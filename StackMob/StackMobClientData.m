@@ -42,7 +42,7 @@ static StackMobClientData * _sharedInstance=nil;
 @implementation StackMobClientData
 
 - (id)init {
-	if(self = [super init]) {
+	if((self = [super init])) {
 		// Device info.
 		UIDevice *device = [UIDevice currentDevice];
 		identifier = [device uniqueIdentifier];
@@ -176,7 +176,8 @@ static StackMobClientData * _sharedInstance=nil;
 	
 		
 	
-	self.clientDataString = [clientDataObject yajl_JSONString];	
+	self.clientDataString = [clientDataObject yajl_JSONString];
+  [clientDataObject release];
 }
 
 #pragma mark - Location
