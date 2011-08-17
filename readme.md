@@ -9,7 +9,7 @@
 
     - CFNetwork.framework
     - CoreLocation.framework
-    - SystemConfirmation.framework
+    - SystemConfiguration.framework
     - YAJLiOS.framework - This is provided as part of our GitHub project. You will find it in the external folder
 
 7. We suggest you create a SessionFactory to handle creating the StackMob Session needed to connect to our servers. The session object should be retained for the life of the application. So creating it on applicationDidFinishLaunching and releasing it on applicationWillTerminate or applicationDidEnterBackground is a good pattern.  Something like the following will work:
