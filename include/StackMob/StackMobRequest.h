@@ -31,7 +31,7 @@ typedef enum {
 	SEL						mSelector;
 	NSString*				mMethod;
 	NSMutableDictionary*	mArguments;
-    NSData*               mBody;
+    NSData*                 mBody;
 	NSMutableData*			mConnectionData;
 	NSDictionary*			mResult;
 	BOOL					_requestFinished;

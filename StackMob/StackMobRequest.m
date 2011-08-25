@@ -33,34 +33,34 @@
 @synthesize finished = _requestFinished;
 @synthesize userBased;
 
-+ (StackMobRequest*)request	
++ (id)request	
 {
 	return [[[StackMobRequest alloc] init] autorelease];
 }
 
-+ (StackMobRequest*)userRequest
++ (id)userRequest
 {
     StackMobRequest *request = [StackMobRequest request];
     request.userBased = YES;
     return request;
 }
 
-+ (StackMobRequest*)requestForMethod:(NSString*)method
++ (id)requestForMethod:(NSString*)method
 {
 	return [StackMobRequest requestForMethod:method withHttpVerb:GET];
 }	
 
-+ (StackMobRequest*)requestForMethod:(NSString*)method withHttpVerb:(SMHttpVerb)httpVerb
++ (id)requestForMethod:(NSString*)method withHttpVerb:(SMHttpVerb)httpVerb
 {
 	return [StackMobRequest requestForMethod:method withArguments:nil withHttpVerb:httpVerb];
 }
 
-+ (StackMobRequest*)userRequestForMethod:(NSString *)method withHttpVerb:(SMHttpVerb)httpVerb
++ (id)userRequestForMethod:(NSString *)method withHttpVerb:(SMHttpVerb)httpVerb
 {
 	return [StackMobRequest userRequestForMethod:method withArguments:nil withHttpVerb:httpVerb];    
 }
 
-+ (StackMobRequest*)requestForMethod:(NSString*)method withArguments:(NSDictionary*)arguments  withHttpVerb:(SMHttpVerb)httpVerb
++ (id)requestForMethod:(NSString*)method withArguments:(NSDictionary*)arguments  withHttpVerb:(SMHttpVerb)httpVerb
 {
 	StackMobRequest* request = [StackMobRequest request];
 	request.method = method;
@@ -71,7 +71,7 @@
 	return request;
 }
 
-+ (StackMobRequest*)userRequestForMethod:(NSString*)method withArguments:(NSDictionary*)arguments withHttpVerb:(SMHttpVerb)httpVerb
++ (id)userRequestForMethod:(NSString*)method withArguments:(NSDictionary*)arguments withHttpVerb:(SMHttpVerb)httpVerb
 {
 	StackMobRequest* request = [StackMobRequest userRequest];
 	request.method = method;
@@ -82,7 +82,7 @@
 	return request;
 }
 
-+ (StackMobRequest *)requestForMethod:(NSString *)method withData:(NSData *)data{
++ (id)requestForMethod:(NSString *)method withData:(NSData *)data{
     StackMobRequest *request = [StackMobRequest request];
     request.method = method;
     request.httpMethod = [self stringFromHttpVerb:POST];
@@ -90,7 +90,7 @@
     return request;
 }
 
-+ (StackMobRequest*)pushRequestWithArguments:(NSDictionary*)arguments withHttpVerb:(SMHttpVerb) httpVerb {
++ (id)pushRequestWithArguments:(NSDictionary*)arguments withHttpVerb:(SMHttpVerb) httpVerb {
 	StackMobRequest* request = [StackMobPushRequest request];
 	request.httpMethod = [self stringFromHttpVerb:httpVerb];
 	if (arguments != nil) {

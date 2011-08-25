@@ -9,6 +9,7 @@
 #import "StackMob.h"
 #import "StackMobRequest.h"
 #import "StackMobClientData.h"
+#import "StackMobCustomRequest.h"
 
 @interface StackMob (Private)
 - (void)queueRequest:(StackMobRequest *)request andCallback:(StackMobCallback)callback;
@@ -22,14 +23,20 @@
 @synthesize session;
 
 static StackMob *_sharedManager = nil;
-NSString * const kAPIKey = @"83454cea-33de-4527-8176-69b8c9b4d183";
-NSString * const kAPISecret = @"4403e237-c7a2-49a1-8c7b-df441b16e1c9";
+// Dev keys
+//NSString * const kAPIKey = @"83454cea-33de-4527-8176-69b8c9b4d183";
+//NSString * const kAPISecret = @"4403e237-c7a2-49a1-8c7b-df441b16e1c9";
+
+// Prod keys
+NSString * const kAPIKey = @"bc82e8de-bb82-4eb6-b03f-62619382837a";
+NSString * const kAPISecret = @"f58efdd7-2233-418c-ba58-e56963406df0";
+
 NSString * const kSubDomain = @"fithsaring";
 NSString * const kAppName = @"meetingroom";
-NSString * const kDomain = @"stackmob.com";
-NSString * const kUserObjectName = @"user";
+NSString * const kDomain = @"mob2.stackmob.com";
+NSString * const kUserObjectName = @"account";
 
-#define API_VERSION [NSNumber numberWithInt:1]
+#define API_VERSION [NSNumber numberWithInt:3]
 
 + (StackMob *)stackmob {
     if (_sharedManager == nil) {
@@ -53,6 +60,11 @@ NSString * const kUserObjectName = @"user";
     [self queueRequest:request andCallback:nil];
 }
 
+- (void)endSession{
+    StackMobRequest *request = [StackMobRequest requestForMethod:@"endsession" withHttpVerb:POST];
+    [self queueRequest:request andCallback:nil];
+}
+
 - (void)loginWithFacebookToken:(NSString *)facebookToken andCallback:(StackMobCallback)callback{
     NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:facebookToken, @"fb_at", nil];
     StackMobRequest *request = [StackMobRequest userRequestForMethod:@"facebookLogin" withArguments:args withHttpVerb:GET];
@@ -72,21 +84,48 @@ NSString * const kUserObjectName = @"user";
     [self queueRequest:request andCallback:callback];
 }
 
-- (void)get:(NSString *)path withCallback:(StackMobCallback)callback{
+- (void)get:(NSString *)path withCallback:(StackMobCallback)callback
+{
     StackMobRequest *request = [StackMobRequest requestForMethod:path
                                                    withArguments:NULL
                                                     withHttpVerb:GET];
     [self queueRequest:request andCallback:callback];
 }
 
-- (void)post:(NSString *)path withParams:(NSDictionary *)params andCallback:(StackMobCallback)callback{
+- (void)customGet:(NSString *)path withCallback:(StackMobCallback)callback
+{
+    StackMobCustomRequest *request = [StackMobCustomRequest requestForMethod:path
+                                                   withArguments:NULL
+                                                    withHttpVerb:GET];
+    [self queueRequest:request andCallback:callback];
+}
+
+- (void)customGet:(NSString *)path withParams:(NSDictionary *)params andCallback:(StackMobCallback)callback
+{
+    StackMobCustomRequest *request = [StackMobCustomRequest requestForMethod:path
+                                                               withArguments:params
+                                                                withHttpVerb:GET];
+    [self queueRequest:request andCallback:callback];
+}
+
+- (void)post:(NSString *)path withParams:(NSDictionary *)params andCallback:(StackMobCallback)callback
+{
     StackMobRequest *request = [StackMobRequest requestForMethod:path
                                                    withArguments:params
                                                     withHttpVerb:POST];
     [self queueRequest:request andCallback:callback];
 }
 
-- (void)post:(NSString *)path forUser:(NSString *)user withParams:(NSDictionary *)params andCallback:(StackMobCallback)callback{
+- (void)customPost:(NSString *)path withParams:(NSDictionary *)params andCallback:(StackMobCallback)callback
+{
+    StackMobCustomRequest *request = [StackMobCustomRequest requestForMethod:path
+                                                               withArguments:params
+                                                                withHttpVerb:POST];
+    [self queueRequest:request andCallback:callback];
+}
+
+- (void)post:(NSString *)path forUser:(NSString *)user withParams:(NSDictionary *)params andCallback:(StackMobCallback)callback
+{
     NSDictionary *modifiedParams = [NSMutableDictionary dictionaryWithDictionary:params];
     [modifiedParams setValue:user forKey:kUserObjectName];
     StackMobRequest *request = [StackMobRequest requestForMethod:[NSString stringWithFormat:@"%@/%@", kUserObjectName, path]
@@ -127,15 +166,16 @@ NSString * const kUserObjectName = @"user";
     if(!_running){
         if([self.requests count] == 0) return;
         NSLog(@"running...");
-        StackMobRequest *request = [self.requests objectAtIndex:0];
-        [request sendRequest];
+        currentRequest = [self.requests objectAtIndex:0];
+        [currentRequest sendRequest];
         _running = YES;
     }
 }
 
 - (void)next{
-    _running = [self.requests count] > 0;
-    if(_running) [self run];
+    _running = NO;
+    currentRequest = nil;
+    [self run];
 }
 
 #pragma mark -

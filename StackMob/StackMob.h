@@ -16,7 +16,7 @@ typedef void (^StackMobCallback)(BOOL success, id result);
     NSMutableArray *callbacks;
     NSMutableArray *requests;
     StackMobSession *session;
-    
+    StackMobRequest *currentRequest;
     BOOL _running;
 }
 
@@ -32,12 +32,18 @@ typedef void (^StackMobCallback)(BOOL success, id result);
 - (void)get:(NSString *)path withParams:(NSDictionary *)params andCallback:(StackMobCallback)callback;
 - (void)get:(NSString *)path withCallback:(StackMobCallback)callback;
 
+- (void)customGet:(NSString *)path withCallback:(StackMobCallback)callback;
+- (void)customGet:(NSString *)path withParams:(NSDictionary *)params andCallback:(StackMobCallback)callback;
+
 - (void)post:(NSString *)path withParams:(NSDictionary *)params andCallback:(StackMobCallback)callback;
 - (void)post:(NSString *)path forUser:(NSString *)user withParams:(NSDictionary *)params andCallback:(StackMobCallback)callback;
+
+- (void)customPost:(NSString *)path withCallback:(StackMobCallback)callback;
 
 - (void)put:(NSString *)path withParams:(NSDictionary *)params andCallback:(StackMobCallback)callback;
 - (void)destroy:(NSString *)path withParams:(NSDictionary *)params andCallback:(StackMobCallback)callback;
 
 - (void)startSession;
+- (void)endSession;
 
 @end

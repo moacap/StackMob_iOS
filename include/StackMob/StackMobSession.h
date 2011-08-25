@@ -14,8 +14,14 @@
 
 #import <Foundation/Foundation.h>
 
+static NSString *const kStackMobDefaultDomain = @"stackmob.com";
 
 @interface StackMobSession : NSObject {
+    NSString *url;
+    NSString *pushURL;
+    NSString *secureURL;
+    NSString *regularURL;
+    
 	NSMutableArray* _delegates;
 	NSString* _apiKey;
 	NSString* _apiSecret;
@@ -41,6 +47,11 @@
  * The URL used for secure API HTTP requests.
  */
 @property(nonatomic,readonly) NSString* apiSecureURL;
+
+/**
+ * The URL used for PUSH the notification API
+ */
+@property(nonatomic,readonly) NSString *pushURL;
 
 /**
  * Your application's API key, as passed to the constructor.
@@ -191,10 +202,5 @@
  * returns a a base url for the method
  */
 
-/**
- * Returns the formatted push url.
- *
- */
-- (NSMutableString*)pushURL;
 
 @end

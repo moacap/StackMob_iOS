@@ -23,10 +23,6 @@
 static const int kMaxBurstRequests = 3;
 static const NSTimeInterval kBurstDuration = 2;
 
-NSString *url = @"";
-NSString *pushURL = @"";
-NSString *secureURL = @"";
-NSString *regularURL = @"";
 static StackMobSession* sharedSession = nil;
 
 @synthesize apiKey = _apiKey;
@@ -38,6 +34,7 @@ static StackMobSession* sharedSession = nil;
 @synthesize apiVersionNumber = _apiVersionNumber;
 @synthesize sessionKey = _sessionKey;
 @synthesize expirationDate = _expirationDate;
+@synthesize pushURL;
 
 + (StackMobSession*)session {
 	return sharedSession;
@@ -51,7 +48,7 @@ static StackMobSession* sharedSession = nil;
                          apiVersionNumber:(NSNumber*)apiVersionNumber 
 {
 	return [self sessionForApplication:key secret:secret appName:appName 
-							 subDomain:subDomain domain:@"stackmob.com" apiVersionNumber:apiVersionNumber];
+							 subDomain:subDomain domain:kStackMobDefaultDomain apiVersionNumber:apiVersionNumber];
 }
 
 + (StackMobSession*)sessionForApplication:(NSString*)key 
@@ -96,14 +93,17 @@ static StackMobSession* sharedSession = nil;
     if(userBasedRequest) [parts addObject:self.userObjectName];
     [parts addObject:method];
     
-    NSMutableString *url = [NSMutableString stringWithString:[parts componentsJoinedByString:@"/"]];
+    NSMutableString *urlString = [NSMutableString stringWithString:[parts componentsJoinedByString:@"/"]];
     
-    // 'ogin' so it matches facebookLogin as well
-    NSRange range = [method rangeOfString:@"ogin" options:NSLiteralSearch];
-    
-    if (range.location == NSNotFound) [url appendString:@"/"];
-    
-    return url;
+    // for non custom methods, append a trailing slash to the URL
+    NSError *error = nil;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@".+(login|facebook|twitter).+" options:NSRegularExpressionCaseInsensitive error:&error];
+    NSUInteger matchCount = [regex numberOfMatchesInString:method options:nil range:NSMakeRange(0,method.length)];
+
+    MRLog(@"checking method '%@', matchCount %d", method, matchCount);
+    if(matchCount == 0)
+//        [urlString appendString:@"/"];
+    return urlString;
 }
 
 - (NSMutableString*)secureURLForMethod:(NSString*)method {
@@ -182,7 +182,7 @@ static StackMobSession* sharedSession = nil;
 	[_subDomain release];
 	[_domain release];
     [_userObjectName release];
-  [_apiVersionNumber release];
+    [_apiVersionNumber release];
 	[_sessionKey release];
 	[_expirationDate release];
 	[_lastRequestTime release];
@@ -203,10 +203,5 @@ static StackMobSession* sharedSession = nil;
 - (NSString*)apiSecureURL {
 	return secureURL;
 }
-
-- (NSMutableString*)pushURL {
-  return [NSString stringWithString:pushURL];
-}
-
 
 @end
