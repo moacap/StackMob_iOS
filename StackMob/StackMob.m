@@ -14,6 +14,7 @@
 @interface StackMob (Private)
 - (void)queueRequest:(StackMobRequest *)request andCallback:(StackMobCallback)callback;
 - (void)run;
+- (void)next;
 @end
 
 @implementation StackMob
@@ -55,6 +56,8 @@ NSString * const kUserObjectName = @"account";
     return _sharedManager;
 }
 
+#pragma mark - Session Methods
+
 - (void)startSession{
     StackMobRequest *request = [StackMobRequest requestForMethod:@"startsession" withHttpVerb:POST];
     [self queueRequest:request andCallback:nil];
@@ -65,6 +68,22 @@ NSString * const kUserObjectName = @"account";
     [self queueRequest:request andCallback:nil];
 }
 
+# pragma mark - User object Methods
+- (void)loginWithParams:(NSDictionary *)params andCallback:(StackMobCallback)callback
+{
+    [self post:[NSString stringWithFormat:@"%@/login", session.userObjectName]
+     withParams:params
+    andCallback:callback];
+}
+
+- (void)getUserInfoWithParams:(NSDictionary *)params andCallback:(StackMobCallback)callback
+{
+    [self get:session.userObjectName
+   withParams:params
+  andCallback:callback];
+}
+
+# pragma mark - Facebook methods
 - (void)loginWithFacebookToken:(NSString *)facebookToken andCallback:(StackMobCallback)callback{
     NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:facebookToken, @"fb_at", nil];
     StackMobRequest *request = [StackMobRequest userRequestForMethod:@"facebookLogin" withArguments:args withHttpVerb:GET];
@@ -76,6 +95,8 @@ NSString * const kUserObjectName = @"account";
     StackMobRequest *request = [StackMobRequest userRequestForMethod:@"createUserWithFacebook" withArguments:args withHttpVerb:GET];
     [self queueRequest:request andCallback:callback];
 }
+
+# pragma mark - CRUD methods
 
 - (void)get:(NSString *)path withParams:(NSDictionary *)params andCallback:(StackMobCallback)callback{
     StackMobRequest *request = [StackMobRequest requestForMethod:path
@@ -148,7 +169,9 @@ NSString * const kUserObjectName = @"account";
     [self queueRequest:request andCallback:callback];
 }
 
-- (void)queueRequest:(StackMobRequest *)request andCallback:(StackMobCallback)callback{
+# pragma mark - Private methods
+- (void)queueRequest:(StackMobRequest *)request andCallback:(StackMobCallback)callback
+{
     request.delegate = self;
     
     [self.requests addObject:request];
@@ -162,7 +185,8 @@ NSString * const kUserObjectName = @"account";
     [self run];
 }
 
-- (void)run{
+- (void)run
+{
     if(!_running){
         if([self.requests count] == 0) return;
         NSLog(@"running...");
@@ -172,14 +196,14 @@ NSString * const kUserObjectName = @"account";
     }
 }
 
-- (void)next{
+- (void)next
+{
     _running = NO;
     currentRequest = nil;
     [self run];
 }
 
-#pragma mark -
-#pragma mark StackMobRequestDelegate
+#pragma mark - StackMobRequestDelegate
 
 - (void)requestCompleted:(StackMobRequest*)request {
 //    [request retain];  // TODO: wtf
@@ -200,8 +224,8 @@ NSString * const kUserObjectName = @"account";
     }
 }
 
-# pragma mark -
 # pragma mark - Singleton Conformity
+
 static StackMob *sharedSession = nil;
 
 + (StackMob *)sharedManager
