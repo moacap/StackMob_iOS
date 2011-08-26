@@ -76,7 +76,6 @@ typedef enum {
 - (void)setBool:(BOOL)value forArgument:(NSString*)argument;
 
 - (void)sendRequest;
-- (void)startSession;
 - (void)cancel;
 
 - (id)sendSynchronousRequestProvidingError:(NSError**)error;

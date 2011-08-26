@@ -99,10 +99,6 @@
 	return request;
 }
 
-+ (StackMobRequest *)startSessionRequest{
-    return nil;
-}
-
 + (NSString*)stringFromHttpVerb:(SMHttpVerb)httpVerb {
 	switch (httpVerb) {
 		case POST:
@@ -240,51 +236,51 @@
 	self.connection = [[[NSURLConnection alloc] initWithRequest:request delegate:self] retain]; // Why retaining this when already retained by synthesized method?
 }
 
-- (void)startSession{
-	_requestFinished = NO;
-    
-    self.method = @"startsession";
-    self.httpMethod = [[self class] stringFromHttpVerb:POST]; 
-	if (kLogVersbose) {
-		StackMobLog(@"Sending Request with StackMob method: %@", self.method);
-		StackMobLog(@"Request Request with url: %@", self.url);
-		StackMobLog(@"Request Request with HTTP Method: %@", self.httpMethod);
-	}
-    
-	OAConsumer *consumer = [[OAConsumer alloc] initWithKey:session.apiKey
-                                                    secret:session.apiSecret];
-    
-    StackMobClientData *data = [StackMobClientData sharedClientData];
-    [self setValue:[data clientDataString]  forArgument:@"cd"];
-    
-	OAMutableURLRequest *request = [[OAMutableURLRequest alloc] initWithURL:self.url
-																   consumer:consumer
-																	  token:nil
-																	  realm:nil
-														  signatureProvider:nil]; // use the default method, HMAC-SHA1
-	[request setHTTPMethod:[self httpMethod]];
-    
-	[request addValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
-	[request addValue:@"deflate" forHTTPHeaderField:@"Accept-Encoding"];
-    
-	[request prepare];
-	if (![[self httpMethod] isEqualToString: @"GET"]) {
-        NSData* postData = [[mArguments yajl_JSONString] dataUsingEncoding:NSUTF8StringEncoding];
-        if (kLogVersbose == YES) {
-//            StackMobLog(@"POST Data: %@", postData);
-        }
-        [request setHTTPBody:postData];	
-        NSString *contentType = [NSString stringWithFormat:@"application/json"];
-        [request addValue:contentType forHTTPHeaderField: @"Content-Type"]; 
-	}
-    
-	if (kLogVersbose) {
-		StackMobLog(@"StackMobRequest: starting session: %@", request);
-	}
-	[mConnectionData setLength:0];		
-	self.result = nil;
-	self.connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];  
-}
+//- (void)startSession{
+//	_requestFinished = NO;
+//    
+//    self.method = @"startsession";
+//    self.httpMethod = [[self class] stringFromHttpVerb:POST]; 
+//	if (kLogVersbose) {
+//		StackMobLog(@"Sending Request with StackMob method: %@", self.method);
+//		StackMobLog(@"Request Request with url: %@", self.url);
+//		StackMobLog(@"Request Request with HTTP Method: %@", self.httpMethod);
+//	}
+//    
+//	OAConsumer *consumer = [[OAConsumer alloc] initWithKey:session.apiKey
+//                                                    secret:session.apiSecret];
+//    
+//    StackMobClientData *data = [StackMobClientData sharedClientData];
+//    [self setValue:[data clientDataString]  forArgument:@"cd"];
+//    
+//	OAMutableURLRequest *request = [[OAMutableURLRequest alloc] initWithURL:self.url
+//																   consumer:consumer
+//																	  token:nil
+//																	  realm:nil
+//														  signatureProvider:nil]; // use the default method, HMAC-SHA1
+//	[request setHTTPMethod:[self httpMethod]];
+//    
+//	[request addValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
+//	[request addValue:@"deflate" forHTTPHeaderField:@"Accept-Encoding"];
+//    
+//	[request prepare];
+//	if (![[self httpMethod] isEqualToString: @"GET"]) {
+//        NSData* postData = [[mArguments yajl_JSONString] dataUsingEncoding:NSUTF8StringEncoding];
+//        if (kLogVersbose == YES) {
+////            StackMobLog(@"POST Data: %@", postData);
+//        }
+//        [request setHTTPBody:postData];	
+//        NSString *contentType = [NSString stringWithFormat:@"application/json"];
+//        [request addValue:contentType forHTTPHeaderField: @"Content-Type"]; 
+//	}
+//    
+//	if (kLogVersbose) {
+//		StackMobLog(@"StackMobRequest: starting session: %@", request);
+//	}
+//	[mConnectionData setLength:0];		
+//	self.result = nil;
+//	self.connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];  
+//}
 
 - (void)cancel
 {
@@ -318,11 +314,10 @@
 	self.result = [NSDictionary dictionaryWithObjectsAndKeys:[error localizedDescription], @"statusDetails", nil];  
 	// If a delegate has been set, attempt to tell
 	// it all about this request's status.
-	if (self.delegate != nil)
-	{
+	if (self.delegate){
 		// If a selector has been set for this request, 
 		// attempt to notify the delegate using it.
-		if ([self.delegate respondsToSelector:@selector(requestCompleted:)] == YES)
+		if ([self.delegate respondsToSelector:@selector(requestCompleted:)])
 			[[self delegate] requestCompleted:self];
 	}
 }
@@ -361,8 +356,7 @@
 	
 	// If a delegate has been set, attempt to tell
 	// it all about this request's status.
-	if (self.delegate != nil)
-	{
+	if (self.delegate != nil){
         if ([self.delegate respondsToSelector:@selector(requestCompleted:)]) {
             if (kLogVersbose == YES) {
                 StackMobLog(@"Calling delegate %d, self %d", [mDelegate retainCount], [self retainCount]);
@@ -417,25 +411,22 @@
 	if (kLogVersbose) {
 		StackMobLog(@"StackMobRequest: sending synchronous oauth request: %@", request);
 	}
-	NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:error];
+	NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
 	if (kLogVersbose) {
-    if (*error!=nil) {
-      StackMobLog(@"StackMobRequest: ERROR: %@", [*error localizedDescription]);
-    }
+        if (error)
+            StackMobLog(@"StackMobRequest: ERROR: %@", [*error localizedDescription]);
 	}
 
 	[mConnectionData appendData:data];
-  mHttpResponse = [(NSHTTPURLResponse*)response copy];
+    mHttpResponse = [(NSHTTPURLResponse*)response copy];
 
 	NSDictionary* result;
 	
-	if ([mConnectionData length] == 0)
-	{
+	if ([mConnectionData length] == 0){
 		result = [NSDictionary dictionary];
 	}
-	else
-	{
-    NSString* textResult = [[[NSString alloc] initWithData:mConnectionData encoding:NSUTF8StringEncoding] autorelease];
+	else{
+        NSString* textResult = [[[NSString alloc] initWithData:mConnectionData encoding:NSUTF8StringEncoding] autorelease];
 		StackMobLog(@"Text result was %@", textResult);
 		
 		[mConnectionData setLength:0];		

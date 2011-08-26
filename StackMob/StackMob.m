@@ -29,28 +29,36 @@ static StackMob *_sharedManager = nil;
 //NSString * const kAPISecret = @"4403e237-c7a2-49a1-8c7b-df441b16e1c9";
 
 // Prod keys
-NSString * const kAPIKey = @"bc82e8de-bb82-4eb6-b03f-62619382837a";
-NSString * const kAPISecret = @"f58efdd7-2233-418c-ba58-e56963406df0";
-
-NSString * const kSubDomain = @"fithsaring";
-NSString * const kAppName = @"meetingroom";
-NSString * const kDomain = @"mob2.stackmob.com";
-NSString * const kUserObjectName = @"account";
+//NSString * const kAPIKey = @"bc82e8de-bb82-4eb6-b03f-62619382837a";
+//NSString * const kAPISecret = @"f58efdd7-2233-418c-ba58-e56963406df0";
+//
+//NSString * const kSubDomain = @"fithsaring";
+//NSString * const kAppName = @"meetingroom";
+//NSString * const kDomain = @"mob2.stackmob.com";
+//NSString * const kUserObjectName = @"account";
 
 #define API_VERSION [NSNumber numberWithInt:3]
 
 + (StackMob *)stackmob {
     if (_sharedManager == nil) {
         _sharedManager = [[super allocWithZone:NULL] init];
-        _sharedManager.session = [[StackMobSession sessionForApplication:kAPIKey
-                                                    secret:kAPISecret
-                                                   appName:kAppName
-                                                 subDomain:kSubDomain
-                                                    domain:kDomain
-                                            userObjectName:kUserObjectName
-                                          apiVersionNumber:API_VERSION] retain];
-        _sharedManager.requests = [NSMutableArray array];
-        _sharedManager.callbacks = [NSMutableArray array];
+        NSString *filename = [[NSBundle mainBundle] pathForResource:@"StackMob" ofType:@"plist"];
+        
+        if(filename){
+            NSDictionary *appInfo = [NSDictionary dictionaryWithContentsOfFile:filename];
+            _sharedManager.session = [[StackMobSession sessionForApplication:[appInfo objectForKey:@"publicKey"]
+                                                                      secret:[appInfo objectForKey:@"privateKey"]
+                                                                     appName:[appInfo objectForKey:@"appName"]
+                                                                   subDomain:[appInfo objectForKey:@"appSubdomain"]
+                                                                      domain:[appInfo objectForKey:@"domain"]
+                                                              userObjectName:[appInfo objectForKey:@"userObjectName"]
+                                                            apiVersionNumber:API_VERSION] retain];
+            _sharedManager.requests = [NSMutableArray array];
+            _sharedManager.callbacks = [NSMutableArray array];
+
+        }else{
+            [NSException raise:@"Invalid Initialization" format:@"You must create a file StackMob.plist in your app's main bundle.  See README for more info."];
+        }
         
     }
     return _sharedManager;
