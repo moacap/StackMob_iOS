@@ -14,5 +14,9 @@
 
 #import <Foundation/Foundation.h>
 @interface NSDictionary (StackMobAdditions)
-	- (NSString *)queryString;
+- (NSString *)queryString;
+@end
+
+@interface NSArray (StackMobAdditions)
+- (BOOL)isEmpty;
 @end

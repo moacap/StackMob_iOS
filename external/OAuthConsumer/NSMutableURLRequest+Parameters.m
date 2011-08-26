@@ -42,15 +42,14 @@
         encodedParameters = [[NSString alloc] initWithData:[self HTTPBody] encoding:NSASCIIStringEncoding];
     }
     
-    NSLog(@"encodedParameters %@", encodedParameters);
+    SMLogVerbose(@"encodedParameters %@", encodedParameters);
     if ((encodedParameters == nil) || ([encodedParameters isEqualToString:@""]))
         return nil;
     
     NSArray *encodedParameterPairs = [encodedParameters componentsSeparatedByString:@"&"];
     NSMutableArray *requestParameters = [[NSMutableArray alloc] initWithCapacity:16];
     
-    for (NSString *encodedPair in encodedParameterPairs) 
-	{
+    for (NSString *encodedPair in encodedParameterPairs){
         NSArray *encodedPairElements = [encodedPair componentsSeparatedByString:@"="];
         OARequestParameter *parameter = [OARequestParameter requestParameterWithName:[[encodedPairElements objectAtIndex:0] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
 																			   value:[[encodedPairElements objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
@@ -69,8 +68,7 @@
     NSMutableString *encodedParameterPairs = [NSMutableString stringWithCapacity:256];
     
     int position = 1;
-    for (OARequestParameter *requestParameter in parameters) 
-	{
+    for (OARequestParameter *requestParameter in parameters){
         [encodedParameterPairs appendString:[requestParameter URLEncodedNameValuePair]];
         if (position < [parameters count])
             [encodedParameterPairs appendString:@"&"];
@@ -80,8 +78,7 @@
     
     if ([[self HTTPMethod] isEqualToString:@"GET"] || [[self HTTPMethod] isEqualToString:@"DELETE"])
         [self setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@?%@", [[self URL] URLStringWithoutQuery], encodedParameterPairs]]];
-    else 
-	{
+    else{
         // POST, PUT
         NSData *postData = [encodedParameterPairs dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
         [self setHTTPBody:postData];

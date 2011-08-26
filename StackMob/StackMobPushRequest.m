@@ -15,8 +15,7 @@
 }
 
 - (NSURL*)getURL {
-	NSMutableString* stringURL = [session pushURL];
-	StackMobLog(@"%@", stringURL);
+	NSString* stringURL = [session pushURL];
 	return [NSURL URLWithString: stringURL];
 }
 

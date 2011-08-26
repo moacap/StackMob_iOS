@@ -55,31 +55,52 @@ typedef enum {
 @property(readonly, getter=getURL) NSURL* url;
 @property(nonatomic) BOOL userBased;
 
-+ (StackMobRequest*)request;
-+ (StackMobRequest*)requestForMethod:(NSString*)method;
-+ (StackMobRequest*)requestForMethod:(NSString*)method withHttpVerb:(SMHttpVerb) httpVerb;
-+ (StackMobRequest*)requestForMethod:(NSString*)method withArguments:(NSDictionary*)arguments withHttpVerb:(SMHttpVerb) httpVerb;
-+ (StackMobRequest *)requestForMethod:(NSString *)method withData:(NSData *)data;
+/* 
+ * Standard CRUD requests
+ */
++ (id)request;
++ (id)requestForMethod:(NSString*)method;
++ (id)requestForMethod:(NSString*)method withHttpVerb:(SMHttpVerb) httpVerb;
++ (id)requestForMethod:(NSString*)method withArguments:(NSDictionary*)arguments withHttpVerb:(SMHttpVerb) httpVerb;
++ (id)requestForMethod:(NSString *)method withData:(NSData *)data;
 
-/* User based requests */
-+ (StackMobRequest*)userRequest;
-+ (StackMobRequest*)userRequestForMethod:(NSString *)method withHttpVerb:(SMHttpVerb)httpVerb;
-+ (StackMobRequest*)userRequestForMethod:(NSString*)method withArguments:(NSDictionary*)arguments withHttpVerb:(SMHttpVerb)httpVerb;
+/* 
+ * User based requests 
+ * Use these to 
+ */
++ (id)userRequest;
++ (id)userRequestForMethod:(NSString *)method withHttpVerb:(SMHttpVerb)httpVerb;
++ (id)userRequestForMethod:(NSString*)method withArguments:(NSDictionary*)arguments withHttpVerb:(SMHttpVerb)httpVerb;
 
-+ (StackMobRequest*)pushRequestWithArguments:(NSDictionary*)arguments withHttpVerb:(SMHttpVerb) httpVerb;
+/*
+ * Create a request for an iOS PUSH notification
+ @param arguments a dictionary of arguments including :alert, :badge and :sound
+ */
++ (id)pushRequestWithArguments:(NSDictionary*)arguments withHttpVerb:(SMHttpVerb) httpVerb;
 
-+ (NSString*)stringFromHttpVerb:(SMHttpVerb)httpVerb;
-
+/*
+ * Set parameters for requests
+ */
 - (void)setArguments:(NSDictionary*)arguments;
 - (void)setValue:(NSString*)value forArgument:(NSString*)argument;
 - (void)setInteger:(NSUInteger)value forArgument:(NSString*)argument;
 - (void)setBool:(BOOL)value forArgument:(NSString*)argument;
 
+/*
+ * Send a configured request and wait for callback
+ */
 - (void)sendRequest;
+
+/*
+ * Cancel and ignore a request in progress
+ */
 - (void)cancel;
 
+/* Send a synchronous request
+ * This is useful if you are creating requests in a separate thread already
+ * @param address of NSError
+ */
 - (id)sendSynchronousRequestProvidingError:(NSError**)error;
-
 
 @end
 

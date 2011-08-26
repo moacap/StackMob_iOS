@@ -20,8 +20,7 @@
 {
 	NSMutableArray* encodedPieces = [NSMutableArray array];
 	
-	for(NSString* argumentKey in self)
-	{
+	for(NSString* argumentKey in self){
 		NSString* argumentValue = [self objectForKey:argumentKey];
 		if(!argumentValue)
 			continue;
@@ -31,6 +30,15 @@
 	}
 	
 	return [encodedPieces componentsJoinedByString:@"&"];
+}
+
+@end
+
+@implementation NSArray (StackMobAdditions)
+
+- (BOOL)isEmpty
+{
+    return self.count == 0;
 }
 
 @end

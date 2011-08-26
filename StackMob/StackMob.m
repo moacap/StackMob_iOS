@@ -8,6 +8,7 @@
 
 #import "StackMob.h"
 #import "StackMobRequest.h"
+#import "StackMobAdditions.h"
 #import "StackMobClientData.h"
 #import "StackMobCustomRequest.h"
 
@@ -24,42 +25,26 @@
 @synthesize session;
 
 static StackMob *_sharedManager = nil;
-// Dev keys
-//NSString * const kAPIKey = @"83454cea-33de-4527-8176-69b8c9b4d183";
-//NSString * const kAPISecret = @"4403e237-c7a2-49a1-8c7b-df441b16e1c9";
-
-// Prod keys
-//NSString * const kAPIKey = @"bc82e8de-bb82-4eb6-b03f-62619382837a";
-//NSString * const kAPISecret = @"f58efdd7-2233-418c-ba58-e56963406df0";
-//
-//NSString * const kSubDomain = @"fithsaring";
-//NSString * const kAppName = @"meetingroom";
-//NSString * const kDomain = @"mob2.stackmob.com";
-//NSString * const kUserObjectName = @"account";
-
-#define API_VERSION [NSNumber numberWithInt:3]
 
 + (StackMob *)stackmob {
     if (_sharedManager == nil) {
         _sharedManager = [[super allocWithZone:NULL] init];
         NSString *filename = [[NSBundle mainBundle] pathForResource:@"StackMob" ofType:@"plist"];
-        
-        if(filename){
-            NSDictionary *appInfo = [NSDictionary dictionaryWithContentsOfFile:filename];
-            _sharedManager.session = [[StackMobSession sessionForApplication:[appInfo objectForKey:@"publicKey"]
-                                                                      secret:[appInfo objectForKey:@"privateKey"]
-                                                                     appName:[appInfo objectForKey:@"appName"]
-                                                                   subDomain:[appInfo objectForKey:@"appSubdomain"]
-                                                                      domain:[appInfo objectForKey:@"domain"]
-                                                              userObjectName:[appInfo objectForKey:@"userObjectName"]
-                                                            apiVersionNumber:API_VERSION] retain];
-            _sharedManager.requests = [NSMutableArray array];
-            _sharedManager.callbacks = [NSMutableArray array];
+        NSDictionary *appInfo = [[NSDictionary dictionaryWithContentsOfFile:filename] objectForKey:@"production"];
 
-        }else{
-            [NSException raise:@"Invalid Initialization" format:@"You must create a file StackMob.plist in your app's main bundle.  See README for more info."];
+        _sharedManager.session = [[StackMobSession sessionForApplication:[appInfo objectForKey:@"publicKey"]
+                                                                  secret:[appInfo objectForKey:@"privateKey"]
+                                                                 appName:[appInfo objectForKey:@"appName"]
+                                                               subDomain:[appInfo objectForKey:@"appSubdomain"]
+                                                                  domain:[appInfo objectForKey:@"domain"]
+                                                          userObjectName:[appInfo objectForKey:@"userObjectName"]
+                                                        apiVersionNumber:[appInfo objectForKey:@"apiVersion"]] retain];
+        _sharedManager.requests = [NSMutableArray array];
+        _sharedManager.callbacks = [NSMutableArray array];
+
+        if(!filename || !appInfo){
+            [NSException raise:@"StackMob.plist format error" format:@"Please ensure proper formatting.  Toplevel should have 'production' or 'development' key."];
         }
-        
     }
     return _sharedManager;
 }
@@ -77,17 +62,17 @@ static StackMob *_sharedManager = nil;
 }
 
 # pragma mark - User object Methods
-- (void)loginWithParams:(NSDictionary *)params andCallback:(StackMobCallback)callback
+- (void)loginwithArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
 {
     [self post:[NSString stringWithFormat:@"%@/login", session.userObjectName]
-     withParams:params
+     withArguments:arguments
     andCallback:callback];
 }
 
-- (void)getUserInfoWithParams:(NSDictionary *)params andCallback:(StackMobCallback)callback
+- (void)getUserInfowithArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
 {
     [self get:session.userObjectName
-   withParams:params
+   withArguments:arguments
   andCallback:callback];
 }
 
@@ -106,9 +91,9 @@ static StackMob *_sharedManager = nil;
 
 # pragma mark - CRUD methods
 
-- (void)get:(NSString *)path withParams:(NSDictionary *)params andCallback:(StackMobCallback)callback{
+- (void)get:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback{
     StackMobRequest *request = [StackMobRequest requestForMethod:path
-                                                   withArguments:params
+                                                   withArguments:arguments
                                                     withHttpVerb:GET]; 
     [self queueRequest:request andCallback:callback];
 }
@@ -129,50 +114,50 @@ static StackMob *_sharedManager = nil;
     [self queueRequest:request andCallback:callback];
 }
 
-- (void)customGet:(NSString *)path withParams:(NSDictionary *)params andCallback:(StackMobCallback)callback
+- (void)customGet:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
 {
     StackMobCustomRequest *request = [StackMobCustomRequest requestForMethod:path
-                                                               withArguments:params
+                                                               withArguments:arguments
                                                                 withHttpVerb:GET];
     [self queueRequest:request andCallback:callback];
 }
 
-- (void)post:(NSString *)path withParams:(NSDictionary *)params andCallback:(StackMobCallback)callback
+- (void)post:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
 {
     StackMobRequest *request = [StackMobRequest requestForMethod:path
-                                                   withArguments:params
+                                                   withArguments:arguments
                                                     withHttpVerb:POST];
     [self queueRequest:request andCallback:callback];
 }
 
-- (void)customPost:(NSString *)path withParams:(NSDictionary *)params andCallback:(StackMobCallback)callback
+- (void)customPost:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
 {
     StackMobCustomRequest *request = [StackMobCustomRequest requestForMethod:path
-                                                               withArguments:params
+                                                               withArguments:arguments
                                                                 withHttpVerb:POST];
     [self queueRequest:request andCallback:callback];
 }
 
-- (void)post:(NSString *)path forUser:(NSString *)user withParams:(NSDictionary *)params andCallback:(StackMobCallback)callback
+- (void)post:(NSString *)path forUser:(NSString *)user withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
 {
-    NSDictionary *modifiedParams = [NSMutableDictionary dictionaryWithDictionary:params];
-    [modifiedParams setValue:user forKey:kUserObjectName];
-    StackMobRequest *request = [StackMobRequest requestForMethod:[NSString stringWithFormat:@"%@/%@", kUserObjectName, path]
-                                                   withArguments:params
+    NSDictionary *modifiedArguments = [NSMutableDictionary dictionaryWithDictionary:arguments];
+    [modifiedArguments setValue:user forKey:session.userObjectName];
+    StackMobRequest *request = [StackMobRequest requestForMethod:[NSString stringWithFormat:@"%@/%@", session.userObjectName, path]
+                                                   withArguments:modifiedArguments
                                                     withHttpVerb:POST];
     [self queueRequest:request andCallback:callback];
 }
 
-- (void)put:(NSString *)path withParams:(NSDictionary *)params andCallback:(StackMobCallback)callback{
+- (void)put:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback{
     StackMobRequest *request = [StackMobRequest requestForMethod:path
-                                                   withArguments:params
+                                                   withArguments:arguments
                                                     withHttpVerb:PUT];
     [self queueRequest:request andCallback:callback];
 }
 
-- (void)destroy:(NSString *)path withParams:(NSDictionary *)params andCallback:(StackMobCallback)callback{
+- (void)destroy:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback{
     StackMobRequest *request = [StackMobRequest requestForMethod:path
-                                                   withArguments:params
+                                                   withArguments:arguments
                                                     withHttpVerb:DELETE];
     [self queueRequest:request andCallback:callback];
 }
@@ -196,8 +181,7 @@ static StackMob *_sharedManager = nil;
 - (void)run
 {
     if(!_running){
-        if([self.requests count] == 0) return;
-        NSLog(@"running...");
+        if([self.requests isEmpty]) return;
         currentRequest = [self.requests objectAtIndex:0];
         [currentRequest sendRequest];
         _running = YES;
@@ -218,15 +202,15 @@ static StackMob *_sharedManager = nil;
     if([self.requests containsObject:request]){
         NSInteger index = [self.requests indexOfObject:request];
         StackMobCallback callback = [self.callbacks objectAtIndex:index];
-        StackMobLog(@"status %d", request.httpResponse.statusCode);
+        SMLog(@"status %d", request.httpResponse.statusCode);
         if((NSNull *)callback != [NSNull null]){
             callback(request.httpResponse.statusCode < 300 && request.httpResponse.statusCode > 0, [request result]);
             Block_release(callback);
         }else{
-            StackMobLog(@"no callback found");
+            SMLog(@"no callback found");
         }
         [self.callbacks removeObjectAtIndex:index];
-        StackMobLog(@"requests %d, request %d", [self.requests retainCount], [request retainCount]);
+        SMLog(@"requests %d, request %d", [self.requests retainCount], [request retainCount]);
         [self.requests removeObject:request];
         [self next];
     }

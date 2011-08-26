@@ -10,7 +10,7 @@
 
 @implementation StackMobCustomRequest
 
-+ (StackMobCustomRequest*)requestForMethod:(NSString*)method withArguments:(NSDictionary*)arguments withHttpVerb:(SMHttpVerb)httpVerb
++ (id)requestForMethod:(NSString*)method withArguments:(NSDictionary*)arguments withHttpVerb:(SMHttpVerb)httpVerb
 {
 	StackMobCustomRequest *request = [[[StackMobCustomRequest alloc] init] autorelease];
 	request.method = method;
