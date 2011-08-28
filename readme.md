@@ -20,7 +20,7 @@
 8. You can now make requests to your servers on StackMob using the following pattern
 
 ```objective-c
-[[StackMob stackmob] get:@"account" withArguments:[loginObject getUserParams] andCallback:^(BOOL success, id result){
+[[StackMob stackmob] get:@"account" withArguments:argumentDictionary andCallback:^(BOOL success, id result){
     if(success){
       // Cast result to a NSDictionary* and do something with the UI
       // Alert delegates
@@ -31,7 +31,7 @@
 }];
 ```
 ```objective-c
-[[StackMob stackmob] post:@"account" withArguments:[loginObject registerUserParams] andCallback:^(BOOL success, id result){
+[[StackMob stackmob] post:@"account" withArguments:argumentsDictionary andCallback:^(BOOL success, id result){
     if(success){
       // Cast result to a NSDictionary* and do something with the UI
       // Alert delegates
@@ -41,13 +41,14 @@
     }
 }];
 ```
-If you need to upload a binary file you can do this:
+If you need to upload a binary file just add an NSData* object to your argument dictionary
 
 ```objective-c
 // kAttributePostPhoto here is the name of the binary field in your object model
-[params setValue:[NSData dataWithContentsOfFile:pathToImageString] forKey:kAttributePostPhoto];
+[params setValue:[NSData dataWithContentsOfFile:pathToDataFile] forKey:kAttributePostPhoto];
 ```
 9. You can register a user with a facebook token and username
+
 ```objective-c
 [[StackMob stackmob] registerWithFacebookToken:token username:myLoginObject.userName andCallback:^(BOOL success, id result){
     if(success){
