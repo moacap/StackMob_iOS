@@ -24,19 +24,20 @@ typedef enum {
 
 @interface StackMobRequest : NSObject
 {
-	NSURLConnection*		mConnection;
-	id						mDelegate;
-	SEL						mSelector;
-	NSString*				mMethod;
-	NSMutableDictionary*	mArguments;
-	NSMutableData*			mConnectionData;
-	NSDictionary*			mResult;
-	BOOL					_requestFinished;
-	NSString*				mHttpMethod;
-	NSHTTPURLResponse*		mHttpResponse;
+  NSURLConnection*      mConnection;
+  id                    mDelegate;
+  SEL                   mSelector;
+  NSString*             mMethod;
+  NSMutableDictionary*  mArguments;
+  NSMutableData*        mConnectionData;
+  NSDictionary*         mResult;
+  NSError*              mConnectionError;
+  BOOL                  _requestFinished;
+  NSString*             mHttpMethod;
+  NSHTTPURLResponse*    mHttpResponse;
 	
-	@protected
-		StackMobSession *session;
+  @protected
+    StackMobSession *session;
 }
 
 @property(readwrite, retain) id delegate;
@@ -44,6 +45,7 @@ typedef enum {
 @property(readwrite, copy) NSString* httpMethod;
 @property(readwrite, retain) NSURLConnection* connection;
 @property(readwrite, retain) NSDictionary* result;
+@property(readwrite, retain) NSError* connectionError;
 @property(readonly) BOOL finished;
 @property(readonly) NSHTTPURLResponse* httpResponse;
 @property(readonly, getter=getStatusCode) NSInteger statusCode;
@@ -66,8 +68,8 @@ typedef enum {
 - (void)sendRequest;
 - (void)cancel;
 
-- (id)sendSynchronousRequestProvidingError:(NSError**)error;
-
+- (id)sendSynchronousRequestProvidingError:(NSError**)error __attribute__((deprecated));
+- (id)sendSynchronousRequest;
 
 @end
 

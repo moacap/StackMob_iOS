@@ -26,6 +26,7 @@
 @synthesize delegate = mDelegate;
 @synthesize method = mMethod;
 @synthesize result = mResult;
+@synthesize connectionError = _connectionError;
 @synthesize httpMethod = mHttpMethod;
 @synthesize httpResponse = mHttpResponse;
 @synthesize finished = _requestFinished;
@@ -195,6 +196,7 @@
 	}
 	[mConnectionData setLength:0];		
 	self.result = nil;
+  self.connectionError = nil;
 	self.connection = [[[NSURLConnection alloc] initWithRequest:request delegate:self] retain]; // Why retaining this when already retained by synthesized method?
   [request release];
 }
@@ -225,6 +227,7 @@
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
 	_requestFinished = YES;
+  self.connectionError = error;
 	// inform the user
 	StackMobLog(@"StackMobRequest %p: Connection failed! Error - %@ %@",
     self,
@@ -297,6 +300,12 @@
 }
 
 - (id) sendSynchronousRequestProvidingError:(NSError**)error {
+  id result = [self sendSynchronousRequest];
+  *error = self.connectionError;
+  return result;
+}
+
+- (id) sendSynchronousRequest {
 	if (kLogVersbose == YES) {
 		StackMobLog(@"StackMobRequest %p: Sending Synch Request httpMethod=%@ method=%@ url=%@", self, self.httpMethod, self.method, self.url);
 	}
@@ -326,40 +335,22 @@
 	}
 	
 	[mConnectionData setLength:0];
-	NSURLResponse *response = nil;
 
 	if (kLogVersbose) {
 		StackMobLog(@"StackMobRequest %p: sending synchronous oauth request: %@", self, request);
 	}
-	NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:error];
-  [request release];
-	if (kLogVersbose) {
-    if (*error!=nil) {
-      StackMobLog(@"StackMobRequest %p: ERROR: %@", self, [*error localizedDescription]);
-    }
-	}
-
-	[mConnectionData appendData:data];
-  mHttpResponse = [(NSHTTPURLResponse*)response copy];
-
-	NSDictionary* result;
-	
-	if ([mConnectionData length] == 0)
-	{
-		result = [NSDictionary dictionary];
-	}
-	else
-	{
-    NSString* textResult = [[[NSString alloc] initWithData:mConnectionData encoding:NSUTF8StringEncoding] autorelease];
-		StackMobLog(@"StackMobRequest %p: Text result was %@", self, textResult);
-		
-		[mConnectionData setLength:0];		
-		result = [textResult yajl_JSON];
-	}
   
-  self.result = result;
+  _requestFinished = NO;
+  self.connectionError = nil;
+  self.delegate = nil;
+  self.connection = [[[NSURLConnection alloc] initWithRequest:request delegate:self] retain];
   
-	return result;
+  NSDate *loopUntil = [NSDate dateWithTimeIntervalSinceNow:0.1];
+  while (!_requestFinished && [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:loopUntil]) {
+    loopUntil = [NSDate dateWithTimeIntervalSinceNow:0.1];
+  }
+  
+	return self.result;
 }
 
 - (NSString*) description {
