@@ -20,30 +20,36 @@
 8. You can now make requests to your servers on StackMob using the following pattern
 
 ```objective-c
-[[StackMob stackmob] post:@"account" withArguments:[loginObject registerUserParams] andCallback:^(BOOL success, id result){
+[[StackMob stackmob] get:@"account" withArguments:[loginObject getUserParams] andCallback:^(BOOL success, id result){
     if(success){
-        NSDictionary *info = (NSDictionary *)result;
-        loginObject.userName = [info objectForKey:@"username"];
-        loginObject.remoteID = [info objectForKey:@"user_id"];
-        mode = MRUserModeSetCurrentUser;
-        [self nextStep];
+      // Cast result to a NSDictionary* and do something with the UI
+      // Alert delegates
     }
     else{
-        MRLog(@"failed to create user %@", result);
-        [self setLoading:NO];
-        [self flashMessage:NSLocalizedString(@"Unable to create user", "user creation error message")];
-        [self.delegate newUserController:self failedWithError:result];
+      // Cast result to an NSError* and alert your delegates
     }
 }];
 ```
 
-9. You can register a user with a facebookToken and userName
-
 ```objective-c
-[[StackMob stackmob] registerWithFacebookToken:token username:"johnny" andCallback:^(BOOL success, id result){
+[[StackMob stackmob] post:@"account" withArguments:[loginObject registerUserParams] andCallback:^(BOOL success, id result){
     if(success){
       // Cast result to a NSDictionary* and do something with the UI
-      // Alert your delegates
+      // Alert delegates
+    }
+    else{
+      // Cast result to an NSError* and alert your delegates
+    }
+}];
+```
+
+9. You can register a user with a facebook token and username
+
+```objective-c
+[[StackMob stackmob] registerWithFacebookToken:token username:myLoginObject.userName andCallback:^(BOOL success, id result){
+    if(success){
+      // Cast result to a NSDictionary* and do something with the UI
+      // Alert delegates
     }
     else{
       // Cast result to an NSError* and alert your delegates
