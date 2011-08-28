@@ -41,6 +41,11 @@
     }
 }];
 ```
+If you need to upload a binary file you can do this:
+```obective-c
+// kAttributePostPhoto here is the name of the binary field in your object model
+[params setValue:[NSData dataWithContentsOfFile:pathToImageString] forKey:kAttributePostPhoto];
+```
 9. You can register a user with a facebook token and username
 ```objective-c
 [[StackMob stackmob] registerWithFacebookToken:token username:myLoginObject.userName andCallback:^(BOOL success, id result){
