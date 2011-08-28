@@ -5,9 +5,9 @@
 
 #!/bin/bash  
 cd ../
-xcodebuild -configuration Release -target "StackMob" -sdk iphoneos5.0
+xcodebuild -configuration Release -target "StackMob" -sdk iphoneos4.3
 
-xcodebuild -configuration Release -target "StackMob" -sdk iphonesimulator5.0
+xcodebuild -configuration Release -target "StackMob" -sdk iphonesimulator4.3
 
 
 # Define these to suit your nefarious purposes  
