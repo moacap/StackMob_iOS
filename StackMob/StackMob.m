@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #import "StackMob.h"
+#import "StackMobPushRequest.h"
 #import "StackMobRequest.h"
 #import "StackMobAdditions.h"
 #import "StackMobClientData.h"
@@ -111,16 +112,28 @@ static StackMob *_sharedManager = nil;
 }
 
 # pragma mark - Facebook methods
-- (StackMobRequest *)loginWithFacebookToken:(NSString *)facebookToken andCallback:(StackMobCallback)callback{
+- (StackMobRequest *)loginWithFacebookToken:(NSString *)facebookToken andCallback:(StackMobCallback)callback
+{
     NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:facebookToken, @"fb_at", nil];
     StackMobRequest *request = [StackMobRequest userRequestForMethod:@"facebookLogin" withArguments:args withHttpVerb:GET];
     [self queueRequest:request andCallback:callback];
     return request;
 }
 
-- (StackMobRequest *)registerWithFacebookToken:(NSString *)facebookToken username:(NSString *)username andCallback:(StackMobCallback)callback{
+- (StackMobRequest *)registerWithFacebookToken:(NSString *)facebookToken username:(NSString *)username andCallback:(StackMobCallback)callback
+{
     NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:facebookToken, @"fb_at", username, @"username", nil];
     StackMobRequest *request = [StackMobRequest userRequestForMethod:@"createUserWithFacebook" withArguments:args withHttpVerb:GET];
+    [self queueRequest:request andCallback:callback];
+    return request;
+}
+
+# pragma mark - PUSH Notifications
+
+- (StackMobRequest *)registerUserForPushWithArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
+{
+    StackMobPushRequest *request = [StackMobPushRequest request];
+    [request setArguments:arguments];
     [self queueRequest:request andCallback:callback];
     return request;
 }

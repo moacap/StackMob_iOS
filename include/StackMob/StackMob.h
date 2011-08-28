@@ -97,6 +97,11 @@ typedef void (^StackMobCallback)(BOOL success, id result);
 - (StackMobRequest *)registerWithFacebookToken:(NSString *)facebookToken username:(NSString *)username andCallback:(StackMobCallback)callback;
 
 /* 
+ * Register a User for PUSH notifications
+ */
+- (StackMobRequest *)registerUserForPushWithArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
+
+/* 
  * Get the object with name "path" and arguments dictionary
  * @param arguments a dictionary whose keys correspond to object field names on Stackmob Object Model
  */
