@@ -42,6 +42,7 @@
 }];
 ```
 If you need to upload a binary file you can do this:
+
 ```objective-c
 // kAttributePostPhoto here is the name of the binary field in your object model
 [params setValue:[NSData dataWithContentsOfFile:pathToImageString] forKey:kAttributePostPhoto];
@@ -59,6 +60,7 @@ If you need to upload a binary file you can do this:
 }];
 ```
 10. You can register an Apple Push Notification service device token like this
+
 ```objective-c
     - (void)registerForPush
     {
