@@ -5,9 +5,9 @@
 
 #!/bin/bash  
 cd ../
-xcodebuild -configuration Release -target "StackMob" -sdk iphoneos4.3 
+xcodebuild -configuration Release -target "StackMob" -sdk iphoneos5.0
 
-xcodebuild -configuration Release -target "StackMob" -sdk iphonesimulator4.3  
+xcodebuild -configuration Release -target "StackMob" -sdk iphonesimulator5.0
 
 
 # Define these to suit your nefarious purposes  
@@ -66,5 +66,7 @@ xcodebuild -configuration Release -target "StackMob" -sdk iphonesimulator4.3
 # header files and the plist file  
  echo "Framework: Copying assets into current version..."  
  echo ls Include/$FRAMEWORK_NAME/
+#   ls include/**/*
  cp include/$FRAMEWORK_NAME/* $FRAMEWORK_DIR/Headers/  
  cp resources/Framework.plist $FRAMEWORK_DIR/Resources/Info.plist  
+ exit 0

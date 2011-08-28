@@ -16,6 +16,7 @@
 - (void)queueRequest:(StackMobRequest *)request andCallback:(StackMobCallback)callback;
 - (void)run;
 - (void)next;
+- (NSDictionary *)loadInfo;
 @end
 
 @implementation StackMob
@@ -29,9 +30,7 @@ static StackMob *_sharedManager = nil;
 + (StackMob *)stackmob {
     if (_sharedManager == nil) {
         _sharedManager = [[super allocWithZone:NULL] init];
-        NSString *filename = [[NSBundle mainBundle] pathForResource:@"StackMob" ofType:@"plist"];
-        NSDictionary *appInfo = [[NSDictionary dictionaryWithContentsOfFile:filename] objectForKey:@"production"];
-
+        NSDictionary *appInfo = [_sharedManager loadInfo];
         _sharedManager.session = [[StackMobSession sessionForApplication:[appInfo objectForKey:@"publicKey"]
                                                                   secret:[appInfo objectForKey:@"privateKey"]
                                                                  appName:[appInfo objectForKey:@"appName"]
@@ -41,10 +40,6 @@ static StackMob *_sharedManager = nil;
                                                         apiVersionNumber:[appInfo objectForKey:@"apiVersion"]] retain];
         _sharedManager.requests = [NSMutableArray array];
         _sharedManager.callbacks = [NSMutableArray array];
-
-        if(!filename || !appInfo){
-            [NSException raise:@"StackMob.plist format error" format:@"Please ensure proper formatting.  Toplevel should have 'production' or 'development' key."];
-        }
     }
     return _sharedManager;
 }
@@ -195,17 +190,48 @@ static StackMob *_sharedManager = nil;
     [self run];
 }
 
+- (NSDictionary *)loadInfo
+{
+    NSString *filename = [[NSBundle mainBundle] pathForResource:@"StackMob" ofType:@"plist"];
+    NSLog(@"filename %@", filename);
+    NSDictionary *info = [NSDictionary dictionaryWithContentsOfFile:filename];
+    NSMutableDictionary *appInfo = [NSMutableDictionary dictionaryWithDictionary:[info objectForKey:@"production"]];
+    NSLog(@"appInfo: %@", appInfo);
+    SMLog(@"public key: %@", [appInfo objectForKey:@"publicKey"]);
+    SMLog(@"private key: %@", [appInfo objectForKey:@"privateKey"]);
+    if(!filename || !appInfo){
+        [NSException raise:@"StackMob.plist format error" format:@"Please ensure proper formatting.  Toplevel should have 'production' or 'development' key."];
+    }
+    else if(![appInfo objectForKey:@"publicKey"] || [[appInfo objectForKey:@"publicKey"] length] < 1 || ![appInfo objectForKey:@"privateKey"] || [[appInfo objectForKey:@"privateKey"] length] < 1 ){
+        [NSException raise:@"Initialization Error" format:@"Make sure you enter your publicKey and privateKey in StackMob.plist"];
+    }
+    else if(![appInfo objectForKey:@"appName"] || [[appInfo objectForKey:@"appName"] length] < 1 ){
+        [NSException raise:@"Initialization Error" format:@"Make sure you enter your appName in StackMob.plist"];
+    }
+    else if(![appInfo objectForKey:@"appSubdomain"] || [[appInfo objectForKey:@"appSubdomain"] length] < 1 ){
+        [NSException raise:@"Initialization Error" format:@"Make sure you enter your appSubdomain in StackMob.plist"];
+    }
+    else if(![appInfo objectForKey:@"domain"] || [[appInfo objectForKey:@"domain"] length] < 1 ){
+        [NSException raise:@"Initialization Error" format:@"Make sure you enter your domain in StackMob.plist"];
+    }
+    else if(![appInfo objectForKey:@"apiVersion"]){
+        [appInfo setValue:[NSNumber numberWithInt:1] forKey:@"apiVersion"];
+    }
+    return appInfo;
+}
+
 #pragma mark - StackMobRequestDelegate
 
 - (void)requestCompleted:(StackMobRequest*)request {
-//    [request retain];  // TODO: wtf
     if([self.requests containsObject:request]){
         NSInteger index = [self.requests indexOfObject:request];
-        StackMobCallback callback = [self.callbacks objectAtIndex:index];
+        id callback = [self.callbacks objectAtIndex:index];
         SMLog(@"status %d", request.httpResponse.statusCode);
-        if((NSNull *)callback != [NSNull null]){
-            callback(request.httpResponse.statusCode < 300 && request.httpResponse.statusCode > 0, [request result]);
-            Block_release(callback);
+        if(callback != [NSNull null]){
+            NSLog(@"callback %@", callback);
+            StackMobCallback mCallback = (StackMobCallback)callback;
+            mCallback(request.httpResponse.statusCode < 300 && request.httpResponse.statusCode > 199, [request result]);
+            Block_release(mCallback);
         }else{
             SMLog(@"no callback found");
         }

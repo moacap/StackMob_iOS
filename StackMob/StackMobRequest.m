@@ -280,13 +280,14 @@
 	NSDictionary *result = nil;
     NSInteger statusCode = [self getStatusCode];
 
+    SMLogVerbose(@"RESPONSE CODE %d", statusCode);
     if ([mConnectionData length] > 0) {
         textResult = [[[NSString alloc] initWithData:mConnectionData encoding:NSUTF8StringEncoding] autorelease];
-        SMLogVerbose(@"Text result was %@", textResult);
+        SMLogVerbose(@"RESPONSE BODY %@", textResult);
     }
 
     // If it's a 500, it probably isn't JSON so don't attempt to parse it as such
-    if (statusCode != 500) {
+    if (statusCode < 500) {
         if (textResult == nil) {
             result = [NSDictionary dictionary];
         }
@@ -311,17 +312,13 @@
     }
 }
 
-- (id) sendSynchronousRequestProvidingError:(NSError**)error {
+- (id)sendSynchronousRequestProvidingError:(NSError**)error {
     SMLogVerbose(@"Sending Request: %@", self.method);
     SMLogVerbose(@"Request url: %@", self.url);
     SMLogVerbose(@"Request HTTP Method: %@", self.httpMethod);
 	
 	OAConsumer *consumer = [[OAConsumer alloc] initWithKey:session.apiKey
 													secret:session.apiSecret];
-	
-	//TODO: This should be its own call?
-	//		StackMobClientData *data = [StackMobClientData sharedClientData];
-	//		[self setValue:[data clientDataString]  forArgument:@"cd"];
 	
 	OAMutableURLRequest *request = [[OAMutableURLRequest alloc] initWithURL:self.url
 																   consumer:consumer
@@ -337,7 +334,7 @@
 	if (![[self httpMethod] isEqualToString: @"GET"]) {
 		[request setHTTPBody:[[mArguments yajl_JSONString] dataUsingEncoding:NSUTF8StringEncoding]];	
 		NSString *contentType = [NSString stringWithFormat:@"application/json"];
-		[request addValue:contentType forHTTPHeaderField: @"Content-Type"]; 
+		[request addValue:contentType forHTTPHeaderField: @"Content-Type"];
 	}
 	
 	[mConnectionData setLength:0];
@@ -345,7 +342,7 @@
 
     SMLogVerbose(@"StackMobRequest: sending synchronous oauth request: %@", request);
     
-	NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+	NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:error];
     if (error)
         SMLogVerbose(@"StackMobRequest: ERROR: %@", [*error localizedDescription]);
 
