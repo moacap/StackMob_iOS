@@ -6,10 +6,12 @@ Getting Started
 3.  Build the target "Build Framework"
 
 Note: if your are not building for iOS 4.3, modify lines 8 and 9 in script/build.sh
+
 ```sh
 xcodebuild -configuration Release -target "StackMob" -sdk iphoneos5.0
 xcodebuild -configuration Release -target "StackMob" -sdk iphonesimulator5.0
 ```
+
 4.  Copy $\{StackMobiOSHome\}/build/Framework/StackMob.framework to your project as a framework
 5. Add the following to Other Linker Flags in the build configuration of your project: -ObjC -all_load
 6.  Add the following Frameworks to your project:
