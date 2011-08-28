@@ -13,39 +13,42 @@
     - YAJLiOS.framework - This is provided as part of our GitHub project. You will find it in the external folder
 
 7. You can now make requests to your servers on StackMob using the following pattern
-    [[StackMob stackmob] loginWithFacebookToken:token andCallback:^(BOOL success, id result){
-        if(success){
-          // Cast result to a NSDictionary* and do something with the UI
-        }
-        else{
-          // Cast result to an NSError* and alert your delegates
-        }
-    }];
+```[[StackMob stackmob] loginWithFacebookToken:token andCallback:^(BOOL success, id result){
+    if(success){
+      // Cast result to a NSDictionary* and do something with the UI
+    }
+    else{
+      // Cast result to an NSError* and alert your delegates
+    }
+}];
+```
 8. You can register an Apple Push Notification service device token like this
 # pragma mark - PUSH Notifications
-    /**
-     Prompts the user to accept push notifications
-     */
-    - (void)registerForPush
-    {
-        [[UIApplication sharedApplication] registerForRemoteNotificationTypes: 
-         (UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
-    }
+```/**
+ Prompts the user to accept push notifications
+ */
+- (void)registerForPush
+{
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes: 
+     (UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
+}
 
-    - (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken 
-    {
-        NSString *token = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
-        
-        token = [[token componentsSeparatedByString:@" "] componentsJoinedByString:@""];
-        
-        // Persist your user's accessToken here if you need
-        
-        [[StackMob stackmob] registerUserForPushwithArguments:[[User currentUser] deviceTokenParams] andCallback:^(BOOL success, id result){
-            if(success){
-                // Registered User.
-            }
-            else{
-                // Unable to register device for PUSH notifications 
-            }
-        }];
-    }
+- (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken 
+{
+    NSString *token = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+    
+    token = [[token componentsSeparatedByString:@" "] componentsJoinedByString:@""];
+    
+    // Persist your user's accessToken here if you need
+    
+    [[StackMob stackmob] registerUserForPushwithArguments:[[User currentUser] deviceTokenParams] andCallback:^(BOOL success, id result){
+        if(success){
+            // Registered User.
+        }
+        else{
+            // Unable to register device for PUSH notifications 
+        }
+    }];
+}
+```
+
