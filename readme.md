@@ -6,7 +6,7 @@ Getting Started
 3.  Build the target "Build Framework"
 
 Note: if your are not building for iOS 4.3, modify lines 8 and 9 in script/build.sh
-```bash
+```sh
 xcodebuild -configuration Release -target "StackMob" -sdk iphoneos5.0
 xcodebuild -configuration Release -target "StackMob" -sdk iphonesimulator5.0
 ```
