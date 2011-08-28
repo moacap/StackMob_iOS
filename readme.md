@@ -2,7 +2,7 @@
 1. Clone the repository from GitHub
 `git clone git://github.com/stackmob/StackMob_iOS.git`
 2. Open the StackMobiOS project in XCode
-3.  Build the target "Build Framework" (Note: if not building for iOS 5.0, first edit line 8 and 10 of script/build)
+3.  Build the target "Build Framework" (Note: if not building for iOS 5.0, first edit lines 8 and 10 of script/build)
 4.  Copy $\{StackMobiOSHome\}/build/Framework/StackMob.framework to your project as a framework
 5. Add the following to Other Linker Flags in the build configuration of your project: -ObjC -all_load
 6.  Add the following Frameworks to your project:
@@ -12,7 +12,7 @@
     - SystemConfirmation.framework
     - YAJLiOS.framework - This is provided as part of our GitHub project. You will find it in the external folder
 
-7. Copy and configure a StackMob.plist in your application's main Bundle
+7. Copy and configure a StackMob.plist in your app's main Bundle
 
     - copy Demo/DemoApp/DemoApp/StackMob.plist into your Xcode project
     - enter your app and account info
@@ -30,7 +30,6 @@
     }
 }];
 ```
-
 ```objective-c
 [[StackMob stackmob] post:@"account" withArguments:[loginObject registerUserParams] andCallback:^(BOOL success, id result){
     if(success){
@@ -42,9 +41,7 @@
     }
 }];
 ```
-
 9. You can register a user with a facebook token and username
-
 ```objective-c
 [[StackMob stackmob] registerWithFacebookToken:token username:myLoginObject.userName andCallback:^(BOOL success, id result){
     if(success){
@@ -56,15 +53,14 @@
     }
 }];
 ```
-
 10. You can register an Apple Push Notification service device token like this
-
 ```objective-c
     - (void)registerForPush
     {
         [[UIApplication sharedApplication] registerForRemoteNotificationTypes: 
          (UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
     }
+
     - (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken 
     {
         NSString *token = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
