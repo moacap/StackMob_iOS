@@ -42,7 +42,7 @@
 }];
 ```
 If you need to upload a binary file you can do this:
-```obective-c
+```objective-c
 // kAttributePostPhoto here is the name of the binary field in your object model
 [params setValue:[NSData dataWithContentsOfFile:pathToImageString] forKey:kAttributePostPhoto];
 ```
