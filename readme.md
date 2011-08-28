@@ -1,4 +1,5 @@
-# Getting Started
+Getting Started
+=========
 1. Clone the repository from GitHub
 `git clone git://github.com/stackmob/StackMob_iOS.git`
 2. Open the StackMobiOS project in XCode
@@ -17,10 +18,19 @@
     - copy Demo/DemoApp/DemoApp/StackMob.plist into your Xcode project
     - enter your app and account info
 
-8. You can now make requests to your servers on StackMob using the following pattern
+Coding
+=====
+You can now make requests to your servers on StackMob using the following pattern.
+
+####GET
 
 ```objective-c
-[[StackMob stackmob] get:@"account" withArguments:argumentDictionary andCallback:^(BOOL success, id result){
+ /*
+   * dictionary: 
+   * NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+   * [dictionary setValue:userName forKey:kAttributeUserUserName];
+   */
+[[StackMob stackmob] get:@"account" withArguments:dictionary andCallback:^(BOOL success, id result){
     if(success){
       // Cast result to a NSDictionary* and do something with the UI
       // Alert delegates
@@ -30,8 +40,18 @@
     }
 }];
 ```
+####POST
 ```objective-c
-[[StackMob stackmob] post:@"account" withArguments:argumentsDictionary andCallback:^(BOOL success, id result){
+ /*
+   * dictionary: 
+   * NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+   * [dictionary setValue:userName forKey:kAttributeUserUserName];
+   * [dictionary setValue:password forKey:kAttributeUserPassword];
+   * [dictionary setValue:firstName forKey:kAttributeUserFirstName];
+   * [dictionary setValue:lastName forKey:kAttributeUserLastName];
+   * [dictionary setValue:email forKey:kAttributeUserEmail];
+   */
+[[StackMob stackmob] post:@"account" withArguments:dictionary andCallback:^(BOOL success, id result){
     if(success){
       // Cast result to a NSDictionary* and do something with the UI
       // Alert delegates
@@ -41,13 +61,15 @@
     }
 }];
 ```
+####File Uploads
 If you need to upload a binary file just add an NSData* object to your argument dictionary
 
 ```objective-c
 // kAttributePostPhoto here is the name of the binary field in your object model
-[params setValue:[NSData dataWithContentsOfFile:pathToDataFile] forKey:kAttributePostPhoto];
+[dictionary setValue:[NSData dataWithContentsOfFile:pathToDataFile] forKey:kAttributePostPhoto];
 ```
-9. You can register a user with a facebook token and username
+####Facebook Registration
+You can register a user with a facebook token and username
 
 ```objective-c
 [[StackMob stackmob] registerWithFacebookToken:token username:myLoginObject.userName andCallback:^(BOOL success, id result){
@@ -60,35 +82,37 @@ If you need to upload a binary file just add an NSData* object to your argument 
     }
 }];
 ```
-10. You can register an Apple Push Notification service device token like this
+####iOS PUSH Notifications
+You can register an Apple Push Notification service device by creating and calling a method like registerForPush.  Keep in mind you may want to do this only after registering a user.
 
 ```objective-c
-    - (void)registerForPush
-    {
-        [[UIApplication sharedApplication] registerForRemoteNotificationTypes: 
-         (UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
-    }
-
-    - (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken 
-    {
-        NSString *token = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
-        token = [[token componentsSeparatedByString:@" "] componentsJoinedByString:@""];
-
-        // Persist your user's accessToken here if you need
-        /*
-         * userInfo: 
-         * NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:2];
-         * [userInfo setValue:self.deviceToken forKey:kAttributeUserDeviceToken];
-         * [userInfo setValue:self.remoteID forKey:kAttributeUserUserID];
-         */
-        [[StackMob stackmob] registerUserForPushwithArguments:userInfo andCallback:^(BOOL success, id result){
-            if(success){
-                // Registered User and alert your delegates
-            }
-            else{
-                // Unable to register device for PUSH notifications 
-                // Failed.  Alert your delgates
-            }
-        }];
-    }
+- (void)registerForPush
+{
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes: 
+     (UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
+}
 ```
+```objective-c
+- (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken 
+{
+    NSString *token = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+    token = [[token componentsSeparatedByString:@" "] componentsJoinedByString:@""];
+    // Persist your user's accessToken here if you need
+    /*
+     * userInfo: 
+     * NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:2];
+     * [userInfo setValue:self.deviceToken forKey:kAttributeUserDeviceToken];
+     * [userInfo setValue:self.remoteID forKey:kAttributeUserUserID];
+     */
+    [[StackMob stackmob] registerUserForPushwithArguments:userInfo andCallback:^(BOOL success, id result){
+        if(success){
+            // Registered User and alert your delegates
+        }
+        else{
+            // Unable to register device for PUSH notifications 
+            // Failed.  Alert your delgates
+        }
+    }];
+}
+```
+
