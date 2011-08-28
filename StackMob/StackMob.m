@@ -199,10 +199,8 @@ static StackMob *_sharedManager = nil;
 - (NSDictionary *)loadInfo
 {
     NSString *filename = [[NSBundle mainBundle] pathForResource:@"StackMob" ofType:@"plist"];
-    NSLog(@"filename %@", filename);
     NSDictionary *info = [NSDictionary dictionaryWithContentsOfFile:filename];
     NSMutableDictionary *appInfo = [NSMutableDictionary dictionaryWithDictionary:[info objectForKey:@"production"]];
-    NSLog(@"appInfo: %@", appInfo);
     SMLog(@"public key: %@", [appInfo objectForKey:@"publicKey"]);
     SMLog(@"private key: %@", [appInfo objectForKey:@"privateKey"]);
     if(!filename || !appInfo){
@@ -234,7 +232,6 @@ static StackMob *_sharedManager = nil;
         id callback = [self.callbacks objectAtIndex:index];
         SMLog(@"status %d", request.httpResponse.statusCode);
         if(callback != [NSNull null]){
-            NSLog(@"callback %@", callback);
             StackMobCallback mCallback = (StackMobCallback)callback;
             mCallback(request.httpResponse.statusCode < 300 && request.httpResponse.statusCode > 199, [request result]);
             Block_release(mCallback);
