@@ -69,14 +69,21 @@
     {
         NSString *token = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
         token = [[token componentsSeparatedByString:@" "] componentsJoinedByString:@""];
+
         // Persist your user's accessToken here if you need
-        [[StackMob stackmob] registerUserForPushwithArguments:[[User currentUser] deviceTokenParams] andCallback:^(BOOL success, id result){
+        /*
+         * userInfo: 
+         * NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:2];
+         * [userInfo setValue:self.deviceToken forKey:kAttributeUserDeviceToken];
+         * [userInfo setValue:self.remoteID forKey:kAttributeUserUserID];
+         */
+        [[StackMob stackmob] registerUserForPushwithArguments:userInfo andCallback:^(BOOL success, id result){
             if(success){
                 // Registered User and alert your delegates
             }
             else{
                 // Unable to register device for PUSH notifications 
-                // Fiailed.  Alert your delgates
+                // Failed.  Alert your delgates
             }
         }];
     }
