@@ -30,9 +30,18 @@ typedef void (^StackMobCallback)(BOOL success, id result);
 @property (nonatomic, retain) NSMutableArray *callbacks;
 @property (nonatomic, retain) NSMutableArray *requests;
 
+
 /*
- * Returns the singleton
+ * Manually configure your session.  Subsequent requests for the StackMob
+ * singleton can use [StackMob stackmob]
+ */
++ (StackMob *)setApplication:(NSString *)apiKey secret:(NSString *)apiSecret appName:(NSString *)appName subDomain:(NSString *)subDomain userObjectName:(NSString *)userObjectName apiVersionNumber:(NSNumber *)apiVersion;
+
+/*
+ * Returns the pre-configured or auto-configured singleton
  * all instance methods are called on the singleton
+ * If this method is called before setApplication:secret:appName:subDomain:userObjectName:apiVersonNumber
+ * it will load the app config info from StackMob.plist in the main Bundle
  */
 + (StackMob *)stackmob;
 
@@ -40,32 +49,44 @@ typedef void (^StackMobCallback)(BOOL success, id result);
  * Initializes a user session
  * Make sure to call this in appDidFinishLaunching
  */
-- (void)startSession;
+- (StackMobRequest *)startSession;
 
 /*
  * Ends a user session
  * Make sure to call this in applicationWillEnterBackground and applicationWillTerminate
  */
-- (void)endSession;
+- (StackMobRequest *)endSession;
+
+/*
+ * Registers a new userusing the user object name set when initializing StackMobSession
+ * @param arguments A dictionary whose keys correspond to object field names on Stackmob Object Model
+ */
+- (StackMobRequest *)registerWithArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
 
 /*
  * Logs a user in using the user object name set when initializing StackMobSession
  * @param arguments A dictionary whose keys correspond to object field names on Stackmob Object Model
  */
-- (void)loginwithArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
+- (StackMobRequest *)loginWithArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
+
+/*
+ * Logs the current user out
+ */
+- (StackMobRequest *)logoutWithCallback:(StackMobCallback)callback;
+
 /*
  * Gets a user object using the user object name set when initializing 
  * StackMobSession
  * @param arguments A dictionary whose keys correspond to object field names on Stackmob Object Model
  */
-- (void)getUserInfowithArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
+- (StackMobRequest *)getUserInfowithArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
 
 /*
  * Authenticates a user in your StackMob app using their Facebook Token.  
  * Assumes the user is already registered
  * @param facebookToken the user's facebook access token
  */
-- (void)loginWithFacebookToken:(NSString *)facebookToken andCallback:(StackMobCallback)callback;
+- (StackMobRequest *)loginWithFacebookToken:(NSString *)facebookToken andCallback:(StackMobCallback)callback;
 
 /* 
  * Registerrs a new user in your StackMob app using their facebook token
@@ -73,53 +94,53 @@ typedef void (^StackMobCallback)(BOOL success, id result);
  * assuming they have set one)
  * @param facebookToken the user's facebook access token
  */
-- (void)registerWithFacebookToken:(NSString *)facebookToken username:(NSString *)username andCallback:(StackMobCallback)callback;
+- (StackMobRequest *)registerWithFacebookToken:(NSString *)facebookToken username:(NSString *)username andCallback:(StackMobCallback)callback;
 
 /* 
  * Get the object with name "path" and arguments dictionary
  * @param arguments a dictionary whose keys correspond to object field names on Stackmob Object Model
  */
-- (void)get:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
+- (StackMobRequest *)get:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
 
 /* 
  * Get the object with name "path" with no arguments.  This will return all items of object type
  * @param path the name of the object to get in your stackmob app
  */
-- (void)get:(NSString *)path withCallback:(StackMobCallback)callback;
+- (StackMobRequest *)get:(NSString *)path withCallback:(StackMobCallback)callback;
 
 /*
  * TODO: Are these even necessary?
  */
-- (void)customGet:(NSString *)path withCallback:(StackMobCallback)callback;
-- (void)customGet:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
+- (StackMobRequest *)customGet:(NSString *)path withCallback:(StackMobCallback)callback;
+- (StackMobRequest *)customGet:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
 
 /* 
  * POST the arguments to the given object model with name of "path"
  * @param path the name of the object in your stackmob app to be created
  * @param arguments a dictionary whose keys correspond to field names of the object in your Stackmob app
  */
-- (void)post:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
+- (StackMobRequest *)post:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
 
 /*
  * POST the arguments for a user
  * @param path the name of the object in your stackmob app to be created
  * @param arguments a dictionary whose keys correspond to field names of the object in your Stackmob app
  */
-- (void)post:(NSString *)path forUser:(NSString *)user withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
+- (StackMobRequest *)post:(NSString *)path forUser:(NSString *)user withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
 
 /*
  * POST the arguments for a custom action on heroku
  * @param path the name of the object in your stackmob app to be created (without 'heroku/proxy')
  * @param arguments a dictionary whose keys correspond to field names of the object in your Stackmob app
  */
-- (void)customPost:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
+- (StackMobRequest *)customPost:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
 
 /*
  * PUT the arguments to the given object path
  * @path the name of the object in your Stackmob app
  * @param arguments a Dictionary of attributes whose  keys correspond to field names of the object in your Stackmob app
  */
-- (void)put:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
+- (StackMobRequest *)put:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
 
 /* 
  * DELETE the object at the given path
@@ -127,6 +148,6 @@ typedef void (^StackMobCallback)(BOOL success, id result);
  * @param arguments a Dictonary with one key that corresponds to your object's primary key
  *   the value of which is the item to delete
  */
-- (void)destroy:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
+- (StackMobRequest *)destroy:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
 
 @end

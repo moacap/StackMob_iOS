@@ -48,7 +48,7 @@ static StackMobSession* sharedSession = nil;
                          apiVersionNumber:(NSNumber*)apiVersionNumber 
 {
 	return [self sessionForApplication:key secret:secret appName:appName 
-							 subDomain:subDomain domain:kStackMobDefaultDomain apiVersionNumber:apiVersionNumber];
+							 subDomain:subDomain domain:SMDefaultDomain apiVersionNumber:apiVersionNumber];
 }
 
 + (StackMobSession*)sessionForApplication:(NSString*)key 
@@ -72,7 +72,7 @@ static StackMobSession* sharedSession = nil;
                                   appName:(NSString*)appName
                                 subDomain:(NSString*)subDomain 
                                    domain:(NSString*)domain 
-                           userObjectName:(NSString *)userObjectName
+                           userObjectName:(NSString*)userObjectName
                          apiVersionNumber:(NSNumber*)apiVersionNumber
 {
 	StackMobSession* session = [[[StackMobSession alloc] initWithKey:key 
@@ -94,15 +94,6 @@ static StackMobSession* sharedSession = nil;
     [parts addObject:method];
     
     NSMutableString *urlString = [NSMutableString stringWithString:[parts componentsJoinedByString:@"/"]];
-    
-    // for non custom methods, append a trailing slash to the URL
-    NSError *error = nil;
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@".+(login|facebook|twitter).+" options:NSRegularExpressionCaseInsensitive error:&error];
-    NSUInteger matchCount = [regex numberOfMatchesInString:method options:nil range:NSMakeRange(0,method.length)];
-
-    MRLog(@"checking method '%@', matchCount %d", method, matchCount);
-    if(matchCount == 0)
-//        [urlString appendString:@"/"];
     return urlString;
 }
 

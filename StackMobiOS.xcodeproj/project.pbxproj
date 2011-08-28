@@ -230,11 +230,11 @@
 			isa = PBXGroup;
 			children = (
 				0393E2911409B53C00D643AA /* Utils */,
-				0393E28D1409B53500D643AA /* StackMob.m */,
-				0393E28E1409B53500D643AA /* StackMobCustomRequest.m */,
 				0393E2871409B50E00D643AA /* StackMob.h */,
+				0393E28D1409B53500D643AA /* StackMob.m */,
 				0393E2881409B50E00D643AA /* StackMobAdditions.h */,
 				0393E2891409B50E00D643AA /* StackMobCustomRequest.h */,
+				0393E28E1409B53500D643AA /* StackMobCustomRequest.m */,
 				8239D7C9129109F600F90A7B /* StackMobAdditions.m */,
 				82DFD9D2128CC46C008D20E2 /* StackMobSession.h */,
 				82DFD9D0128CC45E008D20E2 /* StackMobSession.m */,
@@ -455,7 +455,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd scripts\nsource build.sh\nexit 1";
+			shellScript = "cd scripts\nsource build.sh\nexit 0";
 		};
 		82CE434D1288F0DA00A73E9C /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;

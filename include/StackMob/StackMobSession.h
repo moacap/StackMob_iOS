@@ -14,7 +14,7 @@
 
 #import <Foundation/Foundation.h>
 
-static NSString *const kStackMobDefaultDomain = @"stackmob.com";
+static NSString *const SMDefaultDomain = @"stackmob.com";
 
 @interface StackMobSession : NSObject {
     NSString *url;
@@ -161,7 +161,7 @@ static NSString *const kStackMobDefaultDomain = @"stackmob.com";
                                   appName:(NSString*)appName
                                 subDomain:(NSString*)subDomain 
                                    domain:(NSString*)domain 
-                           userObjectName:(NSString *)userObjectName
+                           userObjectName:(NSString*)userObjectName
                          apiVersionNumber:(NSNumber*)apiVersionNumber;
 
 /**
@@ -179,7 +179,7 @@ static NSString *const kStackMobDefaultDomain = @"stackmob.com";
                         appName:(NSString*)appName
                       subDomain:(NSString*)subDomain 
                          domain:(NSString*)domain 
-                 userObjectName:(NSString *)userObjectName
+                 userObjectName:(NSString*)userObjectName
                apiVersionNumber:(NSNumber*)apiVersionNumber;
 
 /**

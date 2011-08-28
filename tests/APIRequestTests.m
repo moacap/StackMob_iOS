@@ -14,15 +14,12 @@
 
 
 #import "APIRequestTests.h"
-#import <StackMob/StackMobSession.h>
-#import <StackMob/StackMobRequest.h>
-
 
 NSString * const kAPIKey = @"8ae11219-1950-48a4-a3bc-8cf31e077941";
 NSString * const kAPISecret = @"f5874341-a158-4fbf-8e0d-dd92ac791adc";
 NSString * const kSubDomain = @"stackmob";
 NSString * const kAppName = @"sdktestapp";
-NSInteger const kAPIVersion = 1;
+NSInteger  const kVersion = 1;
 
 StackMobSession *mySession = nil;
 
@@ -33,8 +30,9 @@ StackMobSession *mySession = nil;
 	NSLog(@"In setup");
 	if (!mySession) 
 	{
-		mySession = [StackMobSession sessionForApplication:kAPIKey secret:kAPISecret 
-													appName:kAppName subDomain:kSubDomain apiVersionNumber:[NSNumber numberWithInt:kAPIVersion]];
+        [StackMob setApplication:kAPIKey secret:kAPISecret appName:kAppName subDomain:kSubDomain userObjectName:@"user" apiVersionNumber:[NSNumber numberWithInt:kVersion]];
+//		mySession = [StackMobSession sessionForApplication:kAPIKey secret:kAPISecret 
+//													appName:kAppName subDomain:kSubDomain apiVersionNumber:[NSNumber numberWithInt:kVersion]];
 		NSLog(@"Created new session");
 	}
 }
@@ -50,9 +48,9 @@ StackMobSession *mySession = nil;
 											@"ty", @"lastName",
 											nil];
 	
-	StackMobRequest *request = [StackMobRequest requestForMethod: @"user" 
-												   withArguments: userArgs
-												  withHttpVerb: GET];
+	StackMobRequest *request = [StackMobRequest requestForMethod:@"user" 
+												   withArguments:userArgs
+												  withHttpVerb:GET];
 	[request sendRequest];
 	//we need to loop until the request comes back, its just a test its OK
 	NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
@@ -72,16 +70,23 @@ StackMobSession *mySession = nil;
 - (void) testPost {
 	NSLog(@"IN TEST POST");
     NSMutableDictionary* userArgs = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-										@"Ty", @"firstNAme",
+										@"Ty", @"firstName",
 										@"Amell", @"lastName",
 										@"ty@stackmob.com", @"email",
 										nil];
 	
-	StackMobRequest *request = [StackMobRequest requestForMethod: @"user" 
-												   withArguments: userArgs
-												  withHttpVerb: POST];
-	NSLog(@"Calling sendRequest");
-	[request sendRequest];
+    StackMobRequest *request = [[StackMob stackmob] post:@"user" withArguments:userArgs andCallback:^(BOOL success, id result){
+        if(success){
+            NSLog(@"testPost result was: %@", result);
+            NSDictionary *info = (NSDictionary *)result;
+            NSString *userId = [info objectForKey:@"user_id"];
+            STAssertNotNil(userId, @"Returned value for POST is not correct");
+        }
+        else{
+            STFail(@"creating a user failed");
+        }
+    }];
+
 	//we need to loop until the request comes back, its just a test its OK
 	NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
 	do {
@@ -90,8 +95,8 @@ StackMobSession *mySession = nil;
 		[loopPool drain];
 	} while(![request finished]);
 	
-	NSLog(@"testPost result was: %@", [request result]);
 	NSDictionary *result = [request result];
+    NSLog(@"result %@", result);
 	NSString *userId = [result objectForKey:@"userId"];
 	STAssertNotNil(userId, @"Returned value for POST is not correct");
 	request = nil;
@@ -103,7 +108,9 @@ StackMobSession *mySession = nil;
 - (void) testURLGeneration {
 
 	StackMobRequest *request = [StackMobRequest requestForMethod: @"user"];
-	NSURL *testURL = [NSURL URLWithString: @"http://stackmob.stackmob.com/api/1/sdktestapp/user/"];
+	NSURL *testURL = [NSURL URLWithString: @"http://stackmob.stackmob.com/api/1/sdktestapp/user"];
+    NSLog(@"expected %@", [testURL absoluteString]),
+    NSLog(@"actual %@", [request.url absoluteString]);
 	STAssertTrue([[testURL absoluteString] isEqualToString: 
 				  [request.url absoluteString]], @"User get URLs do not match" );
 	testURL = nil;
@@ -115,7 +122,8 @@ StackMobSession *mySession = nil;
 	
 	StackMobRequest *request = [StackMobRequest requestForMethod: @"apilist"];
 	NSLog(@"Calling sendSynchronousRequest");
-	NSDictionary *result = [request sendSynchronousRequest];
+    NSError *error = nil;
+	NSDictionary *result = [request sendSynchronousRequestProvidingError:&error];
 	NSLog(@"TestAPIList result was: %@", result);
 	request = nil;
 	

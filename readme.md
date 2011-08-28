@@ -116,3 +116,18 @@ You can register an Apple Push Notification service device by creating and calli
 }
 ```
 
+Troubleshooting
+===============
+
+####If you see this:
+
+```'Initialization Error', reason: 'Make sure you enter your publicKey and privateKey in StackMob.plist'```
+
+You need to copy the StackMob.plist from the Demo app and fill it out with your app and account info from StackMob.com.
+
+####If you see this:
+
+```-[__NSCFDictionary yajl_JSONString]: unrecognized selector sent to instance]```
+
+Then you need to make sure you've added the YAJLIOS.framework
+

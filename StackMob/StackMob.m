@@ -33,6 +33,24 @@
 
 static StackMob *_sharedManager = nil;
 
++ (StackMob *)setApplication:(NSString *)apiKey secret:(NSString *)apiSecret appName:(NSString *)appName subDomain:(NSString *)subDomain userObjectName:(NSString *)userObjectName apiVersionNumber:(NSNumber *)apiVersion
+{
+    if (_sharedManager == nil) {
+        _sharedManager = [[super allocWithZone:NULL] init];
+        _sharedManager.session = [[StackMobSession sessionForApplication:apiKey
+                                                                  secret:apiSecret
+                                                                 appName:appName
+                                                               subDomain:subDomain
+                                                                  domain:SMDefaultDomain
+                                                          userObjectName:userObjectName
+                                                        apiVersionNumber:apiVersion] retain];
+        _sharedManager.requests = [NSMutableArray array];
+        _sharedManager.callbacks = [NSMutableArray array];
+    }
+    return _sharedManager;
+    
+}
+
 + (StackMob *)stackmob {
     if (_sharedManager == nil) {
         _sharedManager = [[super allocWithZone:NULL] init];
@@ -52,94 +70,117 @@ static StackMob *_sharedManager = nil;
 
 #pragma mark - Session Methods
 
-- (void)startSession{
+- (StackMobRequest *)startSession{
     StackMobRequest *request = [StackMobRequest requestForMethod:@"startsession" withHttpVerb:POST];
     [self queueRequest:request andCallback:nil];
+    return request;
 }
 
-- (void)endSession{
+- (StackMobRequest *)endSession{
     StackMobRequest *request = [StackMobRequest requestForMethod:@"endsession" withHttpVerb:POST];
     [self queueRequest:request andCallback:nil];
+    return request;
 }
 
 # pragma mark - User object Methods
-- (void)loginwithArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
+
+- (StackMobRequest *)registerWithArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
 {
-    [self post:[NSString stringWithFormat:@"%@/login", session.userObjectName]
-     withArguments:arguments
-    andCallback:callback];
+    return [self post:session.userObjectName
+        withArguments:arguments
+          andCallback:callback];
 }
 
-- (void)getUserInfowithArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
+- (StackMobRequest *)loginWithArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
 {
-    [self get:session.userObjectName
+    return [self post:[NSString stringWithFormat:@"%@/login", session.userObjectName]
+     withArguments:arguments
+   andCallback:callback];
+}
+
+- (StackMobRequest *)logoutWithCallback:(StackMobCallback)callback
+{
+    return [self get:@"logout" withCallback:callback];
+}
+
+- (StackMobRequest *)getUserInfowithArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
+{
+    return [self get:session.userObjectName
    withArguments:arguments
   andCallback:callback];
 }
 
 # pragma mark - Facebook methods
-- (void)loginWithFacebookToken:(NSString *)facebookToken andCallback:(StackMobCallback)callback{
+- (StackMobRequest *)loginWithFacebookToken:(NSString *)facebookToken andCallback:(StackMobCallback)callback{
     NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:facebookToken, @"fb_at", nil];
     StackMobRequest *request = [StackMobRequest userRequestForMethod:@"facebookLogin" withArguments:args withHttpVerb:GET];
     [self queueRequest:request andCallback:callback];
+    return request;
 }
 
-- (void)registerWithFacebookToken:(NSString *)facebookToken username:(NSString *)username andCallback:(StackMobCallback)callback{
+- (StackMobRequest *)registerWithFacebookToken:(NSString *)facebookToken username:(NSString *)username andCallback:(StackMobCallback)callback{
     NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:facebookToken, @"fb_at", username, @"username", nil];
     StackMobRequest *request = [StackMobRequest userRequestForMethod:@"createUserWithFacebook" withArguments:args withHttpVerb:GET];
     [self queueRequest:request andCallback:callback];
+    return request;
 }
 
 # pragma mark - CRUD methods
 
-- (void)get:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback{
+- (StackMobRequest *)get:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback{
     StackMobRequest *request = [StackMobRequest requestForMethod:path
                                                    withArguments:arguments
                                                     withHttpVerb:GET]; 
     [self queueRequest:request andCallback:callback];
+    return request;
 }
 
-- (void)get:(NSString *)path withCallback:(StackMobCallback)callback
+- (StackMobRequest *)get:(NSString *)path withCallback:(StackMobCallback)callback
 {
     StackMobRequest *request = [StackMobRequest requestForMethod:path
                                                    withArguments:NULL
                                                     withHttpVerb:GET];
     [self queueRequest:request andCallback:callback];
+    return request;
 }
 
-- (void)customGet:(NSString *)path withCallback:(StackMobCallback)callback
+- (StackMobRequest *)customGet:(NSString *)path withCallback:(StackMobCallback)callback
 {
     StackMobCustomRequest *request = [StackMobCustomRequest requestForMethod:path
                                                    withArguments:NULL
                                                     withHttpVerb:GET];
     [self queueRequest:request andCallback:callback];
+    return request;
 }
 
-- (void)customGet:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
+- (StackMobRequest *)customGet:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
 {
     StackMobCustomRequest *request = [StackMobCustomRequest requestForMethod:path
                                                                withArguments:arguments
                                                                 withHttpVerb:GET];
     [self queueRequest:request andCallback:callback];
+    return request;
 }
 
-- (void)post:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
+- (StackMobRequest *)post:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
 {
     StackMobRequest *request = [StackMobRequest requestForMethod:path
                                                    withArguments:arguments
                                                     withHttpVerb:POST];
     [self queueRequest:request andCallback:callback];
+    return request;
 }
 
-- (void)customPost:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
+- (StackMobRequest *)customPost:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
 {
     StackMobCustomRequest *request = [StackMobCustomRequest requestForMethod:path
                                                                withArguments:arguments
                                                                 withHttpVerb:POST];
     [self queueRequest:request andCallback:callback];
+    return request;
 }
 
-- (void)post:(NSString *)path forUser:(NSString *)user withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
+- (StackMobRequest *)post:(NSString *)path forUser:(NSString *)user withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
 {
     NSDictionary *modifiedArguments = [NSMutableDictionary dictionaryWithDictionary:arguments];
     [modifiedArguments setValue:user forKey:session.userObjectName];
@@ -147,20 +188,23 @@ static StackMob *_sharedManager = nil;
                                                    withArguments:modifiedArguments
                                                     withHttpVerb:POST];
     [self queueRequest:request andCallback:callback];
+    return request;
 }
 
-- (void)put:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback{
+- (StackMobRequest *)put:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback{
     StackMobRequest *request = [StackMobRequest requestForMethod:path
                                                    withArguments:arguments
                                                     withHttpVerb:PUT];
     [self queueRequest:request andCallback:callback];
+    return request;
 }
 
-- (void)destroy:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback{
+- (StackMobRequest *)destroy:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback{
     StackMobRequest *request = [StackMobRequest requestForMethod:path
                                                    withArguments:arguments
                                                     withHttpVerb:DELETE];
     [self queueRequest:request andCallback:callback];
+    return request;
 }
 
 # pragma mark - Private methods
