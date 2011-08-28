@@ -5,8 +5,10 @@ Getting Started
 2. Open the StackMobiOS project in XCode
 3.  Build the target "Build Framework"
 Note: if your are not building for iOS 4.3, modify lines 8 and 9 in script/build.sh
-```sh
+```
 xcodebuild -configuration Release -target "StackMob" -sdk iphoneos5.0
+```
+```
 xcodebuild -configuration Release -target "StackMob" -sdk iphonesimulator5.0
 ```
 4.  Copy $\{StackMobiOSHome\}/build/Framework/StackMob.framework to your project as a framework
