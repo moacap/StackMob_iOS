@@ -277,13 +277,13 @@ static StackMob *_sharedManager = nil;
         SMLog(@"status %d", request.httpResponse.statusCode);
         if(callback != [NSNull null]){
             StackMobCallback mCallback = (StackMobCallback)callback;
-            mCallback(request.httpResponse.statusCode < 300 && request.httpResponse.statusCode > 199, [request result]);
+            BOOL wasSuccessful = request.httpResponse.statusCode < 300 && request.httpResponse.statusCode > 199;
+            mCallback(wasSuccessful, [request result]);
             Block_release(mCallback);
         }else{
             SMLog(@"no callback found");
         }
         [self.callbacks removeObjectAtIndex:index];
-        SMLog(@"requests %d, request %d", [self.requests retainCount], [request retainCount]);
         [self.requests removeObject:request];
         [self next];
     }
