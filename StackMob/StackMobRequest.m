@@ -32,6 +32,7 @@
 @synthesize method = mMethod;
 @synthesize result = mResult;
 @synthesize connectionError = _connectionError;
+@synthesize body;
 @synthesize httpMethod = mHttpMethod;
 @synthesize httpResponse = mHttpResponse;
 @synthesize finished = _requestFinished;
@@ -201,36 +202,20 @@
 {
 	_requestFinished = NO;
 
-<<<<<<< HEAD
     SMLogVerbose(@"StackMob method: %@", self.method);
     SMLogVerbose(@"Request Request with url: %@", self.url);
     SMLogVerbose(@"Request Request with HTTP Method: %@", self.httpMethod);
 				
 	OAConsumer *consumer = [[OAConsumer alloc] initWithKey:session.apiKey
 														secret:session.apiSecret];
-=======
-	if (kLogVersbose == YES) {
-		StackMobLog(@"StackMobRequest %p: Sending Asynch Request httpMethod=%@ method=%@ url=%@", self, self.httpMethod, self.method, self.url);
-	}
-				
-	OAConsumer *consumer = [[OAConsumer alloc] initWithKey:session.apiKey secret:session.apiSecret];
-		
-		//TODO: This should be its own call?
-//		StackMobClientData *data = [StackMobClientData sharedClientData];
-//		[self setValue:[data clientDataString]  forArgument:@"cd"];
->>>>>>> upstream/master
 				
 	OAMutableURLRequest *request = [[OAMutableURLRequest alloc] initWithURL:self.url
 																   consumer:consumer
 																	  token:nil
 																	  realm:nil
-<<<<<<< HEAD
+
 														  signatureProvider:nil]; // use the default method, HMAC-SHA1
     SMLog(@"httpMethod %@", [self httpMethod]);
-=======
-                        signatureProvider:nil]; // use the default method, HMAC-SHA1
-  [consumer release];
->>>>>>> upstream/master
 	[request setHTTPMethod:[self httpMethod]];
 		
 	[request addValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
@@ -238,7 +223,6 @@
     
 	[request prepare];
 	if (![[self httpMethod] isEqualToString: @"GET"]) {
-<<<<<<< HEAD
         NSData* postData = [[mArguments yajl_JSONString] dataUsingEncoding:NSUTF8StringEncoding];
         SMLogVerbose(@"POST Data: %d", [postData length]);
         [request setHTTPBody:postData];	
@@ -248,25 +232,11 @@
 		
     SMLogVerbose(@"StackMobRequest: sending asynchronous oauth request: %@", request);
     
-=======
-    NSData* postData = [[mArguments yajl_JSONString] dataUsingEncoding:NSUTF8StringEncoding];
-    if (kLogVersbose == YES) {
-      StackMobLog(@"StackMobRequest %p: POST Data: %@", self, postData);
-    }
-		[request setHTTPBody:postData];	
-		NSString *contentType = [NSString stringWithFormat:@"application/json"];
-		[request addValue:contentType forHTTPHeaderField: @"Content-Type"]; 
-	}
-		
-	if (kLogVersbose) {
-		StackMobLog(@"StackMobRequest %p: sending asynchronous oauth request: %@", self, request);
-	}
->>>>>>> upstream/master
 	[mConnectionData setLength:0];		
 	self.result = nil;
-  self.connectionError = nil;
+    self.connectionError = nil;
 	self.connection = [[[NSURLConnection alloc] initWithRequest:request delegate:self] retain]; // Why retaining this when already retained by synthesized method?
-  [request release];
+    [request release];
 }
 
 - (void)cancel

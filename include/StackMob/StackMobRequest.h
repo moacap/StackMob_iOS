@@ -50,6 +50,7 @@ typedef enum {
 @property(readwrite, retain) NSURLConnection* connection;
 @property(readwrite, retain) NSDictionary* result;
 @property(readwrite, retain) NSError* connectionError;
+@property(readwrite, retain) NSData *body;
 @property(readonly) BOOL finished;
 @property(readonly) NSHTTPURLResponse* httpResponse;
 @property(readonly, getter=getStatusCode) NSInteger statusCode;
