@@ -21,9 +21,18 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		0393E28A1409B50E00D643AA /* StackMob.h in Headers */ = {isa = PBXBuildFile; fileRef = 0393E2871409B50E00D643AA /* StackMob.h */; };
+		0393E28B1409B50E00D643AA /* StackMobAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 0393E2881409B50E00D643AA /* StackMobAdditions.h */; };
+		0393E28C1409B50E00D643AA /* StackMobCustomRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 0393E2891409B50E00D643AA /* StackMobCustomRequest.h */; };
+		0393E28F1409B53500D643AA /* StackMob.m in Sources */ = {isa = PBXBuildFile; fileRef = 0393E28D1409B53500D643AA /* StackMob.m */; };
+		0393E2901409B53500D643AA /* StackMobCustomRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0393E28E1409B53500D643AA /* StackMobCustomRequest.m */; };
+		0393E2961409B53C00D643AA /* NSData+Base64.h in Headers */ = {isa = PBXBuildFile; fileRef = 0393E2921409B53C00D643AA /* NSData+Base64.h */; };
+		0393E2971409B53C00D643AA /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 0393E2931409B53C00D643AA /* NSData+Base64.m */; };
+		0393E2981409B53C00D643AA /* NSData+JSON.h in Headers */ = {isa = PBXBuildFile; fileRef = 0393E2941409B53C00D643AA /* NSData+JSON.h */; };
+		0393E2991409B53C00D643AA /* NSData+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 0393E2951409B53C00D643AA /* NSData+JSON.m */; };
+		0393E29B1409B62C00D643AA /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0393E29A1409B62C00D643AA /* libz.1.2.5.dylib */; };
 		5798BBED13A15856006D01DF /* StackMobPushRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 5798BBEC13A15856006D01DF /* StackMobPushRequest.h */; };
 		5798BC8813A1871E006D01DF /* StackMobPushRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5798BC8713A1871E006D01DF /* StackMobPushRequest.m */; };
-		8239D7CA129109F600F90A7B /* StackMobAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 8239D7C8129109F600F90A7B /* StackMobAdditions.h */; };
 		8239D7CB129109F600F90A7B /* StackMobAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8239D7C9129109F600F90A7B /* StackMobAdditions.m */; };
 		82CE425C1288CA1B00A73E9C /* StackMobClientData.m in Sources */ = {isa = PBXBuildFile; fileRef = 82CE42591288CA1B00A73E9C /* StackMobClientData.m */; };
 		82CE425D1288CA1B00A73E9C /* StackMobRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 82CE425A1288CA1B00A73E9C /* StackMobRequest.m */; };
@@ -76,9 +85,19 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0393E2871409B50E00D643AA /* StackMob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StackMob.h; path = include/StackMob/StackMob.h; sourceTree = "<group>"; };
+		0393E2881409B50E00D643AA /* StackMobAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StackMobAdditions.h; path = include/StackMob/StackMobAdditions.h; sourceTree = "<group>"; };
+		0393E2891409B50E00D643AA /* StackMobCustomRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StackMobCustomRequest.h; path = include/StackMob/StackMobCustomRequest.h; sourceTree = "<group>"; };
+		0393E28D1409B53500D643AA /* StackMob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StackMob.m; path = StackMob/StackMob.m; sourceTree = "<group>"; };
+		0393E28E1409B53500D643AA /* StackMobCustomRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StackMobCustomRequest.m; path = StackMob/StackMobCustomRequest.m; sourceTree = "<group>"; };
+		0393E2921409B53C00D643AA /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
+		0393E2931409B53C00D643AA /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
+		0393E2941409B53C00D643AA /* NSData+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+JSON.h"; sourceTree = "<group>"; };
+		0393E2951409B53C00D643AA /* NSData+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+JSON.m"; sourceTree = "<group>"; };
+		0393E29A1409B62C00D643AA /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
+		0393E34A140B189D00D643AA /* StackMob.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StackMob.framework; path = build/Framework/StackMob.framework; sourceTree = "<group>"; };
 		5798BBEC13A15856006D01DF /* StackMobPushRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StackMobPushRequest.h; path = include/StackMob/StackMobPushRequest.h; sourceTree = "<group>"; };
 		5798BC8713A1871E006D01DF /* StackMobPushRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StackMobPushRequest.m; path = StackMob/StackMobPushRequest.m; sourceTree = "<group>"; };
-		8239D7C8129109F600F90A7B /* StackMobAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StackMobAdditions.h; path = StackMob/StackMobAdditions.h; sourceTree = "<group>"; };
 		8239D7C9129109F600F90A7B /* StackMobAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StackMobAdditions.m; path = StackMob/StackMobAdditions.m; sourceTree = "<group>"; };
 		82CE42591288CA1B00A73E9C /* StackMobClientData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StackMobClientData.m; path = StackMob/StackMobClientData.m; sourceTree = "<group>"; };
 		82CE425A1288CA1B00A73E9C /* StackMobRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StackMobRequest.m; path = StackMob/StackMobRequest.m; sourceTree = "<group>"; };
@@ -119,7 +138,6 @@
 		82CE42B51288CAE500A73E9C /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Constants.h; path = include/StackMob/Constants.h; sourceTree = "<group>"; };
 		82CE43251288EF9100A73E9C /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		82CE432C1288EFB900A73E9C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		82CE43301288EFCE00A73E9C /* libz.1.2.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.3.dylib; path = usr/lib/libz.1.2.3.dylib; sourceTree = SDKROOT; };
 		82CE43341288EFE000A73E9C /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		82CE433A1288F02E00A73E9C /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		82CE434F1288F0DA00A73E9C /* Tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -149,6 +167,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0393E29B1409B62C00D643AA /* libz.1.2.5.dylib in Frameworks */,
 				82CE45151289025B00A73E9C /* UIKit.framework in Frameworks */,
 				AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */,
 				82CE42A41288CA9000A73E9C /* YAJLIOS.framework in Frameworks */,
@@ -168,9 +187,23 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		0393E2911409B53C00D643AA /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				0393E2921409B53C00D643AA /* NSData+Base64.h */,
+				0393E2931409B53C00D643AA /* NSData+Base64.m */,
+				0393E2941409B53C00D643AA /* NSData+JSON.h */,
+				0393E2951409B53C00D643AA /* NSData+JSON.m */,
+			);
+			name = Utils;
+			path = StackMob/Utils;
+			sourceTree = "<group>";
+		};
 		0867D691FE84028FC02AAC07 /* StackMobiOS */ = {
 			isa = PBXGroup;
 			children = (
+				0393E34A140B189D00D643AA /* StackMob.framework */,
+				0393E29A1409B62C00D643AA /* libz.1.2.5.dylib */,
 				82CE42D41288E4D200A73E9C /* Tests */,
 				82CE42621288CA2B00A73E9C /* External */,
 				08FB77AEFE84172EC02AAC07 /* Classes */,
@@ -187,7 +220,6 @@
 			children = (
 				82CE433A1288F02E00A73E9C /* SystemConfiguration.framework */,
 				82CE43341288EFE000A73E9C /* CoreLocation.framework */,
-				82CE43301288EFCE00A73E9C /* libz.1.2.3.dylib */,
 				82CE432C1288EFB900A73E9C /* UIKit.framework */,
 				82CE43251288EF9100A73E9C /* CFNetwork.framework */,
 				82CE42A31288CA9000A73E9C /* YAJLIOS.framework */,
@@ -199,7 +231,12 @@
 		08FB77AEFE84172EC02AAC07 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				8239D7C8129109F600F90A7B /* StackMobAdditions.h */,
+				0393E2911409B53C00D643AA /* Utils */,
+				0393E2871409B50E00D643AA /* StackMob.h */,
+				0393E28D1409B53500D643AA /* StackMob.m */,
+				0393E2881409B50E00D643AA /* StackMobAdditions.h */,
+				0393E2891409B50E00D643AA /* StackMobCustomRequest.h */,
+				0393E28E1409B53500D643AA /* StackMobCustomRequest.m */,
 				8239D7C9129109F600F90A7B /* StackMobAdditions.m */,
 				82DFD9D2128CC46C008D20E2 /* StackMobSession.h */,
 				82DFD9D0128CC45E008D20E2 /* StackMobSession.m */,
@@ -321,8 +358,12 @@
 				82CE42A01288CA7400A73E9C /* Reachability.h in Headers */,
 				82CE42B61288CAE500A73E9C /* Constants.h in Headers */,
 				82DFD9D3128CC46C008D20E2 /* StackMobSession.h in Headers */,
-				8239D7CA129109F600F90A7B /* StackMobAdditions.h in Headers */,
 				5798BBED13A15856006D01DF /* StackMobPushRequest.h in Headers */,
+				0393E28A1409B50E00D643AA /* StackMob.h in Headers */,
+				0393E28B1409B50E00D643AA /* StackMobAdditions.h in Headers */,
+				0393E28C1409B50E00D643AA /* StackMobCustomRequest.h in Headers */,
+				0393E2961409B53C00D643AA /* NSData+Base64.h in Headers */,
+				0393E2981409B53C00D643AA /* NSData+JSON.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -466,6 +507,10 @@
 				82DFD9D1128CC45E008D20E2 /* StackMobSession.m in Sources */,
 				8239D7CB129109F600F90A7B /* StackMobAdditions.m in Sources */,
 				5798BC8813A1871E006D01DF /* StackMobPushRequest.m in Sources */,
+				0393E28F1409B53500D643AA /* StackMob.m in Sources */,
+				0393E2901409B53500D643AA /* StackMobCustomRequest.m in Sources */,
+				0393E2971409B53C00D643AA /* NSData+Base64.m in Sources */,
+				0393E2991409B53C00D643AA /* NSData+JSON.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

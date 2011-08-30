@@ -12,17 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#import "StackMobPushRequest.h"
+#import "NSData+JSON.h"
+#import "NSData+Base64.h"
 
-@implementation StackMobPushRequest
+@implementation NSData (JSON)
 
-+ (StackMobRequest*)request	{
-	return [[[StackMobPushRequest alloc] init] autorelease];
-}
-
-- (NSURL*)getURL {
-	NSString* stringURL = [session pushURL];
-	return [NSURL URLWithString: stringURL];
+- (id)JSON
+{
+    return [NSString stringWithFormat:@"Content-Type: image/png\n\
+Content-Disposition: attachment; filename=img.png\n\
+Content-Transfer-Encoding: base64\n\n\
+%@",
+             [self base64EncodedString]];
 }
 
 @end

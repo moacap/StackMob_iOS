@@ -3,9 +3,9 @@
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,14 +14,21 @@
 
 #import <Foundation/Foundation.h>
 
+static NSString *const SMDefaultDomain = @"stackmob.com";
 
 @interface StackMobSession : NSObject {
+    NSString *url;
+    NSString *pushURL;
+    NSString *secureURL;
+    NSString *regularURL;
+    
 	NSMutableArray* _delegates;
 	NSString* _apiKey;
 	NSString* _apiSecret;
 	NSString* _appName;
 	NSString* _subDomain;
 	NSString* _domain;
+    NSString* _userObjectName;
 	NSString* _sessionKey;
 	NSDate* _expirationDate;
 	NSMutableArray* _requestQueue;
@@ -40,6 +47,11 @@
  * The URL used for secure API HTTP requests.
  */
 @property(nonatomic,readonly) NSString* apiSecureURL;
+
+/**
+ * The URL used for PUSH the notification API
+ */
+@property(nonatomic,readonly) NSString *pushURL;
 
 /**
  * Your application's API key, as passed to the constructor.
@@ -65,6 +77,11 @@
  * Your application's domain name which defaults to stackmob.com or as passed to the constructor.
  */
 @property(nonatomic,readonly) NSString* domain;
+
+/**
+ * Your application's user object name (ie - 'user' or 'account')
+ */
+@property(nonatomic,readonly) NSString* userObjectName;
 
 /**
  * The API version number.
@@ -130,11 +147,49 @@
 					  subDomain:(NSString*)subDomain domain:(NSString*)domain apiVersionNumber:(NSNumber*)apiVersionNumber;
 
 /**
+ * Constructs a session for an application.
+ *
+ * @param key the application api key
+ * @param secret the application secret api key
+ * @param appName the application name
+ * @param subDomain the application subDomain
+ * @param domain overwrites the stackmob.com domain
+ * @userObjectName the name of the user object in your StackMob App
+ */
++ (StackMobSession*)sessionForApplication:(NSString*)key 
+                                   secret:(NSString*)secret 
+                                  appName:(NSString*)appName
+                                subDomain:(NSString*)subDomain 
+                                   domain:(NSString*)domain 
+                           userObjectName:(NSString*)userObjectName
+                         apiVersionNumber:(NSNumber*)apiVersionNumber;
+
+/**
+ * Constructs a session for an application.
+ *
+ * @param key the application api key
+ * @param secret the application secret api key
+ * @param appName the application name
+ * @param subDomain the application subDomain
+ * @param domain overwrites the stackmob.com domain
+ * @param userObjectName the name you gave to your user object on stackmob.com
+ */
+- (StackMobSession*)initWithKey:(NSString*)key 
+                         secret:(NSString*)secret 
+                        appName:(NSString*)appName
+                      subDomain:(NSString*)subDomain 
+                         domain:(NSString*)domain 
+                 userObjectName:(NSString*)userObjectName
+               apiVersionNumber:(NSNumber*)apiVersionNumber;
+
+/**
  * Returns the formatted url for the passedMethod.
  *
- * @param name of the method to be called
+ * @param method name of the method to be called
+ * @param userBasedRequest whether or not to prepend the user with the user
+ * model name
  */
-- (NSMutableString*)urlForMethod:(NSString*)method;
+- (NSMutableString*)urlForMethod:(NSString*)method isUserBased:(BOOL)userBasedRequest;
 
 /**
  * Returns the formatted SSL url for the passedMethod.
@@ -144,9 +199,8 @@
 - (NSMutableString*)secureURLForMethod:(NSString*)method;
 
 /**
- * Returns the formatted push url.
- *
+ * returns a a base url for the method
  */
-- (NSMutableString*)pushURL;
+
 
 @end

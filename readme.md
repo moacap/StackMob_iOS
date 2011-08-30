@@ -1,8 +1,9 @@
-# Getting Started
+Getting Started
+=========
 1. Clone the repository from GitHub
 `git clone git://github.com/stackmob/StackMob_iOS.git`
 2. Open the StackMobiOS project in XCode
-3.  Build the target "Build Framework" (Note: if not building for iOS 4.2, first edit the xcodebuild -sdk params at the top of script/build)
+3.  Build the target "Build Framework" (Note: if your are not building for iOS 4.3, modify lines 8 and 9 in ```script/build.sh```)
 4.  Copy $\{StackMobiOSHome\}/build/Framework/StackMob.framework to your project as a framework
 5. Add the following to Other Linker Flags in the build configuration of your project: -ObjC -all_load
 6.  Add the following Frameworks to your project:
@@ -12,58 +13,125 @@
     - SystemConfiguration.framework
     - YAJLiOS.framework - This is provided as part of our GitHub project. You will find it in the external folder
 
-7. We suggest you create a SessionFactory to handle creating the StackMob Session needed to connect to our servers. The session object should be retained for the life of the application. So creating it on applicationDidFinishLaunching and releasing it on applicationWillTerminate or applicationDidEnterBackground is a good pattern.  Something like the following will work:
+7. Copy and configure a StackMob.plist in your app's main Bundle
 
-                    @implementation SMSessionFactory
-                    StackMobSession *session_;
-                    NSString * const kAPIKey = @"PUT_YOUR_KEY_HERE";
-                    NSString * const kAPISecret = @"PUT_YOUR_SECRET_HERE";
-                    NSString * const kSubDomain = @"PUT_YOUR_SUB_DOMAIN_HERE";
-                    NSString * const kAppName = @"PUT_YOUR_APP_NAME_HERE";
-                    NSString * const kDomain = @"stackmob.com";
-                    NSNumber * const kAPIVersionNumber = [NSNumber numberWithInt:0]; // 0=sandbox
+    - copy Demo/DemoApp/DemoApp/StackMob.plist into your Xcode project
+    - enter your app and account info
 
-                    + (StackMobSession*)session {
-                        if (session_ == nil) {
-                            session_ = [[StackMobSession sessionForApplication:kAPIKey
-                                                                       secret:kAPISecret
-                                                                      appName:kAppName
-                                                                    subDomain:kSubDomain
-                                                                        domain:kDomain
-                                                               apiVersionNumber:kAPIVersionNumber] retain];
-                        }
-                        return session_;
-                    }
-                    @end
-8. You can now make requests to your servers on StackMob using the following pattern
+Coding
+=====
+You can now make requests to your servers on StackMob using the following pattern.
 
-	            StackMobRequest *request = [StackMobRequest requestForMethod: "THE_NAME_OF_THE_METHOD_BEING_CALLED"
-                                                               withArguments: "DICT_OF_PARAMS"
-                                                                withHttpVerb: "THE_TYPE_OF_REQUEST_GET_POST_ETC"];
-              request.delegate = self;
-              [request sendRequest];
+####GET
 
-             - (void)requestCompleted:(StackMobRequest*)request {
-                       NSString *prettyPrint = [[request result] yajl_JSONStringWithOptions:YAJLGenOptionsBeautify
-                            indentString:@"  "];
-                       jsonLabel.text = prettyPrint;
-             }
+```objective-c
+ /*
+   * dictionary: 
+   * NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+   * [dictionary setValue:userName forKey:kAttributeUserUserName];
+   */
+[[StackMob stackmob] get:@"account" withArguments:dictionary andCallback:^(BOOL success, id result){
+    if(success){
+      // Cast result to a NSDictionary* and do something with the UI
+      // Alert delegates
+    }
+    else{
+      // Cast result to an NSError* and alert your delegates
+    }
+}];
+```
+####POST
+```objective-c
+ /*
+   * dictionary: 
+   * NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+   * [dictionary setValue:userName forKey:kAttributeUserUserName];
+   * [dictionary setValue:password forKey:kAttributeUserPassword];
+   * [dictionary setValue:firstName forKey:kAttributeUserFirstName];
+   * [dictionary setValue:lastName forKey:kAttributeUserLastName];
+   * [dictionary setValue:email forKey:kAttributeUserEmail];
+   */
+[[StackMob stackmob] post:@"account" withArguments:dictionary andCallback:^(BOOL success, id result){
+    if(success){
+      // Cast result to a NSDictionary* and do something with the UI
+      // Alert delegates
+    }
+    else{
+      // Cast result to an NSError* and alert your delegates
+    }
+}];
+```
+####File Uploads
+If you need to upload a binary file just add an NSData* object to your argument dictionary
 
-9. You can register an Apple Push Notification service device token like this
+```objective-c
+// kAttributePostPhoto here is the name of the binary field in your object model
+[dictionary setValue:[NSData dataWithContentsOfFile:pathToDataFile] forKey:kAttributePostPhoto];
+```
+####Facebook Registration
+You can register a user with a facebook token and username
 
-              - (void) application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken {
-                // Apple sends the token in this format: <3004dd85 409f1f62 469a82b8 7baf74c9 8101475e 8bcda8a7 4a098853 b9fc858e>
-                // we need to strip out the angle brackets and spaces
-                NSString* tokenString = [NSString stringWithFormat:@"%@", deviceToken];
-                NSRange tokenRange;
-                tokenRange.location = 1;
-                tokenRange.length = [tokenString length]-2;
-                NSString* noBracketsString = [tokenString substringWithRange:tokenRange];
-                NSString* stackMobTokenString = [noBracketsString stringByReplacingOccurrencesOfString:@" " withString:@""];
-                NSDictionary* arguments = [NSDictionary dictionaryWithObjectsAndKeys:
-                                           stackMobTokenString , @"token",
-                                           stackMobAppUserId, @"userId",
-                                           nil];
-                StackMobRequest* request = [StackMobRequest pushRequestWithArguments:arguments withHttpVerb:POST];
-                [request sendRequest];
-              }
+```objective-c
+[[StackMob stackmob] registerWithFacebookToken:token username:myLoginObject.userName andCallback:^(BOOL success, id result){
+    if(success){
+      // Cast result to a NSDictionary* and do something with the UI
+      // Alert delegates
+    }
+    else{
+      // Cast result to an NSError* and alert your delegates
+    }
+}];
+```
+####iOS PUSH Notifications
+You can register an Apple Push Notification service device by creating and calling a method like registerForPush.  Keep in mind you may want to do this only after registering a user.
+
+```objective-c
+- (void)registerForPush
+{
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes: 
+     (UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
+}
+```
+```objective-c
+- (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken 
+{
+    NSString *token = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+    token = [[token componentsSeparatedByString:@" "] componentsJoinedByString:@""];
+    // Persist your user's accessToken here if you need
+    
+    NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:2];
+    [userInfo setValue:token forKey:@"token"];
+    userInfo setValue:myUserObject.username forKey:@"username"];
+    
+    [[StackMob stackmob] registerUserForPushWithArguments:userInfo andCallback:^(BOOL success, id result){
+        if(success){
+            // Registered User and alert your delegates
+        }
+        else{
+            // Unable to register device for PUSH notifications 
+            // Failed.  Alert your delgates
+        }
+    }];
+}
+```
+
+Troubleshooting
+===============
+
+####If you see this:
+```ld: framework not found StackMob```
+
+Make sure the sdk you are building for is specified in lines 8 and 9 of ./script/build.sh
+
+####If you see this:
+
+```'Initialization Error', reason: 'Make sure you enter your publicKey and privateKey in StackMob.plist'```
+
+You need to copy the StackMob.plist from the Demo app and fill it out with your app and account info from StackMob.com.
+
+####If you see this:
+
+```-[__NSCFDictionary yajl_JSONString]: unrecognized selector sent to instance]```
+
+Then you need to make sure you've added the YAJLIOS.framework
+

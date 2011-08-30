@@ -1,11 +1,11 @@
-// Copyright 2011 StackMob, Inc
+`// Copyright 2011 StackMob, Inc
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,6 +19,11 @@
 #import "StackMobClientData.h"
 #import "StackMobSession.h"
 #import "StackMobPushRequest.h"
+#import "NSData+JSON.h"
+
+@interface StackMobRequest (Private)
++ (NSString*)stringFromHttpVerb:(SMHttpVerb)httpVerb;
+@end
 
 @implementation StackMobRequest;
 
@@ -27,28 +32,58 @@
 @synthesize method = mMethod;
 @synthesize result = mResult;
 @synthesize connectionError = _connectionError;
+@synthesize body;
 @synthesize httpMethod = mHttpMethod;
 @synthesize httpResponse = mHttpResponse;
 @synthesize finished = _requestFinished;
+@synthesize userBased;
 
+# pragma mark - Memory Management
+- (void)dealloc
+{
+	SMLogVerbose(@"StackMobRequest: dealloc");
+	[self cancel];
+	[mConnectionData release];
+	[mConnection release];
+	[mDelegate release];
+	[mMethod release];
+	[mResult release];
+	[mHttpMethod release];
+	[mHttpResponse release];
+	[super dealloc];
+	SMLogVerbose(@"StackMobRequest: dealloc finished");
+}
 
-+ (StackMobRequest*)request	
+# pragma mark - Initialization
+
++ (id)request	
 {
 	return [[[StackMobRequest alloc] init] autorelease];
 }
 
-+ (StackMobRequest*)requestForMethod:(NSString*)method
++ (id)userRequest
+{
+    StackMobRequest *request = [StackMobRequest request];
+    request.userBased = YES;
+    return request;
+}
+
++ (id)requestForMethod:(NSString*)method
 {
 	return [StackMobRequest requestForMethod:method withHttpVerb:GET];
 }	
 
-+ (StackMobRequest*)requestForMethod:(NSString*)method withHttpVerb:(SMHttpVerb) httpVerb
++ (id)requestForMethod:(NSString*)method withHttpVerb:(SMHttpVerb)httpVerb
 {
 	return [StackMobRequest requestForMethod:method withArguments:nil withHttpVerb:httpVerb];
+}
 
-}	
++ (id)userRequestForMethod:(NSString *)method withHttpVerb:(SMHttpVerb)httpVerb
+{
+	return [StackMobRequest userRequestForMethod:method withArguments:nil withHttpVerb:httpVerb];    
+}
 
-+ (StackMobRequest*)requestForMethod:(NSString*)method withArguments:(NSDictionary*)arguments  withHttpVerb:(SMHttpVerb) httpVerb
++ (id)requestForMethod:(NSString*)method withArguments:(NSDictionary*)arguments  withHttpVerb:(SMHttpVerb)httpVerb
 {
 	StackMobRequest* request = [StackMobRequest request];
 	request.method = method;
@@ -59,8 +94,10 @@
 	return request;
 }
 
-+ (StackMobRequest*)pushRequestWithArguments:(NSDictionary*)arguments withHttpVerb:(SMHttpVerb) httpVerb {
-	StackMobRequest* request = [StackMobPushRequest request];
++ (id)userRequestForMethod:(NSString*)method withArguments:(NSDictionary*)arguments withHttpVerb:(SMHttpVerb)httpVerb
+{
+	StackMobRequest* request = [StackMobRequest userRequest];
+	request.method = method;
 	request.httpMethod = [self stringFromHttpVerb:httpVerb];
 	if (arguments != nil) {
 		[request setArguments:arguments];
@@ -68,6 +105,22 @@
 	return request;
 }
 
++ (id)requestForMethod:(NSString *)method withData:(NSData *)data{
+    StackMobRequest *request = [StackMobRequest request];
+    request.method = method;
+    request.httpMethod = [self stringFromHttpVerb:POST];
+    request.body = data;
+    return request;
+}
+
++ (id)pushRequestWithArguments:(NSDictionary*)arguments withHttpVerb:(SMHttpVerb) httpVerb {
+	StackMobRequest* request = [StackMobPushRequest request];
+	request.httpMethod = [self stringFromHttpVerb:httpVerb];
+	if (arguments != nil) {
+		[request setArguments:arguments];
+	}
+	return request;
+}
 
 + (NSString*)stringFromHttpVerb:(SMHttpVerb)httpVerb {
 	switch (httpVerb) {
@@ -84,15 +137,21 @@
 
 - (NSURL*)getURL
 {
-	if (self.method == nil)
-		return nil;
-	NSMutableString *stringURL = [session urlForMethod:self.method];
-	if ([[self httpMethod] isEqualToString: @"GET"] &&
+    // nil method is an invalid request
+	if(!self.method) return nil;
+    
+    // add query string
+    NSMutableArray *urlComponents = [NSMutableArray arrayWithCapacity:2];
+    [urlComponents addObject:[session urlForMethod:self.method isUserBased:userBased]];
+	if ([[self httpMethod] isEqualToString:@"GET"] &&
 		[mArguments count] > 0) {
-		[stringURL appendString: @"?"];
-		[stringURL appendString: [mArguments queryString]];
+		[urlComponents addObject:[mArguments queryString]];
 	}
-	return [NSURL URLWithString: stringURL];
+    
+    NSString *urlString = [urlComponents componentsJoinedByString:@"?"];
+    SMLogVerbose(@"%@", urlString);
+    
+	return [NSURL URLWithString:urlString];
 }
 
 - (NSInteger)getStatusCode
@@ -101,36 +160,19 @@
 }
 
 
-- (id)init	
+- (id)init
 {
 	self = [super init];
-	if (self == nil)
-		return nil;
-	self.delegate = nil;
-	self.method = nil;
-	self.result = nil;
-	mArguments = [[NSMutableDictionary alloc] init];
-	mConnectionData = [[NSMutableData alloc] init];
-	mResult = nil;
-	session = [StackMobSession session];
+    if(self){
+        self.delegate = nil;
+        self.method = nil;
+        self.result = nil;
+        mArguments = [[NSMutableDictionary alloc] init];
+        mConnectionData = [[NSMutableData alloc] init];
+        mResult = nil;
+        session = [StackMobSession session];
+    }
 	return self;
-}
-
-- (void)dealloc
-{
-	if (kLogVersbose == YES)
-		StackMobLog(@"StackMobRequest %p: dealloc", self);
-	[self cancel];
-	[mConnectionData release];
-	[mConnection release];
-	[mDelegate release];
-	[mMethod release];
-	[mResult release];
-	[mHttpMethod release];
-	[mHttpResponse release];
-	[super dealloc];
-	if (kLogVersbose == YES)
-		StackMobLog(@"StackMobRequest %p: dealloc finished", self);
 }
 
 #pragma mark -
@@ -160,45 +202,41 @@
 {
 	_requestFinished = NO;
 
-	if (kLogVersbose == YES) {
-		StackMobLog(@"StackMobRequest %p: Sending Asynch Request httpMethod=%@ method=%@ url=%@", self, self.httpMethod, self.method, self.url);
-	}
+    SMLogVerbose(@"StackMob method: %@", self.method);
+    SMLogVerbose(@"Request Request with url: %@", self.url);
+    SMLogVerbose(@"Request Request with HTTP Method: %@", self.httpMethod);
 				
-	OAConsumer *consumer = [[OAConsumer alloc] initWithKey:session.apiKey secret:session.apiSecret];
-		
-		//TODO: This should be its own call?
-//		StackMobClientData *data = [StackMobClientData sharedClientData];
-//		[self setValue:[data clientDataString]  forArgument:@"cd"];
+	OAConsumer *consumer = [[OAConsumer alloc] initWithKey:session.apiKey
+														secret:session.apiSecret];
 				
 	OAMutableURLRequest *request = [[OAMutableURLRequest alloc] initWithURL:self.url
 																   consumer:consumer
 																	  token:nil
 																	  realm:nil
-                        signatureProvider:nil]; // use the default method, HMAC-SHA1
-  [consumer release];
+
+														  signatureProvider:nil]; // use the default method, HMAC-SHA1
+    SMLog(@"httpMethod %@", [self httpMethod]);
 	[request setHTTPMethod:[self httpMethod]];
 		
 	[request addValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
 	[request addValue:@"deflate" forHTTPHeaderField:@"Accept-Encoding"];
+    
 	[request prepare];
 	if (![[self httpMethod] isEqualToString: @"GET"]) {
-    NSData* postData = [[mArguments yajl_JSONString] dataUsingEncoding:NSUTF8StringEncoding];
-    if (kLogVersbose == YES) {
-      StackMobLog(@"StackMobRequest %p: POST Data: %@", self, postData);
-    }
-		[request setHTTPBody:postData];	
-		NSString *contentType = [NSString stringWithFormat:@"application/json"];
-		[request addValue:contentType forHTTPHeaderField: @"Content-Type"]; 
+        NSData* postData = [[mArguments yajl_JSONString] dataUsingEncoding:NSUTF8StringEncoding];
+        SMLogVerbose(@"POST Data: %d", [postData length]);
+        [request setHTTPBody:postData];	
+        NSString *contentType = [NSString stringWithFormat:@"application/json"];
+        [request addValue:contentType forHTTPHeaderField: @"Content-Type"]; 
 	}
 		
-	if (kLogVersbose) {
-		StackMobLog(@"StackMobRequest %p: sending asynchronous oauth request: %@", self, request);
-	}
+    SMLogVerbose(@"StackMobRequest: sending asynchronous oauth request: %@", request);
+    
 	[mConnectionData setLength:0];		
 	self.result = nil;
-  self.connectionError = nil;
+    self.connectionError = nil;
 	self.connection = [[[NSURLConnection alloc] initWithRequest:request delegate:self] retain]; // Why retaining this when already retained by synthesized method?
-  [request release];
+    [request release];
 }
 
 - (void)cancel
@@ -213,109 +251,98 @@
 	
 - (void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data
 {
-	if (data == nil) {
-		StackMobLog(@"StackMobRequest %p: Recieved data but it was nil", self);
+	if (!data) {
+		SMLog(@"StackMobRequest: Received data but it was nil");
 		return;
 	}
 
 	[mConnectionData appendData:data];
 	
-	if (kLogVersbose == YES)
-		StackMobLog(@"StackMobRequest %p: Got data of length %u", self, [mConnectionData length]);
+    SMLogVerbose(@"StackMobRequest: Got data of length %u", [mConnectionData length]);
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
 	_requestFinished = YES;
-  self.connectionError = error;
-	// inform the user
-	StackMobLog(@"StackMobRequest %p: Connection failed! Error - %@ %@",
+    
+	SMLog(@"StackMobRequest %p: Connection failed! Error - %@ %@",
     self,
 		[error localizedDescription],
 		[[error userInfo] objectForKey:NSErrorFailingURLStringKey]);
+    
+	// inform the user
 	self.result = [NSDictionary dictionaryWithObjectsAndKeys:[error localizedDescription], @"statusDetails", nil];  
-	// If a delegate has been set, attempt to tell
-	// it all about this request's status.
-	if (self.delegate != nil)
-	{
-		// If a selector has been set for this request, 
-		// attempt to notify the delegate using it.
-		if ([self.delegate respondsToSelector:@selector(requestCompleted:)] == YES)
-			[[self delegate] requestCompleted:self];
-	}
+	if (self.delegate && [self.delegate respondsToSelector:@selector(requestCompleted:)])
+        [[self delegate] requestCompleted:self];
 }
 
 
 - (void)connectionDidFinishLoading:(NSURLConnection*)connection
 {
 	_requestFinished = YES;
-	if (kLogRequestSteps == YES) 
-    StackMobLog(@"StackMobRequest %p: Received Request: %@", self, self.method);
-  
-	NSString*     textResult = nil;
-	NSDictionary* result = nil;
-  NSInteger statusCode = [self getStatusCode];
 
-  if ([mConnectionData length] != 0) {
-    textResult = [[[NSString alloc] initWithData:mConnectionData encoding:NSUTF8StringEncoding] autorelease];
-    StackMobLog(@"StackMobRequest %p: Text result was %@", self, textResult);
-  }
+	if(kLogRequestSteps) SMLog(@"Received Request: %@", self.method);
+    SMLog(@"StackMobRequest %p: Received Request: %@", self, self.method);
+    
+	NSString *textResult = nil;
+	NSDictionary *result = nil;
+    NSInteger statusCode = [self getStatusCode];
 
-  // If it's a 500, it probably isn't JSON so don't attempt to parse it as such
-  if (statusCode != 500) {
-    if (textResult == nil) {
-      result = [NSDictionary dictionary];
-    }	else {
-      [mConnectionData setLength:0];		
-      result = [textResult yajl_JSON];
+    SMLogVerbose(@"RESPONSE CODE %d", statusCode);
+    if ([mConnectionData length] > 0) {
+        textResult = [[[NSString alloc] initWithData:mConnectionData encoding:NSUTF8StringEncoding] autorelease];
+        SMLogVerbose(@"RESPONSE BODY %@", textResult);
     }
-  }
+
+
+    // If it's a 500, it probably isn't JSON so don't attempt to parse it as such
+    if (statusCode < 500) {
+        if (textResult == nil) {
+            result = [NSDictionary dictionary];
+        }
+        else {
+            @try{
+                [mConnectionData setLength:0];
+                result = [textResult yajl_JSON];
+            }
+            @catch (NSException *e) {
+                result = nil;
+                SMLog(@"Unable to parse json '%@'", textResult);
+            }
+        }
+    }
   
-	if (kLogRequestSteps == YES)
-		StackMobLog(@"StackMobRequest %p: Request Processed: %@", self, self.method);
+    if (kLogRequestSteps)
+        SMLog(@"Request Processed: %@", self.method);
 
-
-	self.result = result;
+    self.result = result;
 	
-	// If a delegate has been set, attempt to tell
-	// it all about this request's status.
-	if (mDelegate != nil)
-	{
-		if ([mDelegate respondsToSelector:@selector(requestCompleted:)] == YES) {
-      if (kLogVersbose == YES) {
-        StackMobLog(@"StackMobRequest %p: Calling delegate", self);
-      }
-			[mDelegate requestCompleted:self];
+    if (!self.delegate) SMLogVerbose(@"No delegate");
+    
+	if (self.delegate && [self.delegate respondsToSelector:@selector(requestCompleted:)]){
+        SMLogVerbose(@"Calling delegate %d, self %d", [mDelegate retainCount], [self retainCount]);
+        [self.delegate requestCompleted:self];
     } else {
-      if (kLogVersbose == YES) {
-        StackMobLog(@"StackMobRequest %p: Delegate does not respond to selector\ndelegate: %@", self, mDelegate);
-      }
+        SMLogVerbose(@"Delegate does not respond to selector\ndelegate: %@", mDelegate);
     }
-	
-	} else {
-    if (kLogVersbose == YES) {
-      StackMobLog(@"StackMobRequest %p: No delegate", self);
-    }
-  }
 }
 
 - (id) sendSynchronousRequestProvidingError:(NSError**)error {
-  id result = [self sendSynchronousRequest];
-  *error = self.connectionError;
-  return result;
+    SMLogVerbose(@"Sending Request: %@", self.method);
+    SMLogVerbose(@"Request URL: %@", self.url);
+    SMLogVerbose(@"Request HTTP Method: %@", self.httpMethod);
+    id result = [self sendSynchronousRequest];
+    *error = self.connectionError;
+    return result;
 }
 
 - (id) sendSynchronousRequest {
 	if (kLogVersbose == YES) {
-		StackMobLog(@"StackMobRequest %p: Sending Synch Request httpMethod=%@ method=%@ url=%@", self, self.httpMethod, self.method, self.url);
+		SMLog(@"StackMobRequest %p: Sending Synch Request httpMethod=%@ method=%@ url=%@", self, self.httpMethod, self.method, self.url);
 	}
 	
 	OAConsumer *consumer = [[OAConsumer alloc] initWithKey:session.apiKey
 													secret:session.apiSecret];
-	
-	//TODO: This should be its own call?
-	//		StackMobClientData *data = [StackMobClientData sharedClientData];
-	//		[self setValue:[data clientDataString]  forArgument:@"cd"];
 	
 	OAMutableURLRequest *request = [[OAMutableURLRequest alloc] initWithURL:self.url
 																   consumer:consumer
@@ -331,26 +358,26 @@
 	if (![[self httpMethod] isEqualToString: @"GET"]) {
 		[request setHTTPBody:[[mArguments yajl_JSONString] dataUsingEncoding:NSUTF8StringEncoding]];	
 		NSString *contentType = [NSString stringWithFormat:@"application/json"];
-		[request addValue:contentType forHTTPHeaderField: @"Content-Type"]; 
+		[request addValue:contentType forHTTPHeaderField: @"Content-Type"];
 	}
 	
 	[mConnectionData setLength:0];
 
 	if (kLogVersbose) {
-		StackMobLog(@"StackMobRequest %p: sending synchronous oauth request: %@", self, request);
+		SMLog(@"StackMobRequest %p: sending synchronous oauth request: %@", self, request);
 	}
   
-  _requestFinished = NO;
-  self.connectionError = nil;
-  self.delegate = nil;
-  self.connection = [[[NSURLConnection alloc] initWithRequest:request delegate:self] retain];
+    _requestFinished = NO;
+    self.connectionError = nil;
+    self.delegate = nil;
+    self.connection = [[[NSURLConnection alloc] initWithRequest:request delegate:self] retain];
   
-  NSDate *loopUntil = [NSDate dateWithTimeIntervalSinceNow:0.1];
-  while (!_requestFinished && [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:loopUntil]) {
-    loopUntil = [NSDate dateWithTimeIntervalSinceNow:0.1];
-  }
-  
-	return self.result;
+    NSDate *loopUntil = [NSDate dateWithTimeIntervalSinceNow:0.1];
+    while (!_requestFinished && [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:loopUntil]) {
+        loopUntil = [NSDate dateWithTimeIntervalSinceNow:0.1];
+    }
+
+    return self.result;
 }
 
 - (NSString*) description {

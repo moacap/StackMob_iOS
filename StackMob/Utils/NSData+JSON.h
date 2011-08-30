@@ -12,17 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#import "StackMobPushRequest.h"
+#import <Foundation/Foundation.h>
 
-@implementation StackMobPushRequest
+@interface NSData (JSON)
 
-+ (StackMobRequest*)request	{
-	return [[[StackMobPushRequest alloc] init] autorelease];
-}
-
-- (NSURL*)getURL {
-	NSString* stringURL = [session pushURL];
-	return [NSURL URLWithString: stringURL];
-}
+- (id)JSON;
 
 @end

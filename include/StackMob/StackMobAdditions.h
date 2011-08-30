@@ -12,17 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#import "StackMobPushRequest.h"
+#import <Foundation/Foundation.h>
+@interface NSDictionary (StackMobAdditions)
+- (NSString *)queryString;
+@end
 
-@implementation StackMobPushRequest
-
-+ (StackMobRequest*)request	{
-	return [[[StackMobPushRequest alloc] init] autorelease];
-}
-
-- (NSURL*)getURL {
-	NSString* stringURL = [session pushURL];
-	return [NSURL URLWithString: stringURL];
-}
-
+@interface NSArray (StackMobAdditions)
+- (BOOL)isEmpty;
 @end
