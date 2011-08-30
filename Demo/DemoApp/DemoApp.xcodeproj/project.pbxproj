@@ -22,8 +22,8 @@
 		0393E3041409E36300D643AA /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0393E3031409E36300D643AA /* CoreLocation.framework */; };
 		0393E3061409E36A00D643AA /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0393E3051409E36A00D643AA /* SystemConfiguration.framework */; };
 		0393E31C1409F27D00D643AA /* StackMob.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0393E31B1409F27D00D643AA /* StackMob.plist */; };
-		0393E322140A026600D643AA /* StackMob.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0393E3151409EA3900D643AA /* StackMob.framework */; };
 		0393E323140A02C800D643AA /* YAJLIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0393E2D91409E17E00D643AA /* YAJLIOS.framework */; };
+		0393E34F140B18BA00D643AA /* StackMob.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0393E34E140B18BA00D643AA /* StackMob.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,8 +48,8 @@
 		0393E3011409E35E00D643AA /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		0393E3031409E36300D643AA /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		0393E3051409E36A00D643AA /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		0393E3151409EA3900D643AA /* StackMob.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StackMob.framework; path = ../../build/Framework/StackMob.framework; sourceTree = "<group>"; };
 		0393E31B1409F27D00D643AA /* StackMob.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = StackMob.plist; sourceTree = "<group>"; };
+		0393E34E140B18BA00D643AA /* StackMob.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StackMob.framework; path = ../../build/Framework/StackMob.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,9 +57,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0393E34F140B18BA00D643AA /* StackMob.framework in Frameworks */,
 				0393E323140A02C800D643AA /* YAJLIOS.framework in Frameworks */,
 				0393E3021409E35E00D643AA /* CFNetwork.framework in Frameworks */,
-				0393E322140A026600D643AA /* StackMob.framework in Frameworks */,
 				0393E3061409E36A00D643AA /* SystemConfiguration.framework in Frameworks */,
 				0393E3041409E36300D643AA /* CoreLocation.framework in Frameworks */,
 				0393E2AC1409D87B00D643AA /* UIKit.framework in Frameworks */,
@@ -74,7 +74,7 @@
 		0393E29C1409D87B00D643AA = {
 			isa = PBXGroup;
 			children = (
-				0393E3151409EA3900D643AA /* StackMob.framework */,
+				0393E34E140B18BA00D643AA /* StackMob.framework */,
 				0393E3051409E36A00D643AA /* SystemConfiguration.framework */,
 				0393E3031409E36300D643AA /* CoreLocation.framework */,
 				0393E3011409E35E00D643AA /* CFNetwork.framework */,
@@ -349,6 +349,7 @@
 				0393E2D01409D87B00D643AA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

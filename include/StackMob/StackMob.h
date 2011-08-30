@@ -98,6 +98,7 @@ typedef void (^StackMobCallback)(BOOL success, id result);
 
 /* 
  * Register a User for PUSH notifications
+ * @param arguments a Dictionary 
  */
 - (StackMobRequest *)registerUserForPushWithArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
 

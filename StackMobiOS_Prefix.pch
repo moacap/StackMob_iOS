@@ -20,8 +20,14 @@
 	#define kLogVersbose YES
 	#define kLogRequestSteps YES
 	#define kLogApiContent   YES
-#define MRLog(...)
-#define SMLogVerbose(...)
+    #define STACKMOBVERBOSE 1
+
+    #if STACKMOBVERBOSE
+    #define SMLogVerbose(format, ...) {NSLog(format, ##__VA_ARGS__);}
+    #else
+    #define SMLogVerbose(...)
+    #endif
+
 	#if DEBUG
         
 		#define SMLog(format, ...) {NSLog(format, ##__VA_ARGS__);}

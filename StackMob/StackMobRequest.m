@@ -292,8 +292,14 @@
             result = [NSDictionary dictionary];
         }
         else {
-            [mConnectionData setLength:0];
-            result = [textResult yajl_JSON];
+            @try{
+                [mConnectionData setLength:0];
+                result = [textResult yajl_JSON];
+            }
+            @catch (NSException *e) {
+                result = nil;
+                SMLog(@"Unable to parse json '%@'", textResult);
+            }
         }
     }
   
@@ -314,7 +320,7 @@
 
 - (id)sendSynchronousRequestProvidingError:(NSError**)error {
     SMLogVerbose(@"Sending Request: %@", self.method);
-    SMLogVerbose(@"Request url: %@", self.url);
+    SMLogVerbose(@"Request URL: %@", self.url);
     SMLogVerbose(@"Request HTTP Method: %@", self.httpMethod);
 	
 	OAConsumer *consumer = [[OAConsumer alloc] initWithKey:session.apiKey
@@ -349,7 +355,7 @@
 	[mConnectionData appendData:data];
     mHttpResponse = [(NSHTTPURLResponse*)response copy];
 
-	NSDictionary* result;
+	NSDictionary* result = nil;
 	
 	if ([mConnectionData length] == 0){
 		result = [NSDictionary dictionary];
@@ -358,8 +364,13 @@
         NSString* textResult = [[[NSString alloc] initWithData:mConnectionData encoding:NSUTF8StringEncoding] autorelease];
 		SMLogVerbose(@"Text result was %@", textResult);
 		
-		[mConnectionData setLength:0];		
-		result = [textResult yajl_JSON];
+		[mConnectionData setLength:0];
+        @try{
+            result = [textResult yajl_JSON];
+        }
+        @catch (NSException *e){
+            SMLog(@"Unable to parse json for '%@'", textResult);
+        }
 	}
 	return result;
 }

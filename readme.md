@@ -98,13 +98,12 @@ You can register an Apple Push Notification service device by creating and calli
     NSString *token = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
     token = [[token componentsSeparatedByString:@" "] componentsJoinedByString:@""];
     // Persist your user's accessToken here if you need
-    /*
-     * userInfo: 
-     * NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:2];
-     * [userInfo setValue:self.deviceToken forKey:kAttributeUserDeviceToken];
-     * [userInfo setValue:self.remoteID forKey:kAttributeUserUserID];
-     */
-    [[StackMob stackmob] registerUserForPushwithArguments:userInfo andCallback:^(BOOL success, id result){
+    
+    NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:2];
+    [userInfo setValue:token forKey:@"token"];
+    userInfo setValue:myUserObject.username forKey:@"username"];
+    
+    [[StackMob stackmob] registerUserForPushWithArguments:userInfo andCallback:^(BOOL success, id result){
         if(success){
             // Registered User and alert your delegates
         }
@@ -118,6 +117,11 @@ You can register an Apple Push Notification service device by creating and calli
 
 Troubleshooting
 ===============
+
+####If you see this:
+```ld: framework not found StackMob```
+
+Make sure the sdk you are building for is specified in lines 8 and 9 of ./script/build.sh
 
 ####If you see this:
 
