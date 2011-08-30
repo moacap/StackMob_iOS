@@ -1,4 +1,4 @@
-// Copyright 2011 StackMob, Inc
+`// Copyright 2011 StackMob, Inc
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -338,7 +338,7 @@
 
 - (id) sendSynchronousRequest {
 	if (kLogVersbose == YES) {
-		StackMobLog(@"StackMobRequest %p: Sending Synch Request httpMethod=%@ method=%@ url=%@", self, self.httpMethod, self.method, self.url);
+		SMLog(@"StackMobRequest %p: Sending Synch Request httpMethod=%@ method=%@ url=%@", self, self.httpMethod, self.method, self.url);
 	}
 	
 	OAConsumer *consumer = [[OAConsumer alloc] initWithKey:session.apiKey
@@ -364,7 +364,7 @@
 	[mConnectionData setLength:0];
 
 	if (kLogVersbose) {
-		StackMobLog(@"StackMobRequest %p: sending synchronous oauth request: %@", self, request);
+		SMLog(@"StackMobRequest %p: sending synchronous oauth request: %@", self, request);
 	}
   
     _requestFinished = NO;
