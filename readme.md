@@ -10,7 +10,7 @@ Getting Started
 
     - CFNetwork.framework
     - CoreLocation.framework
-    - SystemConfirmation.framework
+    - SystemConfiguration.framework
     - YAJLiOS.framework - This is provided as part of our GitHub project. You will find it in the external folder
 
 7. Copy and configure a StackMob.plist in your app's main Bundle

@@ -34,6 +34,7 @@ typedef enum {
     NSData*                 mBody;
 	NSMutableData*			mConnectionData;
 	NSDictionary*			mResult;
+    NSError*                mConnectionError;
 	BOOL					_requestFinished;
 	NSString*				mHttpMethod;
 	NSHTTPURLResponse*		mHttpResponse;
@@ -48,7 +49,7 @@ typedef enum {
 @property(readwrite, copy) NSString* httpMethod;
 @property(readwrite, retain) NSURLConnection* connection;
 @property(readwrite, retain) NSDictionary* result;
-@property(readwrite, retain) NSData *body;
+@property(readwrite, retain) NSError* connectionError;
 @property(readonly) BOOL finished;
 @property(readonly) NSHTTPURLResponse* httpResponse;
 @property(readonly, getter=getStatusCode) NSInteger statusCode;
@@ -100,7 +101,8 @@ typedef enum {
  * This is useful if you are creating requests in a separate thread already
  * @param address of NSError
  */
-- (id)sendSynchronousRequestProvidingError:(NSError**)error;
+- (id)sendSynchronousRequestProvidingError:(NSError**)error __attribute__((deprecated));
+- (id)sendSynchronousRequest;
 
 @end
 
