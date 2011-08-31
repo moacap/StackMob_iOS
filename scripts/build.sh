@@ -5,8 +5,28 @@
 #!/bin/bash  
 cd ../
 # Do not change the location of the next two lines.  They are referenced by line # in documentation
-xcodebuild -configuration Release -target "StackMob" -sdk iphoneos5.0
-xcodebuild -configuration Release -target "StackMob" -sdk iphonesimulator5.0
+sdks=$(xcodebuild -showsdks | egrep --regex="*-sdk*" -A 1 | awk -F '-sdk ' '{print $2}' | grep -v ^$)
+iphoneos=""
+iphonesimulator=""
+version=""
+for sdk in $sdks
+do
+  if [ -z $iphoneos ]
+  then
+    iphoneos=$(echo $sdk | grep 'iphoneos' | head -n1)   
+    version=$(echo $iphoneos | sed s/iphoneos//)
+  fi
+
+  if [ -z $iphonesimulator ]
+  then
+    to_lookfor='iphonesimulator'$version
+    iphonesimulator=$(echo $sdk | grep $to_lookfor | head -n1)
+  fi
+done
+
+echo "Framework: Building for ios: '$iphoneos' and simulator: '$iphonesimulator'"
+xcodebuild -configuration Release -target "StackMob" -sdk $iphoneos
+xcodebuild -configuration Release -target "StackMob" -sdk $iphonesimulator
 
 # Define these to suit your nefarious purposes  
  FRAMEWORK_NAME=StackMob  
