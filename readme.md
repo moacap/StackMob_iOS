@@ -82,7 +82,9 @@ You can register a new user with a facebook token and username
     }
 }];
 ```
+
 You can also link an existing user account to Facebook:
+
 ```objective-c
 [[StackMob stackmob] linkUserWithFacebookToken:facebookToken withCallback:^(BOOL success, id result){
     if(success){
@@ -93,8 +95,10 @@ You can also link an existing user account to Facebook:
     }
 }];
 ```
+
 ####Twitter Registration
 You can register a new user with a twitter token, secret and username
+
 ```objective-c
 [[StackMob stackmob] registerWithTwitterToken:token secret:secret username:username andCallback:^(BOOL success, id result){
     if(success){
@@ -105,7 +109,9 @@ You can register a new user with a twitter token, secret and username
     }
 }];
 ```
+
 You can also link an existing user account to Twitter:
+
 ```objective-c
 [[StackMob stackmob] linkUserWithTwitterToken:@"" secret:@"" andCallback:^(BOOL success, id result){
     if(success){
@@ -116,6 +122,7 @@ You can also link an existing user account to Twitter:
     }
 }];
 ```
+
 ####iOS PUSH Notifications
 You can register an Apple Push Notification service device by creating and calling a method like registerForPush.  Keep in mind you may want to do this only after registering a user.
 
@@ -126,6 +133,7 @@ You can register an Apple Push Notification service device by creating and calli
      (UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
 }
 ```
+
 ```objective-c
 - (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken 
 {
