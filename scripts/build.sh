@@ -4,7 +4,6 @@
 
 #!/bin/bash  
 cd ../
-# Do not change the location of the next two lines.  They are referenced by line # in documentation
 sdks=$(xcodebuild -showsdks | egrep --regex="*-sdk*" -A 1 | awk -F '-sdk ' '{print $2}' | grep -v ^$)
 iphoneos=""
 iphonesimulator=""
