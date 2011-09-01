@@ -17,7 +17,7 @@
 #import "StackMobRequest.h"
 #import "StackMobAdditions.h"
 #import "StackMobClientData.h"
-#import "StackMobCustomRequest.h"
+#import "StackMobHerokuRequest.h"
 
 @interface StackMob (Private)
 - (void)queueRequest:(StackMobRequest *)request andCallback:(StackMobCallback)callback;
@@ -128,12 +128,115 @@ static StackMob *_sharedManager = nil;
     return request;
 }
 
+- (StackMobRequest *)linkUserWithFacebookToken:(NSString *)facebookToken withCallback:(StackMobCallback)callback
+{
+    NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:facebookToken, @"fb_at", nil];
+    StackMobRequest *request = [StackMobRequest userRequestForMethod:@"linkUserWithFacebook" withArguments:args withHttpVerb:GET];
+    [self queueRequest:request andCallback:callback];
+    return request;    
+}
+
+- (StackMobRequest *)postFacebookMessage:(NSString *)message withCallback:(StackMobCallback)callback
+{
+    NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:message, @"message", nil];
+    StackMobRequest *request = [StackMobRequest userRequestForMethod:@"postFacebookMessage" withArguments:args withHttpVerb:GET];
+    [self queueRequest:request andCallback:callback];
+    return request;
+}
+
+- (StackMobRequest *)getFacebookUserInfoWithCallback:(StackMobCallback)callback
+{
+    return [self get:@"getFacebookUserInfo" withCallback:callback];
+}
+
+# pragma mark - Twitter methods
+
+- (StackMobRequest *)registerWithTwitterToken:(NSString *)token secret:(NSString *)secret username:(NSString *)username andCallback:(StackMobCallback)callback
+{
+    NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:token, @"tw_tk", secret, @"tw_ts", username, @"username", nil];
+    StackMobRequest *request = [StackMobRequest userRequestForMethod:@"createUserWithTwitter" withArguments:args withHttpVerb:GET];
+    [self queueRequest:request andCallback:callback];
+    return request;
+}
+
+- (StackMobRequest *)loginWithTwitterToken:(NSString *)token secret:(NSString *)secret andCallback:(StackMobCallback)callback
+{
+    NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:token, @"tw_tk", secret, @"tw_ts", nil];
+    StackMobRequest *request = [StackMobRequest userRequestForMethod:@"twitterLogin" withArguments:args withHttpVerb:GET];
+    [self queueRequest:request andCallback:callback];
+    return request;    
+}
+
+- (StackMobRequest *)linkUserWithTwitterToken:(NSString *)token secret:(NSString *)secret andCallback:(StackMobCallback)callback
+{
+    NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:token, @"tw_tk", secret, @"tw_ts", nil];
+    StackMobRequest *request = [StackMobRequest userRequestForMethod:@"linkUserWithTwitter" withArguments:args withHttpVerb:GET];
+    [self queueRequest:request andCallback:callback];
+    return request;    
+}
+
+- (StackMobRequest *)twitterStatusUpdate:(NSString *)message withCallback:(StackMobCallback)callback
+{
+    NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:message, @"tw_st", nil];
+    StackMobRequest *request = [StackMobRequest userRequestForMethod:@"twitterStatusUpdate" withArguments:args withHttpVerb:GET];
+    [self queueRequest:request andCallback:callback];
+    return request;    
+}
+
 # pragma mark - PUSH Notifications
 
-- (StackMobRequest *)registerUserForPushWithArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
+- (StackMobRequest *)registerForPushWithUser:(NSString *)userId andToken:(NSString *)token andCallback:(StackMobCallback)callback
 {
+    NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:userId, @"user_id", token, @"token", nil];
     StackMobPushRequest *request = [StackMobPushRequest request];
-    [request setArguments:arguments];
+    [request setArguments:args];
+    [self queueRequest:request andCallback:callback];
+    return request;
+}
+
+# pragma mark - Heroku methods
+
+- (StackMobRequest *)herokuGet:(NSString *)path withCallback:(StackMobCallback)callback
+{
+    StackMobHerokuRequest *request = [StackMobHerokuRequest requestForMethod:path
+                                                               withArguments:NULL
+                                                                withHttpVerb:GET];
+    [self queueRequest:request andCallback:callback];
+    return request;
+}
+
+- (StackMobRequest *)herokuGet:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
+{
+    StackMobHerokuRequest *request = [StackMobHerokuRequest requestForMethod:path
+                                                               withArguments:arguments
+                                                                withHttpVerb:GET];
+    [self queueRequest:request andCallback:callback];
+    return request;
+}
+
+- (StackMobRequest *)herokuPost:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
+{
+    StackMobHerokuRequest *request = [StackMobHerokuRequest requestForMethod:path
+                                                               withArguments:arguments
+                                                                withHttpVerb:POST];
+    [self queueRequest:request andCallback:callback];
+    return request;
+}
+
+- (StackMobRequest *)herokuPut:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
+{
+    StackMobHerokuRequest *request = [StackMobHerokuRequest requestForMethod:path
+                                                               withArguments:arguments
+                                                                withHttpVerb:PUT];
+    [self queueRequest:request andCallback:callback];
+    return request;
+}
+
+- (StackMobRequest *)herokuDelete:(NSString *)path andCallback:(StackMobCallback)callback
+{
+    StackMobHerokuRequest *request = [StackMobHerokuRequest requestForMethod:path
+                                                               withArguments:nil
+                                                                withHttpVerb:DELETE];
     [self queueRequest:request andCallback:callback];
     return request;
 }
@@ -157,38 +260,11 @@ static StackMob *_sharedManager = nil;
     return request;
 }
 
-- (StackMobRequest *)customGet:(NSString *)path withCallback:(StackMobCallback)callback
-{
-    StackMobCustomRequest *request = [StackMobCustomRequest requestForMethod:path
-                                                   withArguments:NULL
-                                                    withHttpVerb:GET];
-    [self queueRequest:request andCallback:callback];
-    return request;
-}
-
-- (StackMobRequest *)customGet:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
-{
-    StackMobCustomRequest *request = [StackMobCustomRequest requestForMethod:path
-                                                               withArguments:arguments
-                                                                withHttpVerb:GET];
-    [self queueRequest:request andCallback:callback];
-    return request;
-}
-
 - (StackMobRequest *)post:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
 {
     StackMobRequest *request = [StackMobRequest requestForMethod:path
                                                    withArguments:arguments
                                                     withHttpVerb:POST];
-    [self queueRequest:request andCallback:callback];
-    return request;
-}
-
-- (StackMobRequest *)customPost:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
-{
-    StackMobCustomRequest *request = [StackMobCustomRequest requestForMethod:path
-                                                               withArguments:arguments
-                                                                withHttpVerb:POST];
     [self queueRequest:request andCallback:callback];
     return request;
 }

@@ -69,7 +69,7 @@ If you need to upload a binary file just add an NSData* object to your argument 
 [dictionary setValue:[NSData dataWithContentsOfFile:pathToDataFile] forKey:kAttributePostPhoto];
 ```
 ####Facebook Registration
-You can register a user with a facebook token and username
+You can register a new user with a facebook token and username
 
 ```objective-c
 [[StackMob stackmob] registerWithFacebookToken:token username:myLoginObject.userName andCallback:^(BOOL success, id result){
@@ -79,6 +79,43 @@ You can register a user with a facebook token and username
     }
     else{
       // Cast result to an NSError* and alert your delegates
+    }
+}];
+```
+You can also link an existing user account to his/her Facebook account:
+
+```objective-c
+[[StackMob stackmob] linkUserWithFacebookToken:facebookToken withCallback:^(BOOL success, id result){
+    if(success){
+        // User accounts linked.  Alert your delegates
+    }
+    else{
+        // Error.  Display alert to user and/or alert your delegates
+    }
+}];
+```
+####Twitter Registration
+You can register a new user with a twitter token, secret and username
+
+```objective-c
+[[StackMob stackmob] registerWithTwitterToken:token secret:secret username:username andCallback:^(BOOL success, id result){
+    if(success){
+        // User registered.  Persist the user and alert your delegates
+    }
+    else{
+        // Error.  Display alert to user and/or alert your delegates
+    }
+}];
+```
+You can also link an existing user account to his/her Twitter account:
+
+```objective-c
+[[StackMob stackmob] linkUserWithTwitterToken:@"" secret:@"" andCallback:^(BOOL success, id result){
+    if(success){
+        // User accounts linked.  Alert your delegates
+    }
+    else{
+        // Error.  Display alert to user and/or alert your delegates
     }
 }];
 ```
@@ -92,20 +129,16 @@ You can register an Apple Push Notification service device by creating and calli
      (UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
 }
 ```
+
 ```objective-c
 - (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken 
 {
     NSString *token = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
     token = [[token componentsSeparatedByString:@" "] componentsJoinedByString:@""];
     // Persist your user's accessToken here if you need
-    
-    NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:2];
-    [userInfo setValue:token forKey:@"token"];
-    userInfo setValue:myUserObject.username forKey:@"username"];
-    
-    [[StackMob stackmob] registerUserForPushWithArguments:userInfo andCallback:^(BOOL success, id result){
+    [[StackMob stackmob] registerForPushWithUser:currentUser.userName andToken:token andCallback:^(BOOL success, id result){
         if(success){
-            // Registered User and alert your delegates
+            // User created.  Alert your delegates
         }
         else{
             // Unable to register device for PUSH notifications 

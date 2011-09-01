@@ -57,6 +57,8 @@ typedef void (^StackMobCallback)(BOOL success, id result);
  */
 - (StackMobRequest *)endSession;
 
+/********************* User based requests *************************/
+
 /*
  * Registers a new userusing the user object name set when initializing StackMobSession
  * @param arguments A dictionary whose keys correspond to object field names on Stackmob Object Model
@@ -81,6 +83,8 @@ typedef void (^StackMobCallback)(BOOL success, id result);
  */
 - (StackMobRequest *)getUserInfowithArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
 
+/********************** Facebook Methods ******************/
+
 /*
  * Authenticates a user in your StackMob app using their Facebook Token.  
  * Assumes the user is already registered
@@ -89,19 +93,73 @@ typedef void (^StackMobCallback)(BOOL success, id result);
 - (StackMobRequest *)loginWithFacebookToken:(NSString *)facebookToken andCallback:(StackMobCallback)callback;
 
 /* 
- * Registerrs a new user in your StackMob app using their facebook token
+ * Registers a new user in your StackMob app using their facebook token
  * and a user selected username (you can default it to their Facebook username
  * assuming they have set one)
  * @param facebookToken the user's facebook access token
  */
 - (StackMobRequest *)registerWithFacebookToken:(NSString *)facebookToken username:(NSString *)username andCallback:(StackMobCallback)callback;
 
+/*
+ * Links an existing user account to their facebook account.  Assumes the user
+ * is currently logged in.
+ * @param facebookToken the user's facebook token
+ */
+- (StackMobRequest *)linkUserWithFacebookToken:(NSString *)facebookToken withCallback:(StackMobCallback)callback;
+
+/*
+ * Post a message to facebook for the currently logged in user
+ * assumes the user has connected to facebook
+ * @param message the message to post
+ */
+- (StackMobRequest *)postFacebookMessage:(NSString *)message withCallback:(StackMobCallback)callback;
+
+/*
+ * Get the user info from facebook for the currently logged in user
+ * assumes the user has connected to facebook
+ */
+- (StackMobRequest *)getFacebookUserInfoWithCallback:(StackMobCallback)callback;
+
+/********************** Twitter methods ***********************/
+
+/*
+ * Registers a new user in your app using their twitter account
+ * @param token the user's twitter token
+ * @param secret the user's twitter secret
+ */
+- (StackMobRequest *)registerWithTwitterToken:(NSString *)token secret:(NSString *)secret username:(NSString *)username andCallback:(StackMobCallback)callback;
+
+/* 
+ * Login an existing user via Twitter
+ * @param token the user's twitter token
+ * @param secret the user's twitter secret
+ */
+- (StackMobRequest *)loginWithTwitterToken:(NSString *)token secret:(NSString *)secret andCallback:(StackMobCallback)callback;
+
+/*
+ * Link an existing user to their twitter account
+ * @param token the user's token
+ * @param secret the user's secret
+ */
+- (StackMobRequest *)linkUserWithTwitterToken:(NSString *)token secret:(NSString *)secret andCallback:(StackMobCallback)callback;
+
+/*
+ * Send a status update to twitter
+ * @param message the status update to send
+ */
+- (StackMobRequest *)twitterStatusUpdate:(NSString *)message withCallback:(StackMobCallback)callback;
+
+/********************** PUSH Notifications ********************/
+
 /* 
  * Register a User for PUSH notifications
+ * @param userId the user's user Id or username
+ * @param token the device's PUSH notification token
  * @param arguments a Dictionary 
  */
-- (StackMobRequest *)registerUserForPushWithArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
+- (StackMobRequest *)registerForPushWithUser:(NSString *)userId andToken:(NSString *)token andCallback:(StackMobCallback)callback;
 
+/********************** CRUD Methods **********************/
 /* 
  * Get the object with name "path" and arguments dictionary
  * @param arguments a dictionary whose keys correspond to object field names on Stackmob Object Model
@@ -113,12 +171,6 @@ typedef void (^StackMobCallback)(BOOL success, id result);
  * @param path the name of the object to get in your stackmob app
  */
 - (StackMobRequest *)get:(NSString *)path withCallback:(StackMobCallback)callback;
-
-/*
- * TODO: Are these even necessary?
- */
-- (StackMobRequest *)customGet:(NSString *)path withCallback:(StackMobCallback)callback;
-- (StackMobRequest *)customGet:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
 
 /* 
  * POST the arguments to the given object model with name of "path"
@@ -135,13 +187,6 @@ typedef void (^StackMobCallback)(BOOL success, id result);
 - (StackMobRequest *)post:(NSString *)path forUser:(NSString *)user withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
 
 /*
- * POST the arguments for a custom action on heroku
- * @param path the name of the object in your stackmob app to be created (without 'heroku/proxy')
- * @param arguments a dictionary whose keys correspond to field names of the object in your Stackmob app
- */
-- (StackMobRequest *)customPost:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
-
-/*
  * PUT the arguments to the given object path
  * @path the name of the object in your Stackmob app
  * @param arguments a Dictionary of attributes whose  keys correspond to field names of the object in your Stackmob app
@@ -155,5 +200,41 @@ typedef void (^StackMobCallback)(BOOL success, id result);
  *   the value of which is the item to delete
  */
 - (StackMobRequest *)destroy:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
+
+
+/**************** Heroku Methods *****************/
+
+/*
+ * Perform a GET request on a custom heroku action.
+ * @param path should be the full path without the leading / to your action
+ */
+- (StackMobRequest *)herokuGet:(NSString *)path withCallback:(StackMobCallback)callback;
+
+/*
+ * Perform a GET request on a custom heroku action.
+ * @param path should be the full path without the leading / to your action
+ * @param arguments a dictionary to be converted to query params
+ */
+- (StackMobRequest *)herokuGet:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
+
+/*
+ * POST the arguments for a heroku action on heroku
+ * @param path the name of the object in your stackmob app to be created (without 'heroku/proxy')
+ * @param arguments a dictionary whose keys correspond to field names of the object in your Stackmob app
+ */
+- (StackMobRequest *)herokuPost:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
+
+/*
+ * PUT the arguments for a heroku action on heroku
+ * @param path the name of the object in your stackmob app to be created (without 'heroku/proxy')
+ * @param arguments a dictionary whose keys correspond to field names of the object in your Stackmob app
+ */
+- (StackMobRequest *)herokuPut:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
+
+/*
+ * DELETE the object at specified path
+ * @param path should be the full path without the leading / to your action
+ */
+- (StackMobRequest *)herokuDelete:(NSString *)path andCallback:(StackMobCallback)callback;
 
 @end
