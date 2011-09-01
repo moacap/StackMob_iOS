@@ -82,7 +82,7 @@ You can register a new user with a facebook token and username
     }
 }];
 ```
-You can also link an existing user account to Facebook:
+You can also link an existing user account to his/her Facebook account:
 
 ```objective-c
 [[StackMob stackmob] linkUserWithFacebookToken:facebookToken withCallback:^(BOOL success, id result){
@@ -107,7 +107,7 @@ You can register a new user with a twitter token, secret and username
     }
 }];
 ```
-You can also link an existing user account to Twitter:
+You can also link an existing user account to his/her Twitter account:
 
 ```objective-c
 [[StackMob stackmob] linkUserWithTwitterToken:@"" secret:@"" andCallback:^(BOOL success, id result){
