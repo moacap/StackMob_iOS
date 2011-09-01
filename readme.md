@@ -82,7 +82,6 @@ You can register a new user with a facebook token and username
     }
 }];
 ```
-
 You can also link an existing user account to Facebook:
 
 ```objective-c
@@ -95,7 +94,6 @@ You can also link an existing user account to Facebook:
     }
 }];
 ```
-
 ####Twitter Registration
 You can register a new user with a twitter token, secret and username
 
@@ -109,7 +107,6 @@ You can register a new user with a twitter token, secret and username
     }
 }];
 ```
-
 You can also link an existing user account to Twitter:
 
 ```objective-c
@@ -122,7 +119,6 @@ You can also link an existing user account to Twitter:
     }
 }];
 ```
-
 ####iOS PUSH Notifications
 You can register an Apple Push Notification service device by creating and calling a method like registerForPush.  Keep in mind you may want to do this only after registering a user.
 
