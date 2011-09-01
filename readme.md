@@ -32,7 +32,7 @@ You can now make requests to your servers on StackMob using the following patter
    */
 [[StackMob stackmob] get:@"account" withArguments:dictionary andCallback:^(BOOL success, id result){
     if(success){
-      // Cast result to a NSDictionary* and do something with the UI
+      // Cast result to an NSDictionary* and do something with the UI
       // Alert delegates
     }
     else{
