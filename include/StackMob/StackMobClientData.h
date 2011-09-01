@@ -64,8 +64,8 @@
 }
 
 @property(readwrite, retain) NSString *clientDataString;
-@property(readonly) float longitude;
-@property(readonly) float latitude;
+@property(readonly) CLLocationDegrees longitude;
+@property(readonly) CLLocationDegrees latitude;
 
 
 + (StackMobClientData*) sharedClientData;

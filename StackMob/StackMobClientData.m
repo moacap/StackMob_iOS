@@ -36,6 +36,7 @@ static StackMobClientData * _sharedInstance=nil;
 - (void)startLocationUpdates;
 - (void)startReachabilityUpdates;
 - (void)generateClientDataString;
+- (void)reachabilityChanged:(NSNotification *)note;
 
 @end
 
@@ -134,11 +135,11 @@ static StackMobClientData * _sharedInstance=nil;
 
 @synthesize clientDataString = _clientDataString;
 
-- (float)longitude {
+- (CLLocationDegrees)longitude {
 	return _location.longitude;
 }
 
-- (float)latitude {
+- (CLLocationDegrees)latitude {
 	return _location.latitude;
 }
 
@@ -160,8 +161,8 @@ static StackMobClientData * _sharedInstance=nil;
 	
 		
 	if(_locationUpdatesStarted) {
-		[clientDataObject setValue:[NSNumber numberWithFloat:_location.latitude] forKey:LATITUDE];
-		[clientDataObject setValue:[NSNumber numberWithFloat:_location.longitude] forKey:LONGITUDE];  
+		[clientDataObject setValue:[NSNumber numberWithDouble:_location.latitude] forKey:LATITUDE];
+		[clientDataObject setValue:[NSNumber numberWithDouble:_location.longitude] forKey:LONGITUDE];  
 	}
 	
 	NetworkStatus newStatus = [[Reachability reachabilityForInternetConnection] currentReachabilityStatus];
