@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#import "StackMobCustomRequest.h"
+#import "StackMobHerokuRequest.h"
 
-@implementation StackMobCustomRequest
+@implementation StackMobHerokuRequest
 
 + (id)requestForMethod:(NSString*)method withArguments:(NSDictionary*)arguments withHttpVerb:(SMHttpVerb)httpVerb
 {
-	StackMobCustomRequest *request = [[[StackMobCustomRequest alloc] init] autorelease];
+	StackMobHerokuRequest *request = [[[StackMobHerokuRequest alloc] init] autorelease];
 	request.method = method;
 	request.httpMethod = [self stringFromHttpVerb:httpVerb];
 	if (arguments != nil) {
@@ -29,8 +29,6 @@
 
 
 - (NSURL*)getURL {
-    
-    // TODO: refactor this
     NSString *urlString = [NSString stringWithFormat:@"http://%@.%@/api/%@/%@/heroku/proxy/%@", session.subDomain, session.domain, session.apiVersionNumber, session.appName, self.method];
 	return [NSURL URLWithString:urlString];
 }

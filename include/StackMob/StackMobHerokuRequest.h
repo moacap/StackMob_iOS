@@ -15,7 +15,7 @@
 #import "StackMobRequest.h"
 
 
-@interface StackMobCustomRequest : StackMobRequest {
+@interface StackMobHerokuRequest : StackMobRequest {
     
 }
 
