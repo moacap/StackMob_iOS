@@ -143,7 +143,7 @@
     // add query string
     NSMutableArray *urlComponents = [NSMutableArray arrayWithCapacity:2];
     [urlComponents addObject:[session urlForMethod:self.method isUserBased:userBased]];
-	if ([[self httpMethod] isEqualToString:@"GET"] &&
+	if (([[self httpMethod] isEqualToString:@"GET"] || [[self httpMethod] isEqualToString:@"DELETE"]) &&
 		[mArguments count] > 0) {
 		[urlComponents addObject:[mArguments queryString]];
 	}
@@ -222,7 +222,7 @@
 	[request addValue:@"deflate" forHTTPHeaderField:@"Accept-Encoding"];
     
 	[request prepare];
-	if (![[self httpMethod] isEqualToString: @"GET"]) {
+	if (!([[self httpMethod] isEqualToString: @"GET"] || [[self httpMethod] isEqualToString:@"DELETE"])) {
         NSData* postData = [[mArguments yajl_JSONString] dataUsingEncoding:NSUTF8StringEncoding];
         SMLogVerbose(@"POST Data: %d", [postData length]);
         [request setHTTPBody:postData];	
