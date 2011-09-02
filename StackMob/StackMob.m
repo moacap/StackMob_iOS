@@ -361,8 +361,8 @@ static StackMob *_sharedManager = nil;
 
 - (void)requestCompleted:(StackMobRequest*)request {
     if([self.requests containsObject:request]){
-        NSInteger index = [self.requests indexOfObject:request];
-        id callback = [self.callbacks objectAtIndex:index];
+        NSInteger idx = [self.requests indexOfObject:request];
+        id callback = [self.callbacks objectAtIndex:idx];
         SMLog(@"status %d", request.httpResponse.statusCode);
         if(callback != [NSNull null]){
             StackMobCallback mCallback = (StackMobCallback)callback;
@@ -372,7 +372,7 @@ static StackMob *_sharedManager = nil;
         }else{
             SMLog(@"no callback found");
         }
-        [self.callbacks removeObjectAtIndex:index];
+        [self.callbacks removeObjectAtIndex:idx];
         [self.requests removeObject:request];
         [self next];
     }
