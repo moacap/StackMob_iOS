@@ -26,6 +26,8 @@
 - (NSDictionary *)loadInfo;
 @end
 
+#define ENVIRONMENTS [NSArray arrayWithObjects:@"production", @"development", nil]
+
 @implementation StackMob
 
 @synthesize requests;
@@ -33,11 +35,13 @@
 @synthesize session;
 
 static StackMob *_sharedManager = nil;
+static SMEnvironment environment;
 
 + (StackMob *)setApplication:(NSString *)apiKey secret:(NSString *)apiSecret appName:(NSString *)appName subDomain:(NSString *)subDomain userObjectName:(NSString *)userObjectName apiVersionNumber:(NSNumber *)apiVersion
 {
     if (_sharedManager == nil) {
         _sharedManager = [[super allocWithZone:NULL] init];
+        environment = SMEnvironmentProduction;
         _sharedManager.session = [[StackMobSession sessionForApplication:apiKey
                                                                   secret:apiSecret
                                                                  appName:appName
@@ -49,11 +53,11 @@ static StackMob *_sharedManager = nil;
         _sharedManager.callbacks = [NSMutableArray array];
     }
     return _sharedManager;
-    
 }
 
 + (StackMob *)stackmob {
     if (_sharedManager == nil) {
+        environment = SMEnvironmentProduction;
         _sharedManager = [[super allocWithZone:NULL] init];
         NSDictionary *appInfo = [_sharedManager loadInfo];
         _sharedManager.session = [[StackMobSession sessionForApplication:[appInfo objectForKey:@"publicKey"]
@@ -67,6 +71,22 @@ static StackMob *_sharedManager = nil;
         _sharedManager.callbacks = [NSMutableArray array];
     }
     return _sharedManager;
+}
+
+- (void)setEnvironment:(SMEnvironment)env
+{
+    if (env != environment){
+        self.session = nil;
+        NSDictionary *appInfo = [_sharedManager loadInfo];
+        _sharedManager.session = [[StackMobSession sessionForApplication:[appInfo objectForKey:@"publicKey"]
+                                                                  secret:[appInfo objectForKey:@"privateKey"]
+                                                                 appName:[appInfo objectForKey:@"appName"]
+                                                               subDomain:[appInfo objectForKey:@"appSubdomain"]
+                                                                  domain:[appInfo objectForKey:@"domain"]
+                                                          userObjectName:[appInfo objectForKey:@"userObjectName"]
+                                                        apiVersionNumber:[appInfo objectForKey:@"apiVersion"]] retain];
+        SMLog(@"set environment to %@", (NSString *)[ENVIRONMENTS objectAtIndex:env]);
+    }
 }
 
 #pragma mark - Session Methods
@@ -333,7 +353,10 @@ static StackMob *_sharedManager = nil;
 {
     NSString *filename = [[NSBundle mainBundle] pathForResource:@"StackMob" ofType:@"plist"];
     NSDictionary *info = [NSDictionary dictionaryWithContentsOfFile:filename];
-    NSMutableDictionary *appInfo = [NSMutableDictionary dictionaryWithDictionary:[info objectForKey:@"production"]];
+
+    NSString *env = [ENVIRONMENTS objectAtIndex:(int)environment];
+
+    NSMutableDictionary *appInfo = [NSMutableDictionary dictionaryWithDictionary:[info objectForKey:env]];
     SMLog(@"public key: %@", [appInfo objectForKey:@"publicKey"]);
     SMLog(@"private key: %@", [appInfo objectForKey:@"privateKey"]);
     if(!filename || !appInfo){

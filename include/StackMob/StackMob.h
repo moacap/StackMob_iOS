@@ -16,6 +16,12 @@
 #import "StackMobSession.h"
 #import "StackMobRequest.h"
 
+typedef enum {
+    SMEnvironmentProduction = 0,
+    SMEnvironmentDevelopment = 1
+} SMEnvironment;
+
+
 typedef void (^StackMobCallback)(BOOL success, id result);
 
 @interface StackMob : NSObject <SMRequestDelegate>{
@@ -44,6 +50,12 @@ typedef void (^StackMobCallback)(BOOL success, id result);
  * it will load the app config info from StackMob.plist in the main Bundle
  */
 + (StackMob *)stackmob;
+
+/* 
+ * Set the environment.  Default is production
+ * @param env one of SMEnvironmentDevelopment or SMEnvironmentProduction (default)
+ */
+- (void)setEnvironment:(SMEnvironment)env;
 
 /* 
  * Initializes a user session
