@@ -94,7 +94,7 @@ static StackMob *_sharedManager = nil;
 
 - (StackMobRequest *)loginWithArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
 {
-    return [self post:[NSString stringWithFormat:@"%@/login", session.userObjectName]
+    return [self get:[NSString stringWithFormat:@"%@/login", session.userObjectName]
      withArguments:arguments
    andCallback:callback];
 }
