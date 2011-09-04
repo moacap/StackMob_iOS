@@ -216,12 +216,17 @@
 
 														  signatureProvider:nil]; // use the default method, HMAC-SHA1
     SMLog(@"httpMethod %@", [self httpMethod]);
+    if([self.method isEqualToString:@"startsession"]){
+        NSLog(@"starting session");
+        [mArguments setValue:[StackMobClientData sharedClientData].clientDataString forKey:@"cd"];
+    }
 	[request setHTTPMethod:[self httpMethod]];
 		
 	[request addValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
 	[request addValue:@"deflate" forHTTPHeaderField:@"Accept-Encoding"];
     
 	[request prepare];
+    
 	if (![[self httpMethod] isEqualToString: @"GET"]) {
         NSData* postData = [[mArguments yajl_JSONString] dataUsingEncoding:NSUTF8StringEncoding];
         SMLogVerbose(@"POST Data: %d", [postData length]);

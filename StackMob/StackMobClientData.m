@@ -41,7 +41,8 @@ static StackMobClientData * _sharedInstance=nil;
 
 @implementation StackMobClientData
 
-- (id)init {
+- (id)init
+{
 	if((self = [super init])) {
 		// Device info.
 		UIDevice *device = [UIDevice currentDevice];
@@ -68,10 +69,9 @@ static StackMobClientData * _sharedInstance=nil;
 	return self;
 }
 
-+ (StackMobClientData*) sharedClientData;
++ (StackMobClientData*) sharedClientData
 {
-	if(!_sharedInstance)
-	{
+	if(!_sharedInstance){
 		_sharedInstance = [[StackMobClientData alloc] init];
 	}
 	return _sharedInstance;
@@ -123,8 +123,9 @@ static StackMobClientData * _sharedInstance=nil;
 }
 
 - (void)dealloc {
-	
+#ifdef CoreLocation
 	[_locationManager release];
+#endif
 	[_sharedInstance release];
 	[super dealloc];
 
@@ -133,7 +134,7 @@ static StackMobClientData * _sharedInstance=nil;
 #pragma mark - Properties
 
 @synthesize clientDataString = _clientDataString;
-
+#ifdef CoreLocation
 - (float)longitude {
 	return _location.longitude;
 }
@@ -141,6 +142,7 @@ static StackMobClientData * _sharedInstance=nil;
 - (float)latitude {
 	return _location.latitude;
 }
+#endif
 
 #pragma mark -
 
@@ -157,13 +159,14 @@ static StackMobClientData * _sharedInstance=nil;
 											 language, DEVICE_LANGUAGE,
 											 jailBroken, DEVICE_IS_JAILBORKEN,
 											 nil];
-	
-		
+	NSLog(@"checking for CoreLocation...");
+#ifdef CoreLocation
 	if(_locationUpdatesStarted) {
 		[clientDataObject setValue:[NSNumber numberWithFloat:_location.latitude] forKey:LATITUDE];
 		[clientDataObject setValue:[NSNumber numberWithFloat:_location.longitude] forKey:LONGITUDE];  
 	}
-	
+#endif
+	NSLog(@"data %@", clientDataObject);
 	NetworkStatus newStatus = [[Reachability reachabilityForInternetConnection] currentReachabilityStatus];
 	switch (newStatus) {
 		case ReachableViaWWAN:
@@ -177,12 +180,14 @@ static StackMobClientData * _sharedInstance=nil;
 		
 	
 	self.clientDataString = [clientDataObject yajl_JSONString];
-  [clientDataObject release];
+    [clientDataObject release];
 }
 
 #pragma mark - Location
 
 - (void)startLocationUpdates {
+#ifdef CoreLocation
+
 	_locationUpdatesStarted = NO;
 	_location.longitude = 0.0;
 	_location.latitude = 0.0;
@@ -193,11 +198,14 @@ static StackMobClientData * _sharedInstance=nil;
 	_locationManager.desiredAccuracy = kCLLocationAccuracyKilometer;
 	_locationManager.distanceFilter = 500;
 	[_locationManager startUpdatingLocation];
+#endif
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
 	_locationUpdatesStarted = YES;
+#ifdef CoreLocation
 	_location = newLocation.coordinate;
+#endif
 	[self generateClientDataString];
 }
 

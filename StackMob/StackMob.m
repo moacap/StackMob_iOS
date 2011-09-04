@@ -92,6 +92,7 @@ static SMEnvironment environment;
 #pragma mark - Session Methods
 
 - (StackMobRequest *)startSession{
+    NSLog(@"startSession");
     StackMobRequest *request = [StackMobRequest requestForMethod:@"startsession" withHttpVerb:POST];
     [self queueRequest:request andCallback:nil];
     return request;
@@ -121,7 +122,7 @@ static SMEnvironment environment;
 
 - (StackMobRequest *)logoutWithCallback:(StackMobCallback)callback
 {
-    return [self get:@"logout" withCallback:callback];
+    return [self destroy:session.userObjectName withArguments:NULL andCallback:callback];
 }
 
 - (StackMobRequest *)getUserInfowithArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
