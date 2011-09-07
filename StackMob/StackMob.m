@@ -115,7 +115,7 @@ static SMEnvironment environment;
 
 - (StackMobRequest *)loginWithArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
 {
-    return [self post:[NSString stringWithFormat:@"%@/login", session.userObjectName]
+    return [self get:[NSString stringWithFormat:@"%@/login", session.userObjectName]
      withArguments:arguments
    andCallback:callback];
 }
@@ -210,6 +210,7 @@ static SMEnvironment environment;
 {
     NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:userId, @"user_id", token, @"token", nil];
     StackMobPushRequest *request = [StackMobPushRequest request];
+    request.httpMethod = @"POST";
     [request setArguments:args];
     [self queueRequest:request andCallback:callback];
     return request;
@@ -358,8 +359,7 @@ static SMEnvironment environment;
     NSString *env = [ENVIRONMENTS objectAtIndex:(int)environment];
 
     NSMutableDictionary *appInfo = [NSMutableDictionary dictionaryWithDictionary:[info objectForKey:env]];
-    SMLog(@"public key: %@", [appInfo objectForKey:@"publicKey"]);
-    SMLog(@"private key: %@", [appInfo objectForKey:@"privateKey"]);
+
     if(!filename || !appInfo){
         [NSException raise:@"StackMob.plist format error" format:@"Please ensure proper formatting.  Toplevel should have 'production' or 'development' key."];
     }
