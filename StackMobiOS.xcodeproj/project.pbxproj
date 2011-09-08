@@ -82,6 +82,28 @@
 		82DFD9D3128CC46C008D20E2 /* StackMobSession.h in Headers */ = {isa = PBXBuildFile; fileRef = 82DFD9D2128CC46C008D20E2 /* StackMobSession.h */; };
 		AA747D9F0F9514B9006C5449 /* StackMobiOS_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = AA747D9E0F9514B9006C5449 /* StackMobiOS_Prefix.pch */; };
 		AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
+		E3E27C4D141940B600181B6E /* StackMob.m in Sources */ = {isa = PBXBuildFile; fileRef = 0393E28D1409B53500D643AA /* StackMob.m */; };
+		E3E27C4E141940E200181B6E /* StackMobRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 82CE425A1288CA1B00A73E9C /* StackMobRequest.m */; };
+		E3E27C4F141940E800181B6E /* StackMobHerokuRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0393E28E1409B53500D643AA /* StackMobHerokuRequest.m */; };
+		E3E27C50141940EF00181B6E /* StackMobAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8239D7C9129109F600F90A7B /* StackMobAdditions.m */; };
+		E3E27C51141940F800181B6E /* StackMobSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 82DFD9D0128CC45E008D20E2 /* StackMobSession.m */; };
+		E3E27C521419410B00181B6E /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 82CE42B31288CADC00A73E9C /* Constants.m */; };
+		E3E27C531419411000181B6E /* StackMobClientData.m in Sources */ = {isa = PBXBuildFile; fileRef = 82CE42591288CA1B00A73E9C /* StackMobClientData.m */; };
+		E3E27C541419411900181B6E /* StackMobPushRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5798BC8713A1871E006D01DF /* StackMobPushRequest.m */; };
+		E3E27C551419413E00181B6E /* NSMutableURLRequest+Parameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 82CE42651288CA4A00A73E9C /* NSMutableURLRequest+Parameters.m */; };
+		E3E27C561419414200181B6E /* NSString+URLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 82CE42671288CA4A00A73E9C /* NSString+URLEncoding.m */; };
+		E3E27C571419415500181B6E /* NSURL+Base.m in Sources */ = {isa = PBXBuildFile; fileRef = 82CE42691288CA4A00A73E9C /* NSURL+Base.m */; };
+		E3E27C581419415F00181B6E /* OAAsynchronousDataFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 82CE426B1288CA4A00A73E9C /* OAAsynchronousDataFetcher.m */; };
+		E3E27C591419416600181B6E /* OAConsumer.m in Sources */ = {isa = PBXBuildFile; fileRef = 82CE426D1288CA4A00A73E9C /* OAConsumer.m */; };
+		E3E27C5A1419416C00181B6E /* OADataFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 82CE426F1288CA4A00A73E9C /* OADataFetcher.m */; };
+		E3E27C5B1419417000181B6E /* OAHMAC_SHA1SignatureProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 82CE42711288CA4A00A73E9C /* OAHMAC_SHA1SignatureProvider.m */; };
+		E3E27C5C1419417300181B6E /* OAMutableURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 82CE42731288CA4A00A73E9C /* OAMutableURLRequest.m */; };
+		E3E27C5D1419417A00181B6E /* OAPlaintextSignatureProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 82CE42751288CA4A00A73E9C /* OAPlaintextSignatureProvider.m */; };
+		E3E27C5E1419418000181B6E /* OARequestParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = 82CE42771288CA4A00A73E9C /* OARequestParameter.m */; };
+		E3E27C5F1419418F00181B6E /* OAServiceTicket.m in Sources */ = {isa = PBXBuildFile; fileRef = 82CE42791288CA4A00A73E9C /* OAServiceTicket.m */; };
+		E3E27C601419419400181B6E /* OAToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 82CE427C1288CA4A00A73E9C /* OAToken.m */; };
+		E3E27C611419434E00181B6E /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 82CE429F1288CA7400A73E9C /* Reachability.m */; };
+		E3E27C621419436500181B6E /* Base64Transcoder.c in Sources */ = {isa = PBXBuildFile; fileRef = 82CE42991288CA6000A73E9C /* Base64Transcoder.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -409,6 +431,7 @@
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastUpgradeCheck = 0420;
 				ORGANIZATIONNAME = "StackMob, Inc.";
 			};
 			buildConfigurationList = 1DEB922208733DC00010E9CD /* Build configuration list for PBXProject "StackMobiOS" */;
@@ -478,6 +501,28 @@
 			buildActionMask = 2147483647;
 			files = (
 				82CE45F412892FFA00A73E9C /* APIRequestTests.m in Sources */,
+				E3E27C4D141940B600181B6E /* StackMob.m in Sources */,
+				E3E27C4E141940E200181B6E /* StackMobRequest.m in Sources */,
+				E3E27C4F141940E800181B6E /* StackMobHerokuRequest.m in Sources */,
+				E3E27C50141940EF00181B6E /* StackMobAdditions.m in Sources */,
+				E3E27C51141940F800181B6E /* StackMobSession.m in Sources */,
+				E3E27C521419410B00181B6E /* Constants.m in Sources */,
+				E3E27C531419411000181B6E /* StackMobClientData.m in Sources */,
+				E3E27C541419411900181B6E /* StackMobPushRequest.m in Sources */,
+				E3E27C551419413E00181B6E /* NSMutableURLRequest+Parameters.m in Sources */,
+				E3E27C561419414200181B6E /* NSString+URLEncoding.m in Sources */,
+				E3E27C571419415500181B6E /* NSURL+Base.m in Sources */,
+				E3E27C581419415F00181B6E /* OAAsynchronousDataFetcher.m in Sources */,
+				E3E27C591419416600181B6E /* OAConsumer.m in Sources */,
+				E3E27C5A1419416C00181B6E /* OADataFetcher.m in Sources */,
+				E3E27C5B1419417000181B6E /* OAHMAC_SHA1SignatureProvider.m in Sources */,
+				E3E27C5C1419417300181B6E /* OAMutableURLRequest.m in Sources */,
+				E3E27C5D1419417A00181B6E /* OAPlaintextSignatureProvider.m in Sources */,
+				E3E27C5E1419418000181B6E /* OARequestParameter.m in Sources */,
+				E3E27C5F1419418F00181B6E /* OAServiceTicket.m in Sources */,
+				E3E27C611419434E00181B6E /* Reachability.m in Sources */,
+				E3E27C601419419400181B6E /* OAToken.m in Sources */,
+				E3E27C621419436500181B6E /* Base64Transcoder.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -587,6 +632,7 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREFIX_HEADER = StackMobiOS_Prefix.pch;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
@@ -602,6 +648,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_PREFIX_HEADER = StackMobiOS_Prefix.pch;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
