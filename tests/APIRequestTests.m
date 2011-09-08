@@ -44,9 +44,7 @@ StackMobSession *mySession = nil;
 }
 
 - (void) testGet {
-    NSMutableDictionary* userArgs = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-											@"ty", @"lastName",
-											nil];
+    NSMutableDictionary* userArgs = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"ty", @"user_id",nil];
 	
 	StackMobRequest *request = [StackMobRequest requestForMethod:@"user" 
 												   withArguments:userArgs
@@ -59,11 +57,9 @@ StackMobSession *mySession = nil;
 		[runLoop acceptInputForMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.5]];
 		[loopPool drain];
 	} while(![request finished]);
-	
-	NSLog(@"testGet result was: %@", [request result]);
+	    
+    STAssertTrue([[request result] isKindOfClass:[NSArray class]], @"Did not get a valid GET result");
 	request = nil;
-	[userArgs release];
-    NSLog(@"Finished Get Test");
 
 }
 
@@ -124,10 +120,8 @@ StackMobSession *mySession = nil;
 	NSLog(@"Calling sendSynchronousRequest");
     NSError *error = nil;
 	NSDictionary *result = [request sendSynchronousRequestProvidingError:&error];
-	NSLog(@"TestAPIList result was: %@", result);
-	request = nil;
-	
-	
+    STAssertNotNil([result objectForKey:@"user"], @"No User Object in List API, Fail");
+	request = nil;		
 }
 
 
