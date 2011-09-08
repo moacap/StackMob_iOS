@@ -31,8 +31,6 @@ StackMobSession *mySession = nil;
 	if (!mySession) 
 	{
         [StackMob setApplication:kAPIKey secret:kAPISecret appName:kAppName subDomain:kSubDomain userObjectName:@"user" apiVersionNumber:[NSNumber numberWithInt:kVersion]];
-//		mySession = [StackMobSession sessionForApplication:kAPIKey secret:kAPISecret 
-//													appName:kAppName subDomain:kSubDomain apiVersionNumber:[NSNumber numberWithInt:kVersion]];
 		NSLog(@"Created new session");
 	}
 }
