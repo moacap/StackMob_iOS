@@ -15,11 +15,11 @@
 
 #import "APIRequestTests.h"
 
-NSString * const kAPIKey = @"8ae11219-1950-48a4-a3bc-8cf31e077941";
-NSString * const kAPISecret = @"f5874341-a158-4fbf-8e0d-dd92ac791adc";
+NSString * const kAPIKey = @"201543b9-7b81-4934-a353-c22d979c891a";
+NSString * const kAPISecret = @"7a099db4-e09a-4e71-8348-3fea8ef5164f";
 NSString * const kSubDomain = @"stackmob";
-NSString * const kAppName = @"sdktestapp";
-NSInteger  const kVersion = 1;
+NSString * const kAppName = @"iossdktest";
+NSInteger  const kVersion = 0;
 
 StackMobSession *mySession = nil;
 
@@ -70,8 +70,8 @@ StackMobSession *mySession = nil;
 - (void) testPost {
 	NSLog(@"IN TEST POST");
     NSMutableDictionary* userArgs = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-										@"Ty", @"firstName",
-										@"Amell", @"lastName",
+										@"Ty", @"firstname",
+										@"Amell", @"lastname",
 										@"ty@stackmob.com", @"email",
 										nil];
 	
@@ -97,7 +97,7 @@ StackMobSession *mySession = nil;
 	
 	NSDictionary *result = [request result];
     NSLog(@"result %@", result);
-	NSString *userId = [result objectForKey:@"userId"];
+	NSString *userId = [result objectForKey:@"user_id"];
 	STAssertNotNil(userId, @"Returned value for POST is not correct");
 	request = nil;
 	[userArgs release];
@@ -108,7 +108,7 @@ StackMobSession *mySession = nil;
 - (void) testURLGeneration {
 
 	StackMobRequest *request = [StackMobRequest requestForMethod: @"user"];
-	NSURL *testURL = [NSURL URLWithString: @"http://stackmob.stackmob.com/api/1/sdktestapp/user"];
+	NSURL *testURL = [NSURL URLWithString: @"http://stackmob.stackmob.com/api/0/iossdktest/user"];
     NSLog(@"expected %@", [testURL absoluteString]),
     NSLog(@"actual %@", [request.url absoluteString]);
 	STAssertTrue([[testURL absoluteString] isEqualToString: 
@@ -120,7 +120,7 @@ StackMobSession *mySession = nil;
 
 - (void) testAPIList {
 	
-	StackMobRequest *request = [StackMobRequest requestForMethod: @"apilist"];
+	StackMobRequest *request = [StackMobRequest requestForMethod: @"listapi"];
 	NSLog(@"Calling sendSynchronousRequest");
     NSError *error = nil;
 	NSDictionary *result = [request sendSynchronousRequestProvidingError:&error];
