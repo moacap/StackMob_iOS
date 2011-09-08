@@ -31,8 +31,6 @@ StackMobSession *mySession = nil;
 	if (!mySession) 
 	{
         [StackMob setApplication:kAPIKey secret:kAPISecret appName:kAppName subDomain:kSubDomain userObjectName:@"user" apiVersionNumber:[NSNumber numberWithInt:kVersion]];
-//		mySession = [StackMobSession sessionForApplication:kAPIKey secret:kAPISecret 
-//													appName:kAppName subDomain:kSubDomain apiVersionNumber:[NSNumber numberWithInt:kVersion]];
 		NSLog(@"Created new session");
 	}
 }
@@ -44,9 +42,7 @@ StackMobSession *mySession = nil;
 }
 
 - (void) testGet {
-    NSMutableDictionary* userArgs = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-											@"ty", @"lastName",
-											nil];
+    NSMutableDictionary* userArgs = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"ty", @"user_id",nil];
 	
 	StackMobRequest *request = [StackMobRequest requestForMethod:@"user" 
 												   withArguments:userArgs
@@ -59,11 +55,9 @@ StackMobSession *mySession = nil;
 		[runLoop acceptInputForMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.5]];
 		[loopPool drain];
 	} while(![request finished]);
-	
-	NSLog(@"testGet result was: %@", [request result]);
+	    
+    STAssertTrue([[request result] isKindOfClass:[NSArray class]], @"Did not get a valid GET result");
 	request = nil;
-	[userArgs release];
-    NSLog(@"Finished Get Test");
 
 }
 
@@ -118,16 +112,23 @@ StackMobSession *mySession = nil;
 	
 }
 
+- (void) testSecureURLGeneration {
+    StackMobRequest *request = [StackMobRequest requestForMethod:@"user"];
+    request.isSecure = YES;
+    NSURL *expectedURL = [NSURL URLWithString:@"https://stackmob.stackmob.com/api/0/iossdktest/user"];
+    STAssertTrue([[expectedURL absoluteString] isEqualToString:[request.url absoluteString]], @"%@ Does Not Match Expected Secure URL", [request.url absoluteString]);
+    expectedURL = nil;
+    request = nil;
+}
+
 - (void) testAPIList {
 	
 	StackMobRequest *request = [StackMobRequest requestForMethod: @"listapi"];
 	NSLog(@"Calling sendSynchronousRequest");
     NSError *error = nil;
 	NSDictionary *result = [request sendSynchronousRequestProvidingError:&error];
-	NSLog(@"TestAPIList result was: %@", result);
-	request = nil;
-	
-	
+    STAssertNotNil([result objectForKey:@"user"], @"No User Object in List API, Fail");
+	request = nil;		
 }
 
 
