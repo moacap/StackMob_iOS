@@ -42,7 +42,7 @@ StackMobSession *mySession = nil;
 }
 
 - (void) testGet {
-    NSMutableDictionary* userArgs = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"ty", @"user_id",nil];
+    NSMutableDictionary* userArgs = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"ty", @"username",nil];
 	
 	StackMobRequest *request = [StackMobRequest requestForMethod:@"user" 
 												   withArguments:userArgs
@@ -73,7 +73,7 @@ StackMobSession *mySession = nil;
         if(success){
             NSLog(@"testPost result was: %@", result);
             NSDictionary *info = (NSDictionary *)result;
-            NSString *userId = [info objectForKey:@"user_id"];
+            NSString *userId = [info objectForKey:@"username"];
             STAssertNotNil(userId, @"Returned value for POST is not correct");
         }
         else{
@@ -91,7 +91,7 @@ StackMobSession *mySession = nil;
 	
 	NSDictionary *result = [request result];
     NSLog(@"result %@", result);
-	NSString *userId = [result objectForKey:@"user_id"];
+	NSString *userId = [result objectForKey:@"username"];
 	STAssertNotNil(userId, @"Returned value for POST is not correct");
 	request = nil;
 	[userArgs release];
