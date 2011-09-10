@@ -87,16 +87,24 @@ static StackMob *_sharedManager = nil;
 
 - (StackMobRequest *)registerWithArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
 {
-    return [self post:session.userObjectName
-        withArguments:arguments
-          andCallback:callback];
+    StackMobRequest *request = [StackMobRequest requestForMethod:session.userObjectName
+                                                   withArguments:arguments
+                                                    withHttpVerb:POST]; 
+    request.isSecure = YES;
+    [self queueRequest:request andCallback:callback];
+    
+    return request;
 }
 
 - (StackMobRequest *)loginWithArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
 {
-    return [self get:[NSString stringWithFormat:@"%@/login", session.userObjectName]
-     withArguments:arguments
-   andCallback:callback];
+    StackMobRequest *request = [StackMobRequest requestForMethod:[NSString stringWithFormat:@"%@/login", session.userObjectName]
+                                                   withArguments:arguments
+                                                    withHttpVerb:GET]; 
+    request.isSecure = YES;
+    [self queueRequest:request andCallback:callback];
+    
+    return request;
 }
 
 - (StackMobRequest *)logoutWithCallback:(StackMobCallback)callback
@@ -116,6 +124,7 @@ static StackMob *_sharedManager = nil;
 {
     NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:facebookToken, @"fb_at", nil];
     StackMobRequest *request = [StackMobRequest userRequestForMethod:@"facebookLogin" withArguments:args withHttpVerb:GET];
+    request.isSecure = YES;
     [self queueRequest:request andCallback:callback];
     return request;
 }
@@ -124,6 +133,7 @@ static StackMob *_sharedManager = nil;
 {
     NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:facebookToken, @"fb_at", username, @"username", nil];
     StackMobRequest *request = [StackMobRequest userRequestForMethod:@"createUserWithFacebook" withArguments:args withHttpVerb:GET];
+    request.isSecure = YES;
     [self queueRequest:request andCallback:callback];
     return request;
 }
@@ -132,6 +142,7 @@ static StackMob *_sharedManager = nil;
 {
     NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:facebookToken, @"fb_at", nil];
     StackMobRequest *request = [StackMobRequest userRequestForMethod:@"linkUserWithFacebook" withArguments:args withHttpVerb:GET];
+    request.isSecure = YES;
     [self queueRequest:request andCallback:callback];
     return request;    
 }
@@ -155,6 +166,7 @@ static StackMob *_sharedManager = nil;
 {
     NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:token, @"tw_tk", secret, @"tw_ts", username, @"username", nil];
     StackMobRequest *request = [StackMobRequest userRequestForMethod:@"createUserWithTwitter" withArguments:args withHttpVerb:GET];
+    request.isSecure = YES;
     [self queueRequest:request andCallback:callback];
     return request;
 }
@@ -163,6 +175,7 @@ static StackMob *_sharedManager = nil;
 {
     NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:token, @"tw_tk", secret, @"tw_ts", nil];
     StackMobRequest *request = [StackMobRequest userRequestForMethod:@"twitterLogin" withArguments:args withHttpVerb:GET];
+    request.isSecure = YES;
     [self queueRequest:request andCallback:callback];
     return request;    
 }
@@ -171,6 +184,7 @@ static StackMob *_sharedManager = nil;
 {
     NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:token, @"tw_tk", secret, @"tw_ts", nil];
     StackMobRequest *request = [StackMobRequest userRequestForMethod:@"linkUserWithTwitter" withArguments:args withHttpVerb:GET];
+    request.isSecure = YES;
     [self queueRequest:request andCallback:callback];
     return request;    
 }
