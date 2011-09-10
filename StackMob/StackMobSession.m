@@ -82,6 +82,7 @@ static StackMobSession* sharedSession = nil;
                                                               domain:domain
                                                       userObjectName:userObjectName
                                                     apiVersionNumber:apiVersionNumber] autorelease];
+    SMLog(@"apiVersionNumber %@", apiVersionNumber);
 	return session;
 }
 

@@ -52,12 +52,6 @@ typedef void (^StackMobCallback)(BOOL success, id result);
 + (StackMob *)stackmob;
 
 /* 
- * Set the environment.  Default is production
- * @param env one of SMEnvironmentDevelopment or SMEnvironmentProduction (default)
- */
-- (void)setEnvironment:(SMEnvironment)env;
-
-/* 
  * Initializes a user session
  * Make sure to call this in appDidFinishLaunching
  */
@@ -169,7 +163,7 @@ typedef void (^StackMobCallback)(BOOL success, id result);
  * @param token the device's PUSH notification token
  * @param arguments a Dictionary 
  */
-- (StackMobRequest *)registerForPushWithUser:(NSString *)userId andToken:(NSString *)token andCallback:(StackMobCallback)callback;
+- (StackMobRequest *)registerForPushWithUser:(NSString *)userId token:(NSString *)token andCallback:(StackMobCallback)callback;
 
 /********************** CRUD Methods **********************/
 /* 

@@ -41,7 +41,6 @@
 # pragma mark - Memory Management
 - (void)dealloc
 {
-	SMLogVerbose(@"StackMobRequest: dealloc");
 	[self cancel];
 	[mConnectionData release];
 	[mConnection release];
@@ -51,7 +50,6 @@
 	[mHttpMethod release];
 	[mHttpResponse release];
 	[super dealloc];
-	SMLogVerbose(@"StackMobRequest: dealloc finished");
 }
 
 # pragma mark - Initialization
@@ -122,7 +120,8 @@
 	return request;
 }
 
-+ (NSString*)stringFromHttpVerb:(SMHttpVerb)httpVerb {
++ (NSString*)stringFromHttpVerb:(SMHttpVerb)httpVerb
+{
 	switch (httpVerb) {
 		case POST:
 			return @"POST";	
@@ -217,7 +216,6 @@
 														  signatureProvider:nil]; // use the default method, HMAC-SHA1
     SMLog(@"httpMethod %@", [self httpMethod]);
     if([self.method isEqualToString:@"startsession"]){
-        NSLog(@"starting session");
         [mArguments setValue:[StackMobClientData sharedClientData].clientDataString forKey:@"cd"];
     }
 	[request setHTTPMethod:[self httpMethod]];
@@ -286,8 +284,7 @@
 {
 	_requestFinished = YES;
 
-	if(kLogRequestSteps) SMLog(@"Received Request: %@", self.method);
-    SMLog(@"StackMobRequest %p: Received Request: %@", self, self.method);
+    SMLogVerbose(@"StackMobRequest %p: Received Request: %@", self, self.method);
     
 	NSString *textResult = nil;
 	NSDictionary *result = nil;
@@ -310,15 +307,14 @@
                 [mConnectionData setLength:0];
                 result = [textResult yajl_JSON];
             }
-            @catch (NSException *e) {
+            @catch (NSException *e) { // catch parsing errors
                 result = nil;
                 SMLog(@"Unable to parse json '%@'", textResult);
             }
         }
     }
   
-    if (kLogRequestSteps)
-        SMLog(@"Request Processed: %@", self.method);
+    SMLogVerbose(@"Request Processed: %@", self.method);
 
     self.result = result;
 	
@@ -342,9 +338,7 @@
 }
 
 - (id) sendSynchronousRequest {
-	if (kLogVersbose == YES) {
-		SMLog(@"StackMobRequest %p: Sending Synch Request httpMethod=%@ method=%@ url=%@", self, self.httpMethod, self.method, self.url);
-	}
+    SMLogVerbose(@"StackMobRequest %p: Sending Synch Request httpMethod=%@ method=%@ url=%@", self, self.httpMethod, self.method, self.url);
 	
 	OAConsumer *consumer = [[OAConsumer alloc] initWithKey:session.apiKey
 													secret:session.apiSecret];
@@ -368,9 +362,7 @@
 	
 	[mConnectionData setLength:0];
 
-	if (kLogVersbose) {
-		SMLog(@"StackMobRequest %p: sending synchronous oauth request: %@", self, request);
-	}
+    SMLogVerbose(@"StackMobRequest %p: sending synchronous oauth request: %@", self, request);
   
     _requestFinished = NO;
     self.connectionError = nil;

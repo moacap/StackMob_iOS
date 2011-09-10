@@ -15,6 +15,8 @@
 
 #import "StackMobSession.h"
 
+@class StackMob;
+
 typedef enum {
 	GET,
 	POST,
@@ -104,6 +106,9 @@ typedef enum {
  */
 - (id)sendSynchronousRequestProvidingError:(NSError**)error __attribute__((deprecated));
 - (id)sendSynchronousRequest;
+
+/* translate enum to string */
++ (NSString*)stringFromHttpVerb:(SMHttpVerb)httpVerb;
 
 @end
 
