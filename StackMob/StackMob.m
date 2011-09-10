@@ -58,6 +58,7 @@ static SMEnvironment environment;
 + (StackMob *)stackmob {
     if (_sharedManager == nil) {
         environment = SMEnvironmentProduction;
+
         _sharedManager = [[super allocWithZone:NULL] init];
         NSDictionary *appInfo = [_sharedManager loadInfo];
         _sharedManager.session = [[StackMobSession sessionForApplication:[appInfo objectForKey:@"publicKey"]
@@ -73,26 +74,9 @@ static SMEnvironment environment;
     return _sharedManager;
 }
 
-- (void)setEnvironment:(SMEnvironment)env
-{
-    if (env != environment){
-        self.session = nil;
-        NSDictionary *appInfo = [_sharedManager loadInfo];
-        _sharedManager.session = [[StackMobSession sessionForApplication:[appInfo objectForKey:@"publicKey"]
-                                                                  secret:[appInfo objectForKey:@"privateKey"]
-                                                                 appName:[appInfo objectForKey:@"appName"]
-                                                               subDomain:[appInfo objectForKey:@"appSubdomain"]
-                                                                  domain:[appInfo objectForKey:@"domain"]
-                                                          userObjectName:[appInfo objectForKey:@"userObjectName"]
-                                                        apiVersionNumber:[appInfo objectForKey:@"apiVersion"]] retain];
-        SMLog(@"set environment to %@", (NSString *)[ENVIRONMENTS objectAtIndex:env]);
-    }
-}
-
 #pragma mark - Session Methods
 
 - (StackMobRequest *)startSession{
-    NSLog(@"startSession");
     StackMobRequest *request = [StackMobRequest requestForMethod:@"startsession" withHttpVerb:POST];
     [self queueRequest:request andCallback:nil];
     return request;
@@ -206,11 +190,13 @@ static SMEnvironment environment;
 
 # pragma mark - PUSH Notifications
 
-- (StackMobRequest *)registerForPushWithUser:(NSString *)userId andToken:(NSString *)token andCallback:(StackMobCallback)callback
+- (StackMobRequest *)registerForPushWithUser:(NSString *)userId token:(NSString *)token andCallback:(StackMobCallback)callback
 {
-    NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:userId, @"user_id", token, @"token", nil];
+    NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:userId, @"userId", token, @"token", nil];
     StackMobPushRequest *request = [StackMobPushRequest request];
     request.httpMethod = @"POST";
+    request.method = @"device_tokens";
+    SMLog(@"args %@", args);
     [request setArguments:args];
     [self queueRequest:request andCallback:callback];
     return request;
