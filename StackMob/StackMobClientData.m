@@ -159,14 +159,14 @@ static StackMobClientData * _sharedInstance=nil;
 											 language, DEVICE_LANGUAGE,
 											 jailBroken, DEVICE_IS_JAILBORKEN,
 											 nil];
-	NSLog(@"checking for CoreLocation...");
+	SMLog(@"checking for CoreLocation...");
 #ifdef CoreLocation
 	if(_locationUpdatesStarted) {
 		[clientDataObject setValue:[NSNumber numberWithDouble:_location.latitude] forKey:LATITUDE];
 		[clientDataObject setValue:[NSNumber numberWithDouble:_location.longitude] forKey:LONGITUDE];  
 	}
 #endif
-	NSLog(@"data %@", clientDataObject);
+	SMLog(@"data %@", clientDataObject);
 	NetworkStatus newStatus = [[Reachability reachabilityForInternetConnection] currentReachabilityStatus];
 	switch (newStatus) {
 		case ReachableViaWWAN:
