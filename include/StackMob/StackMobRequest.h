@@ -31,6 +31,7 @@ typedef enum {
 	NSURLConnection*		mConnection;
 	id<SMRequestDelegate>	mDelegate;
 	SEL						mSelector;
+  BOOL          mIsSecure;
 	NSString*				mMethod;
 	NSMutableDictionary*	mArguments;
     NSData*                 mBody;
@@ -46,9 +47,10 @@ typedef enum {
 		StackMobSession *session;
 }
 
-@property(readwrite, assign) id delegate;
+@property(readwrite, retain) id delegate;
 @property(readwrite, copy) NSString* method;
 @property(readwrite, copy) NSString* httpMethod;
+@property(readwrite) BOOL isSecure;
 @property(readwrite, retain) NSURLConnection* connection;
 @property(readwrite, retain) NSDictionary* result;
 @property(readwrite, retain) NSError* connectionError;
@@ -58,6 +60,8 @@ typedef enum {
 @property(readonly, getter=getStatusCode) NSInteger statusCode;
 @property(readonly, getter=getURL) NSURL* url;
 @property(nonatomic) BOOL userBased;
+
++ (NSString*)stringFromHttpVerb:(SMHttpVerb)httpVerb;
 
 /* 
  * Standard CRUD requests

@@ -92,16 +92,24 @@ static SMEnvironment environment;
 
 - (StackMobRequest *)registerWithArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
 {
-    return [self post:session.userObjectName
-        withArguments:arguments
-          andCallback:callback];
+    StackMobRequest *request = [StackMobRequest requestForMethod:session.userObjectName
+                                                   withArguments:arguments
+                                                    withHttpVerb:POST]; 
+    request.isSecure = YES;
+    [self queueRequest:request andCallback:callback];
+    
+    return request;
 }
 
 - (StackMobRequest *)loginWithArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
 {
-    return [self get:[NSString stringWithFormat:@"%@/login", session.userObjectName]
-     withArguments:arguments
-   andCallback:callback];
+    StackMobRequest *request = [StackMobRequest requestForMethod:[NSString stringWithFormat:@"%@/login", session.userObjectName]
+                                                   withArguments:arguments
+                                                    withHttpVerb:GET]; 
+    request.isSecure = YES;
+    [self queueRequest:request andCallback:callback];
+    
+    return request;
 }
 
 - (StackMobRequest *)logoutWithCallback:(StackMobCallback)callback
@@ -121,6 +129,7 @@ static SMEnvironment environment;
 {
     NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:facebookToken, @"fb_at", nil];
     StackMobRequest *request = [StackMobRequest userRequestForMethod:@"facebookLogin" withArguments:args withHttpVerb:GET];
+    request.isSecure = YES;
     [self queueRequest:request andCallback:callback];
     return request;
 }
@@ -129,6 +138,7 @@ static SMEnvironment environment;
 {
     NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:facebookToken, @"fb_at", username, @"username", nil];
     StackMobRequest *request = [StackMobRequest userRequestForMethod:@"createUserWithFacebook" withArguments:args withHttpVerb:GET];
+    request.isSecure = YES;
     [self queueRequest:request andCallback:callback];
     return request;
 }
@@ -137,6 +147,7 @@ static SMEnvironment environment;
 {
     NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:facebookToken, @"fb_at", nil];
     StackMobRequest *request = [StackMobRequest userRequestForMethod:@"linkUserWithFacebook" withArguments:args withHttpVerb:GET];
+    request.isSecure = YES;
     [self queueRequest:request andCallback:callback];
     return request;    
 }
@@ -160,6 +171,7 @@ static SMEnvironment environment;
 {
     NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:token, @"tw_tk", secret, @"tw_ts", username, @"username", nil];
     StackMobRequest *request = [StackMobRequest userRequestForMethod:@"createUserWithTwitter" withArguments:args withHttpVerb:GET];
+    request.isSecure = YES;
     [self queueRequest:request andCallback:callback];
     return request;
 }
@@ -168,6 +180,7 @@ static SMEnvironment environment;
 {
     NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:token, @"tw_tk", secret, @"tw_ts", nil];
     StackMobRequest *request = [StackMobRequest userRequestForMethod:@"twitterLogin" withArguments:args withHttpVerb:GET];
+    request.isSecure = YES;
     [self queueRequest:request andCallback:callback];
     return request;    
 }
@@ -176,6 +189,7 @@ static SMEnvironment environment;
 {
     NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:token, @"tw_tk", secret, @"tw_ts", nil];
     StackMobRequest *request = [StackMobRequest userRequestForMethod:@"linkUserWithTwitter" withArguments:args withHttpVerb:GET];
+    request.isSecure = YES;
     [self queueRequest:request andCallback:callback];
     return request;    
 }
@@ -371,8 +385,8 @@ static SMEnvironment environment;
 
 - (void)requestCompleted:(StackMobRequest*)request {
     if([self.requests containsObject:request]){
-        NSInteger index = [self.requests indexOfObject:request];
-        id callback = [self.callbacks objectAtIndex:index];
+        NSInteger idx = [self.requests indexOfObject:request];
+        id callback = [self.callbacks objectAtIndex:idx];
         SMLog(@"status %d", request.httpResponse.statusCode);
         if(callback != [NSNull null]){
             StackMobCallback mCallback = (StackMobCallback)callback;
@@ -382,7 +396,7 @@ static SMEnvironment environment;
         }else{
             SMLog(@"no callback found");
         }
-        [self.callbacks removeObjectAtIndex:index];
+        [self.callbacks removeObjectAtIndex:idx];
         [self.requests removeObject:request];
         [self next];
     }

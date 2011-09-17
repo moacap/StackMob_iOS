@@ -36,6 +36,7 @@ static StackMobClientData * _sharedInstance=nil;
 - (void)startLocationUpdates;
 - (void)startReachabilityUpdates;
 - (void)generateClientDataString;
+- (void)reachabilityChanged:(NSNotification *)note;
 
 @end
 
@@ -134,15 +135,14 @@ static StackMobClientData * _sharedInstance=nil;
 #pragma mark - Properties
 
 @synthesize clientDataString = _clientDataString;
-#ifdef CoreLocation
-- (float)longitude {
+
+- (CLLocationDegrees)longitude {
 	return _location.longitude;
 }
 
-- (float)latitude {
+- (CLLocationDegrees)latitude {
 	return _location.latitude;
 }
-#endif
 
 #pragma mark -
 
@@ -162,8 +162,8 @@ static StackMobClientData * _sharedInstance=nil;
 	NSLog(@"checking for CoreLocation...");
 #ifdef CoreLocation
 	if(_locationUpdatesStarted) {
-		[clientDataObject setValue:[NSNumber numberWithFloat:_location.latitude] forKey:LATITUDE];
-		[clientDataObject setValue:[NSNumber numberWithFloat:_location.longitude] forKey:LONGITUDE];  
+		[clientDataObject setValue:[NSNumber numberWithDouble:_location.latitude] forKey:LATITUDE];
+		[clientDataObject setValue:[NSNumber numberWithDouble:_location.longitude] forKey:LONGITUDE];  
 	}
 #endif
 	NSLog(@"data %@", clientDataObject);
@@ -186,8 +186,6 @@ static StackMobClientData * _sharedInstance=nil;
 #pragma mark - Location
 
 - (void)startLocationUpdates {
-#ifdef CoreLocation
-
 	_locationUpdatesStarted = NO;
 	_location.longitude = 0.0;
 	_location.latitude = 0.0;
@@ -198,14 +196,11 @@ static StackMobClientData * _sharedInstance=nil;
 	_locationManager.desiredAccuracy = kCLLocationAccuracyKilometer;
 	_locationManager.distanceFilter = 500;
 	[_locationManager startUpdatingLocation];
-#endif
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
 	_locationUpdatesStarted = YES;
-#ifdef CoreLocation
 	_location = newLocation.coordinate;
-#endif
 	[self generateClientDataString];
 }
 
