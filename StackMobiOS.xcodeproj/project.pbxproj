@@ -21,7 +21,6 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		038CB1E314283272001DEAC9 /* YAJLIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 038CB1AD14283272001DEAC9 /* YAJLIOS.framework */; };
 		038CB1E414283272001DEAC9 /* Base64Transcoder.c in Sources */ = {isa = PBXBuildFile; fileRef = 038CB1B014283272001DEAC9 /* Base64Transcoder.c */; };
 		038CB1E514283272001DEAC9 /* Base64Transcoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 038CB1B114283272001DEAC9 /* Base64Transcoder.h */; };
 		038CB1E614283272001DEAC9 /* NSMutableURLRequest+Parameters.h in Headers */ = {isa = PBXBuildFile; fileRef = 038CB1B214283272001DEAC9 /* NSMutableURLRequest+Parameters.h */; };
@@ -71,6 +70,26 @@
 		038CB21214283272001DEAC9 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB1E014283272001DEAC9 /* NSData+Base64.m */; };
 		038CB21314283272001DEAC9 /* NSData+JSON.h in Headers */ = {isa = PBXBuildFile; fileRef = 038CB1E114283272001DEAC9 /* NSData+JSON.h */; };
 		038CB21414283272001DEAC9 /* NSData+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB1E214283272001DEAC9 /* NSData+JSON.m */; };
+		038CB28F14284C3F001DEAC9 /* JSONKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 038CB28D14284C3F001DEAC9 /* JSONKit.h */; };
+		038CB29014284C3F001DEAC9 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB28E14284C3F001DEAC9 /* JSONKit.m */; };
+		038CB29314284C97001DEAC9 /* StackMob.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB1D014283272001DEAC9 /* StackMob.m */; };
+		038CB29414284C97001DEAC9 /* StackMobRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB1DB14283272001DEAC9 /* StackMobRequest.m */; };
+		038CB29514284F04001DEAC9 /* StackMobPushRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB1D914283272001DEAC9 /* StackMobPushRequest.m */; };
+		038CB29614284F04001DEAC9 /* StackMobSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB1DD14283272001DEAC9 /* StackMobSession.m */; };
+		038CB29714284F1B001DEAC9 /* OAConsumer.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB1BB14283272001DEAC9 /* OAConsumer.m */; };
+		038CB29814284F1B001DEAC9 /* StackMobHerokuRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB1D714283272001DEAC9 /* StackMobHerokuRequest.m */; };
+		038CB29914284F33001DEAC9 /* OAMutableURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB1C114283272001DEAC9 /* OAMutableURLRequest.m */; };
+		038CB29A14284F33001DEAC9 /* StackMobClientData.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB1D414283272001DEAC9 /* StackMobClientData.m */; };
+		038CB29B14284F49001DEAC9 /* OAHMAC_SHA1SignatureProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB1BF14283272001DEAC9 /* OAHMAC_SHA1SignatureProvider.m */; };
+		038CB29C14284F49001DEAC9 /* OAToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB1CA14283272001DEAC9 /* OAToken.m */; };
+		038CB29E14284F79001DEAC9 /* OARequestParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB1C514283272001DEAC9 /* OARequestParameter.m */; };
+		038CB29F14284F79001DEAC9 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB1CE14283272001DEAC9 /* Reachability.m */; };
+		038CB2A014284F92001DEAC9 /* NSURL+Base.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB1B714283272001DEAC9 /* NSURL+Base.m */; };
+		038CB2A114284FA0001DEAC9 /* Base64Transcoder.c in Sources */ = {isa = PBXBuildFile; fileRef = 038CB1B014283272001DEAC9 /* Base64Transcoder.c */; };
+		038CB2A214284FBE001DEAC9 /* NSString+URLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB1B514283272001DEAC9 /* NSString+URLEncoding.m */; };
+		038CB2A314284FDA001DEAC9 /* NSMutableURLRequest+Parameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB1B314283272001DEAC9 /* NSMutableURLRequest+Parameters.m */; };
+		038CB2A414284FED001DEAC9 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB28E14284C3F001DEAC9 /* JSONKit.m */; };
+		038CB2A514285007001DEAC9 /* StackMobAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB1D214283272001DEAC9 /* StackMobAdditions.m */; };
 		57121D5E140FDE3F00686005 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 57121D5D140FDE3F00686005 /* libz.dylib */; };
 		82CE43D41288F14000A73E9C /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82CE43341288EFE000A73E9C /* CoreLocation.framework */; };
 		82CE43DB1288F15500A73E9C /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82CE43341288EFE000A73E9C /* CoreLocation.framework */; };
@@ -83,7 +102,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		038CB1AD14283272001DEAC9 /* YAJLIOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = YAJLIOS.framework; sourceTree = "<group>"; };
 		038CB1B014283272001DEAC9 /* Base64Transcoder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Base64Transcoder.c; sourceTree = "<group>"; };
 		038CB1B114283272001DEAC9 /* Base64Transcoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64Transcoder.h; sourceTree = "<group>"; };
 		038CB1B214283272001DEAC9 /* NSMutableURLRequest+Parameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableURLRequest+Parameters.h"; sourceTree = "<group>"; };
@@ -133,6 +151,8 @@
 		038CB1E014283272001DEAC9 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
 		038CB1E114283272001DEAC9 /* NSData+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+JSON.h"; sourceTree = "<group>"; };
 		038CB1E214283272001DEAC9 /* NSData+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+JSON.m"; sourceTree = "<group>"; };
+		038CB28D14284C3F001DEAC9 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
+		038CB28E14284C3F001DEAC9 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
 		57121D5D140FDE3F00686005 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		82CE43251288EF9100A73E9C /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		82CE432C1288EFB900A73E9C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -166,7 +186,6 @@
 				82CE45151289025B00A73E9C /* UIKit.framework in Frameworks */,
 				AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */,
 				82CE43D41288F14000A73E9C /* CoreLocation.framework in Frameworks */,
-				038CB1E314283272001DEAC9 /* YAJLIOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -219,7 +238,7 @@
 		038CB1AC14283272001DEAC9 /* libraries */ = {
 			isa = PBXGroup;
 			children = (
-				038CB1AD14283272001DEAC9 /* YAJLIOS.framework */,
+				038CB28C14284C3F001DEAC9 /* JSONKit */,
 			);
 			path = libraries;
 			sourceTree = "<group>";
@@ -286,6 +305,16 @@
 			);
 			path = Utils;
 			sourceTree = "<group>";
+		};
+		038CB28C14284C3F001DEAC9 /* JSONKit */ = {
+			isa = PBXGroup;
+			children = (
+				038CB28D14284C3F001DEAC9 /* JSONKit.h */,
+				038CB28E14284C3F001DEAC9 /* JSONKit.m */,
+			);
+			name = JSONKit;
+			path = StackMob/External/JSONKit;
+			sourceTree = SOURCE_ROOT;
 		};
 		0867D691FE84028FC02AAC07 /* StackMobiOS */ = {
 			isa = PBXGroup;
@@ -364,6 +393,7 @@
 				038CB20F14283272001DEAC9 /* StackMobSession.h in Headers */,
 				038CB21114283272001DEAC9 /* NSData+Base64.h in Headers */,
 				038CB21314283272001DEAC9 /* NSData+JSON.h in Headers */,
+				038CB28F14284C3F001DEAC9 /* JSONKit.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -480,6 +510,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				038CB2A514285007001DEAC9 /* StackMobAdditions.m in Sources */,
+				038CB2A414284FED001DEAC9 /* JSONKit.m in Sources */,
+				038CB2A314284FDA001DEAC9 /* NSMutableURLRequest+Parameters.m in Sources */,
+				038CB2A214284FBE001DEAC9 /* NSString+URLEncoding.m in Sources */,
+				038CB2A114284FA0001DEAC9 /* Base64Transcoder.c in Sources */,
+				038CB2A014284F92001DEAC9 /* NSURL+Base.m in Sources */,
+				038CB29E14284F79001DEAC9 /* OARequestParameter.m in Sources */,
+				038CB29F14284F79001DEAC9 /* Reachability.m in Sources */,
+				038CB29B14284F49001DEAC9 /* OAHMAC_SHA1SignatureProvider.m in Sources */,
+				038CB29C14284F49001DEAC9 /* OAToken.m in Sources */,
+				038CB29914284F33001DEAC9 /* OAMutableURLRequest.m in Sources */,
+				038CB29A14284F33001DEAC9 /* StackMobClientData.m in Sources */,
+				038CB29714284F1B001DEAC9 /* OAConsumer.m in Sources */,
+				038CB29814284F1B001DEAC9 /* StackMobHerokuRequest.m in Sources */,
+				038CB29514284F04001DEAC9 /* StackMobPushRequest.m in Sources */,
+				038CB29614284F04001DEAC9 /* StackMobSession.m in Sources */,
+				038CB29314284C97001DEAC9 /* StackMob.m in Sources */,
+				038CB29414284C97001DEAC9 /* StackMobRequest.m in Sources */,
 				82CE45F412892FFA00A73E9C /* APIRequestTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -511,6 +559,7 @@
 				038CB21014283272001DEAC9 /* StackMobSession.m in Sources */,
 				038CB21214283272001DEAC9 /* NSData+Base64.m in Sources */,
 				038CB21414283272001DEAC9 /* NSData+JSON.m in Sources */,
+				038CB29014284C3F001DEAC9 /* JSONKit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

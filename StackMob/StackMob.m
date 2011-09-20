@@ -75,6 +75,7 @@ static SMEnvironment environment;
 
         }
         else{
+#ifdef STACKMOB_PUBLIC_KEY
             _sharedManager.session = [StackMobSession sessionForApplication:STACKMOB_PUBLIC_KEY
                                                                       secret:STACKMOB_PRIVATE_KEY
                                                                      appName:STACKMOB_APP_NAME
@@ -82,6 +83,9 @@ static SMEnvironment environment;
                                                                       domain:STACKMOB_APP_DOMAIN
                                                               userObjectName:STACKMOB_USER_OBJECT_NAME
                                                            apiVersionNumber:[NSNumber numberWithInt:STACKMOB_API_VERSION]];
+#else
+#warning "No configuration found"
+#endif
 
         }
         _sharedManager.requests = [NSMutableArray array];
