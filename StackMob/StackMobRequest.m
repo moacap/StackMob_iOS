@@ -256,35 +256,6 @@
 	self.connection = nil;
 }
 
-# pragma mark - NSURLConnectionDelegate
-
-// To handle the self signed certificate on mob2.stackmob.com
-- (BOOL)connection:(NSURLConnection *)connection
-canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace{
-	return [protectionSpace.authenticationMethod
-			isEqualToString:NSURLAuthenticationMethodServerTrust];
-}
-
-- (void)connection:(NSURLConnection *)connection
-didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge{
-	if ([challenge.protectionSpace.authenticationMethod
-		 isEqualToString:NSURLAuthenticationMethodServerTrust]){
-        NSError *error = nil;
-        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"stackmob.com"
-                                                                               options:NSRegularExpressionCaseInsensitive error:&error];
-        if(error) NSLog(@"error creating regex");
-        NSUInteger count = [regex numberOfMatchesInString:challenge.protectionSpace.host options:0 range:NSMakeRange(0,challenge.protectionSpace.host.length)];
-
-		if (count > 0){
-			NSURLCredential *credential =
-            [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
-			[challenge.sender useCredential:credential forAuthenticationChallenge:challenge];
-		}
-	}
-    
-	[challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
-}
-
 - (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response {
 	mHttpResponse = [(NSHTTPURLResponse*)response copy];
 }
