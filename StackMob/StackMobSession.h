@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #import <Foundation/Foundation.h>
+#import "StackMobConstants.h"
 
 static NSString *const SMDefaultDomain = @"stackmob.com";
 

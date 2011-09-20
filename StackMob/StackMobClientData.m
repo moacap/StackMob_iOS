@@ -124,9 +124,7 @@ static StackMobClientData * _sharedInstance=nil;
 }
 
 - (void)dealloc {
-#ifdef CoreLocation
 	[_locationManager release];
-#endif
 	[_sharedInstance release];
 	[super dealloc];
 
@@ -159,13 +157,10 @@ static StackMobClientData * _sharedInstance=nil;
 											 language, DEVICE_LANGUAGE,
 											 jailBroken, DEVICE_IS_JAILBORKEN,
 											 nil];
-	SMLog(@"checking for CoreLocation...");
-#ifdef CoreLocation
 	if(_locationUpdatesStarted) {
 		[clientDataObject setValue:[NSNumber numberWithDouble:_location.latitude] forKey:LATITUDE];
 		[clientDataObject setValue:[NSNumber numberWithDouble:_location.longitude] forKey:LONGITUDE];  
 	}
-#endif
 	SMLog(@"data %@", clientDataObject);
 	NetworkStatus newStatus = [[Reachability reachabilityForInternetConnection] currentReachabilityStatus];
 	switch (newStatus) {
@@ -177,9 +172,7 @@ static StackMobClientData * _sharedInstance=nil;
 			break;
 	}
 	
-		
-	
-	self.clientDataString = [clientDataObject yajl_JSONString];
+	self.clientDataString = [clientDataObject JSONString];
     [clientDataObject release];
 }
 

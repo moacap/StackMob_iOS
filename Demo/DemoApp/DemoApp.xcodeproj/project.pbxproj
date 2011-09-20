@@ -7,6 +7,30 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		038CB254142834D3001DEAC9 /* Base64Transcoder.c in Sources */ = {isa = PBXBuildFile; fileRef = 038CB220142834D3001DEAC9 /* Base64Transcoder.c */; };
+		038CB255142834D3001DEAC9 /* NSMutableURLRequest+Parameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB223142834D3001DEAC9 /* NSMutableURLRequest+Parameters.m */; };
+		038CB256142834D3001DEAC9 /* NSString+URLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB225142834D3001DEAC9 /* NSString+URLEncoding.m */; };
+		038CB257142834D3001DEAC9 /* NSURL+Base.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB227142834D3001DEAC9 /* NSURL+Base.m */; };
+		038CB258142834D3001DEAC9 /* OAAsynchronousDataFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB229142834D3001DEAC9 /* OAAsynchronousDataFetcher.m */; };
+		038CB259142834D3001DEAC9 /* OAConsumer.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB22B142834D3001DEAC9 /* OAConsumer.m */; };
+		038CB25A142834D3001DEAC9 /* OADataFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB22D142834D3001DEAC9 /* OADataFetcher.m */; };
+		038CB25B142834D3001DEAC9 /* OAHMAC_SHA1SignatureProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB22F142834D3001DEAC9 /* OAHMAC_SHA1SignatureProvider.m */; };
+		038CB25C142834D3001DEAC9 /* OAMutableURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB231142834D3001DEAC9 /* OAMutableURLRequest.m */; };
+		038CB25D142834D3001DEAC9 /* OAPlaintextSignatureProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB233142834D3001DEAC9 /* OAPlaintextSignatureProvider.m */; };
+		038CB25E142834D3001DEAC9 /* OARequestParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB235142834D3001DEAC9 /* OARequestParameter.m */; };
+		038CB25F142834D3001DEAC9 /* OAServiceTicket.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB237142834D3001DEAC9 /* OAServiceTicket.m */; };
+		038CB260142834D3001DEAC9 /* OAToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB23A142834D3001DEAC9 /* OAToken.m */; };
+		038CB261142834D3001DEAC9 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB23E142834D3001DEAC9 /* Reachability.m */; };
+		038CB262142834D3001DEAC9 /* StackMob.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB240142834D3001DEAC9 /* StackMob.m */; };
+		038CB263142834D3001DEAC9 /* StackMobAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB242142834D3001DEAC9 /* StackMobAdditions.m */; };
+		038CB264142834D3001DEAC9 /* StackMobClientData.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB244142834D3001DEAC9 /* StackMobClientData.m */; };
+		038CB265142834D3001DEAC9 /* StackMobHerokuRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB247142834D3001DEAC9 /* StackMobHerokuRequest.m */; };
+		038CB266142834D3001DEAC9 /* StackMobPushRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB249142834D3001DEAC9 /* StackMobPushRequest.m */; };
+		038CB267142834D3001DEAC9 /* StackMobRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB24B142834D3001DEAC9 /* StackMobRequest.m */; };
+		038CB268142834D3001DEAC9 /* StackMobSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB24D142834D3001DEAC9 /* StackMobSession.m */; };
+		038CB269142834D3001DEAC9 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB250142834D3001DEAC9 /* NSData+Base64.m */; };
+		038CB26A142834D3001DEAC9 /* NSData+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB252142834D3001DEAC9 /* NSData+JSON.m */; };
+		038CB28A14284178001DEAC9 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB28914284178001DEAC9 /* JSONKit.m */; };
 		0393E2AC1409D87B00D643AA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0393E2AB1409D87B00D643AA /* UIKit.framework */; };
 		0393E2AE1409D87B00D643AA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0393E2AD1409D87B00D643AA /* Foundation.framework */; };
 		0393E2B01409D87B00D643AA /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0393E2AF1409D87B00D643AA /* CoreData.framework */; };
@@ -21,12 +45,61 @@
 		0393E3021409E35E00D643AA /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0393E3011409E35E00D643AA /* CFNetwork.framework */; };
 		0393E3041409E36300D643AA /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0393E3031409E36300D643AA /* CoreLocation.framework */; };
 		0393E3061409E36A00D643AA /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0393E3051409E36A00D643AA /* SystemConfiguration.framework */; };
-		0393E31C1409F27D00D643AA /* StackMob.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0393E31B1409F27D00D643AA /* StackMob.plist */; };
-		0393E323140A02C800D643AA /* YAJLIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0393E2D91409E17E00D643AA /* YAJLIOS.framework */; };
-		0393E34F140B18BA00D643AA /* StackMob.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0393E34E140B18BA00D643AA /* StackMob.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		038CB220142834D3001DEAC9 /* Base64Transcoder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Base64Transcoder.c; sourceTree = "<group>"; };
+		038CB221142834D3001DEAC9 /* Base64Transcoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64Transcoder.h; sourceTree = "<group>"; };
+		038CB222142834D3001DEAC9 /* NSMutableURLRequest+Parameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableURLRequest+Parameters.h"; sourceTree = "<group>"; };
+		038CB223142834D3001DEAC9 /* NSMutableURLRequest+Parameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableURLRequest+Parameters.m"; sourceTree = "<group>"; };
+		038CB224142834D3001DEAC9 /* NSString+URLEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+URLEncoding.h"; sourceTree = "<group>"; };
+		038CB225142834D3001DEAC9 /* NSString+URLEncoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+URLEncoding.m"; sourceTree = "<group>"; };
+		038CB226142834D3001DEAC9 /* NSURL+Base.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+Base.h"; sourceTree = "<group>"; };
+		038CB227142834D3001DEAC9 /* NSURL+Base.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+Base.m"; sourceTree = "<group>"; };
+		038CB228142834D3001DEAC9 /* OAAsynchronousDataFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAAsynchronousDataFetcher.h; sourceTree = "<group>"; };
+		038CB229142834D3001DEAC9 /* OAAsynchronousDataFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAAsynchronousDataFetcher.m; sourceTree = "<group>"; };
+		038CB22A142834D3001DEAC9 /* OAConsumer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAConsumer.h; sourceTree = "<group>"; };
+		038CB22B142834D3001DEAC9 /* OAConsumer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAConsumer.m; sourceTree = "<group>"; };
+		038CB22C142834D3001DEAC9 /* OADataFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OADataFetcher.h; sourceTree = "<group>"; };
+		038CB22D142834D3001DEAC9 /* OADataFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OADataFetcher.m; sourceTree = "<group>"; };
+		038CB22E142834D3001DEAC9 /* OAHMAC_SHA1SignatureProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAHMAC_SHA1SignatureProvider.h; sourceTree = "<group>"; };
+		038CB22F142834D3001DEAC9 /* OAHMAC_SHA1SignatureProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAHMAC_SHA1SignatureProvider.m; sourceTree = "<group>"; };
+		038CB230142834D3001DEAC9 /* OAMutableURLRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAMutableURLRequest.h; sourceTree = "<group>"; };
+		038CB231142834D3001DEAC9 /* OAMutableURLRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAMutableURLRequest.m; sourceTree = "<group>"; };
+		038CB232142834D3001DEAC9 /* OAPlaintextSignatureProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAPlaintextSignatureProvider.h; sourceTree = "<group>"; };
+		038CB233142834D3001DEAC9 /* OAPlaintextSignatureProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAPlaintextSignatureProvider.m; sourceTree = "<group>"; };
+		038CB234142834D3001DEAC9 /* OARequestParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OARequestParameter.h; sourceTree = "<group>"; };
+		038CB235142834D3001DEAC9 /* OARequestParameter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OARequestParameter.m; sourceTree = "<group>"; };
+		038CB236142834D3001DEAC9 /* OAServiceTicket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAServiceTicket.h; sourceTree = "<group>"; };
+		038CB237142834D3001DEAC9 /* OAServiceTicket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAServiceTicket.m; sourceTree = "<group>"; };
+		038CB238142834D3001DEAC9 /* OASignatureProviding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OASignatureProviding.h; sourceTree = "<group>"; };
+		038CB239142834D3001DEAC9 /* OAToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAToken.h; sourceTree = "<group>"; };
+		038CB23A142834D3001DEAC9 /* OAToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAToken.m; sourceTree = "<group>"; };
+		038CB23B142834D3001DEAC9 /* OAuthConsumer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAuthConsumer.h; sourceTree = "<group>"; };
+		038CB23D142834D3001DEAC9 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		038CB23E142834D3001DEAC9 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		038CB23F142834D3001DEAC9 /* StackMob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StackMob.h; sourceTree = "<group>"; };
+		038CB240142834D3001DEAC9 /* StackMob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StackMob.m; sourceTree = "<group>"; };
+		038CB241142834D3001DEAC9 /* StackMobAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StackMobAdditions.h; sourceTree = "<group>"; };
+		038CB242142834D3001DEAC9 /* StackMobAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StackMobAdditions.m; sourceTree = "<group>"; };
+		038CB243142834D3001DEAC9 /* StackMobClientData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StackMobClientData.h; sourceTree = "<group>"; };
+		038CB244142834D3001DEAC9 /* StackMobClientData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StackMobClientData.m; sourceTree = "<group>"; };
+		038CB245142834D3001DEAC9 /* StackMobConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StackMobConfiguration.h; sourceTree = "<group>"; };
+		038CB246142834D3001DEAC9 /* StackMobHerokuRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StackMobHerokuRequest.h; sourceTree = "<group>"; };
+		038CB247142834D3001DEAC9 /* StackMobHerokuRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StackMobHerokuRequest.m; sourceTree = "<group>"; };
+		038CB248142834D3001DEAC9 /* StackMobPushRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StackMobPushRequest.h; sourceTree = "<group>"; };
+		038CB249142834D3001DEAC9 /* StackMobPushRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StackMobPushRequest.m; sourceTree = "<group>"; };
+		038CB24A142834D3001DEAC9 /* StackMobRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StackMobRequest.h; sourceTree = "<group>"; };
+		038CB24B142834D3001DEAC9 /* StackMobRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StackMobRequest.m; sourceTree = "<group>"; };
+		038CB24C142834D3001DEAC9 /* StackMobSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StackMobSession.h; sourceTree = "<group>"; };
+		038CB24D142834D3001DEAC9 /* StackMobSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StackMobSession.m; sourceTree = "<group>"; };
+		038CB24F142834D3001DEAC9 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
+		038CB250142834D3001DEAC9 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
+		038CB251142834D3001DEAC9 /* NSData+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+JSON.h"; sourceTree = "<group>"; };
+		038CB252142834D3001DEAC9 /* NSData+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+JSON.m"; sourceTree = "<group>"; };
+		038CB27C14283957001DEAC9 /* StackMobConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StackMobConstants.h; sourceTree = "<group>"; };
+		038CB28814284178001DEAC9 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
+		038CB28914284178001DEAC9 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
 		0393E2A71409D87B00D643AA /* DemoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DemoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0393E2AB1409D87B00D643AA /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		0393E2AD1409D87B00D643AA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -44,12 +117,9 @@
 		0393E2C41409D87B00D643AA /* FlipsideViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FlipsideViewController.m; sourceTree = "<group>"; };
 		0393E2C71409D87B00D643AA /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainViewController.xib; sourceTree = "<group>"; };
 		0393E2CA1409D87B00D643AA /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/FlipsideViewController.xib; sourceTree = "<group>"; };
-		0393E2D91409E17E00D643AA /* YAJLIOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = YAJLIOS.framework; path = ../../external/libraries/YAJLIOS.framework; sourceTree = "<group>"; };
 		0393E3011409E35E00D643AA /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		0393E3031409E36300D643AA /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		0393E3051409E36A00D643AA /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		0393E31B1409F27D00D643AA /* StackMob.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = StackMob.plist; sourceTree = "<group>"; };
-		0393E34E140B18BA00D643AA /* StackMob.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StackMob.framework; path = ../../build/Framework/StackMob.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,8 +127,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0393E34F140B18BA00D643AA /* StackMob.framework in Frameworks */,
-				0393E323140A02C800D643AA /* YAJLIOS.framework in Frameworks */,
 				0393E3021409E35E00D643AA /* CFNetwork.framework in Frameworks */,
 				0393E3061409E36A00D643AA /* SystemConfiguration.framework in Frameworks */,
 				0393E3041409E36300D643AA /* CoreLocation.framework in Frameworks */,
@@ -71,14 +139,129 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		038CB21A142834D3001DEAC9 /* StackMob */ = {
+			isa = PBXGroup;
+			children = (
+				038CB21B142834D3001DEAC9 /* External */,
+				038CB23F142834D3001DEAC9 /* StackMob.h */,
+				038CB240142834D3001DEAC9 /* StackMob.m */,
+				038CB241142834D3001DEAC9 /* StackMobAdditions.h */,
+				038CB242142834D3001DEAC9 /* StackMobAdditions.m */,
+				038CB243142834D3001DEAC9 /* StackMobClientData.h */,
+				038CB244142834D3001DEAC9 /* StackMobClientData.m */,
+				038CB245142834D3001DEAC9 /* StackMobConfiguration.h */,
+				038CB246142834D3001DEAC9 /* StackMobHerokuRequest.h */,
+				038CB247142834D3001DEAC9 /* StackMobHerokuRequest.m */,
+				038CB248142834D3001DEAC9 /* StackMobPushRequest.h */,
+				038CB249142834D3001DEAC9 /* StackMobPushRequest.m */,
+				038CB24A142834D3001DEAC9 /* StackMobRequest.h */,
+				038CB24B142834D3001DEAC9 /* StackMobRequest.m */,
+				038CB24C142834D3001DEAC9 /* StackMobSession.h */,
+				038CB24D142834D3001DEAC9 /* StackMobSession.m */,
+				038CB24E142834D3001DEAC9 /* Utils */,
+				038CB27C14283957001DEAC9 /* StackMobConstants.h */,
+			);
+			name = StackMob;
+			path = ../../StackMob;
+			sourceTree = "<group>";
+		};
+		038CB21B142834D3001DEAC9 /* External */ = {
+			isa = PBXGroup;
+			children = (
+				038CB28714284178001DEAC9 /* JSONKit */,
+				038CB21C142834D3001DEAC9 /* libraries */,
+				038CB21E142834D3001DEAC9 /* OAuthConsumer */,
+				038CB23C142834D3001DEAC9 /* reachability */,
+			);
+			path = External;
+			sourceTree = "<group>";
+		};
+		038CB21C142834D3001DEAC9 /* libraries */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = libraries;
+			sourceTree = "<group>";
+		};
+		038CB21E142834D3001DEAC9 /* OAuthConsumer */ = {
+			isa = PBXGroup;
+			children = (
+				038CB21F142834D3001DEAC9 /* Crypto */,
+				038CB222142834D3001DEAC9 /* NSMutableURLRequest+Parameters.h */,
+				038CB223142834D3001DEAC9 /* NSMutableURLRequest+Parameters.m */,
+				038CB224142834D3001DEAC9 /* NSString+URLEncoding.h */,
+				038CB225142834D3001DEAC9 /* NSString+URLEncoding.m */,
+				038CB226142834D3001DEAC9 /* NSURL+Base.h */,
+				038CB227142834D3001DEAC9 /* NSURL+Base.m */,
+				038CB228142834D3001DEAC9 /* OAAsynchronousDataFetcher.h */,
+				038CB229142834D3001DEAC9 /* OAAsynchronousDataFetcher.m */,
+				038CB22A142834D3001DEAC9 /* OAConsumer.h */,
+				038CB22B142834D3001DEAC9 /* OAConsumer.m */,
+				038CB22C142834D3001DEAC9 /* OADataFetcher.h */,
+				038CB22D142834D3001DEAC9 /* OADataFetcher.m */,
+				038CB22E142834D3001DEAC9 /* OAHMAC_SHA1SignatureProvider.h */,
+				038CB22F142834D3001DEAC9 /* OAHMAC_SHA1SignatureProvider.m */,
+				038CB230142834D3001DEAC9 /* OAMutableURLRequest.h */,
+				038CB231142834D3001DEAC9 /* OAMutableURLRequest.m */,
+				038CB232142834D3001DEAC9 /* OAPlaintextSignatureProvider.h */,
+				038CB233142834D3001DEAC9 /* OAPlaintextSignatureProvider.m */,
+				038CB234142834D3001DEAC9 /* OARequestParameter.h */,
+				038CB235142834D3001DEAC9 /* OARequestParameter.m */,
+				038CB236142834D3001DEAC9 /* OAServiceTicket.h */,
+				038CB237142834D3001DEAC9 /* OAServiceTicket.m */,
+				038CB238142834D3001DEAC9 /* OASignatureProviding.h */,
+				038CB239142834D3001DEAC9 /* OAToken.h */,
+				038CB23A142834D3001DEAC9 /* OAToken.m */,
+				038CB23B142834D3001DEAC9 /* OAuthConsumer.h */,
+			);
+			path = OAuthConsumer;
+			sourceTree = "<group>";
+		};
+		038CB21F142834D3001DEAC9 /* Crypto */ = {
+			isa = PBXGroup;
+			children = (
+				038CB220142834D3001DEAC9 /* Base64Transcoder.c */,
+				038CB221142834D3001DEAC9 /* Base64Transcoder.h */,
+			);
+			path = Crypto;
+			sourceTree = "<group>";
+		};
+		038CB23C142834D3001DEAC9 /* reachability */ = {
+			isa = PBXGroup;
+			children = (
+				038CB23D142834D3001DEAC9 /* Reachability.h */,
+				038CB23E142834D3001DEAC9 /* Reachability.m */,
+			);
+			path = reachability;
+			sourceTree = "<group>";
+		};
+		038CB24E142834D3001DEAC9 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				038CB24F142834D3001DEAC9 /* NSData+Base64.h */,
+				038CB250142834D3001DEAC9 /* NSData+Base64.m */,
+				038CB251142834D3001DEAC9 /* NSData+JSON.h */,
+				038CB252142834D3001DEAC9 /* NSData+JSON.m */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		038CB28714284178001DEAC9 /* JSONKit */ = {
+			isa = PBXGroup;
+			children = (
+				038CB28814284178001DEAC9 /* JSONKit.h */,
+				038CB28914284178001DEAC9 /* JSONKit.m */,
+			);
+			path = JSONKit;
+			sourceTree = "<group>";
+		};
 		0393E29C1409D87B00D643AA = {
 			isa = PBXGroup;
 			children = (
-				0393E34E140B18BA00D643AA /* StackMob.framework */,
+				038CB21A142834D3001DEAC9 /* StackMob */,
 				0393E3051409E36A00D643AA /* SystemConfiguration.framework */,
 				0393E3031409E36300D643AA /* CoreLocation.framework */,
 				0393E3011409E35E00D643AA /* CFNetwork.framework */,
-				0393E2D91409E17E00D643AA /* YAJLIOS.framework */,
 				0393E2B11409D87B00D643AA /* DemoApp */,
 				0393E2AA1409D87B00D643AA /* Frameworks */,
 				0393E2A81409D87B00D643AA /* Products */,
@@ -106,7 +289,6 @@
 		0393E2B11409D87B00D643AA /* DemoApp */ = {
 			isa = PBXGroup;
 			children = (
-				0393E31B1409F27D00D643AA /* StackMob.plist */,
 				0393E2BA1409D87B00D643AA /* AppDelegate.h */,
 				0393E2BB1409D87B00D643AA /* AppDelegate.m */,
 				0393E2C01409D87B00D643AA /* MainViewController.h */,
@@ -186,7 +368,6 @@
 				0393E2B61409D87B00D643AA /* InfoPlist.strings in Resources */,
 				0393E2C81409D87B00D643AA /* MainViewController.xib in Resources */,
 				0393E2CB1409D87B00D643AA /* FlipsideViewController.xib in Resources */,
-				0393E31C1409F27D00D643AA /* StackMob.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -202,6 +383,30 @@
 				0393E2BF1409D87B00D643AA /* DemoApp.xcdatamodeld in Sources */,
 				0393E2C21409D87B00D643AA /* MainViewController.m in Sources */,
 				0393E2C51409D87B00D643AA /* FlipsideViewController.m in Sources */,
+				038CB254142834D3001DEAC9 /* Base64Transcoder.c in Sources */,
+				038CB255142834D3001DEAC9 /* NSMutableURLRequest+Parameters.m in Sources */,
+				038CB256142834D3001DEAC9 /* NSString+URLEncoding.m in Sources */,
+				038CB257142834D3001DEAC9 /* NSURL+Base.m in Sources */,
+				038CB258142834D3001DEAC9 /* OAAsynchronousDataFetcher.m in Sources */,
+				038CB259142834D3001DEAC9 /* OAConsumer.m in Sources */,
+				038CB25A142834D3001DEAC9 /* OADataFetcher.m in Sources */,
+				038CB25B142834D3001DEAC9 /* OAHMAC_SHA1SignatureProvider.m in Sources */,
+				038CB25C142834D3001DEAC9 /* OAMutableURLRequest.m in Sources */,
+				038CB25D142834D3001DEAC9 /* OAPlaintextSignatureProvider.m in Sources */,
+				038CB25E142834D3001DEAC9 /* OARequestParameter.m in Sources */,
+				038CB25F142834D3001DEAC9 /* OAServiceTicket.m in Sources */,
+				038CB260142834D3001DEAC9 /* OAToken.m in Sources */,
+				038CB261142834D3001DEAC9 /* Reachability.m in Sources */,
+				038CB262142834D3001DEAC9 /* StackMob.m in Sources */,
+				038CB263142834D3001DEAC9 /* StackMobAdditions.m in Sources */,
+				038CB264142834D3001DEAC9 /* StackMobClientData.m in Sources */,
+				038CB265142834D3001DEAC9 /* StackMobHerokuRequest.m in Sources */,
+				038CB266142834D3001DEAC9 /* StackMobPushRequest.m in Sources */,
+				038CB267142834D3001DEAC9 /* StackMobRequest.m in Sources */,
+				038CB268142834D3001DEAC9 /* StackMobSession.m in Sources */,
+				038CB269142834D3001DEAC9 /* NSData+Base64.m in Sources */,
+				038CB26A142834D3001DEAC9 /* NSData+JSON.m in Sources */,
+				038CB28A14284178001DEAC9 /* JSONKit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,7 +445,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_ARC = NO;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -255,7 +460,7 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -265,7 +470,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_ARC = NO;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -273,7 +478,7 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -283,23 +488,17 @@
 		0393E2CF1409D87B00D643AA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../../build/Framework\"",
-					"\"$(SRCROOT)/../../external/libraries\"",
-					"\"$(SRCROOT)/../../scripts/build/Framework\"",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DemoApp/DemoApp-Prefix.pch";
 				INFOPLIST_FILE = "DemoApp/DemoApp-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/DemoApp\"",
+					"\"$(SRCROOT)/../../StackMob/External/libraries/YAJLIOS.framework/Versions/A\"",
 				);
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-all_load",
-				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -308,23 +507,17 @@
 		0393E2D01409D87B00D643AA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../../build/Framework\"",
-					"\"$(SRCROOT)/../../external/libraries\"",
-					"\"$(SRCROOT)/../../scripts/build/Framework\"",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DemoApp/DemoApp-Prefix.pch";
 				INFOPLIST_FILE = "DemoApp/DemoApp-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/DemoApp\"",
+					"\"$(SRCROOT)/../../StackMob/External/libraries/YAJLIOS.framework/Versions/A\"",
 				);
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-all_load",
-				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

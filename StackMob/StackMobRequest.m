@@ -16,6 +16,7 @@
 #import "Reachability.h"
 #import "OAConsumer.h"
 #import "OAMutableURLRequest.h"
+#import "StackMobAdditions.h"
 #import "StackMobClientData.h"
 #import "StackMobSession.h"
 #import "StackMobPushRequest.h"
@@ -234,7 +235,7 @@
 	[request prepare];
 
 	if (!([[self httpMethod] isEqualToString: @"GET"] || [[self httpMethod] isEqualToString:@"DELETE"])) {
-        NSData* postData = [[mArguments yajl_JSONString] dataUsingEncoding:NSUTF8StringEncoding];
+        NSData* postData = [[mArguments JSONString] dataUsingEncoding:NSUTF8StringEncoding];
         SMLogVerbose(@"POST Data: %d", [postData length]);
         [request setHTTPBody:postData];	
         NSString *contentType = [NSString stringWithFormat:@"application/json"];
@@ -313,7 +314,7 @@
         else {
             @try{
                 [mConnectionData setLength:0];
-                result = [textResult yajl_JSON];
+                result = [textResult objectFromJSONString];
             }
             @catch (NSException *e) { // catch parsing errors
                 result = nil;
@@ -363,7 +364,7 @@
 	[request addValue:@"deflate" forHTTPHeaderField:@"Accept-Encoding"];
 	[request prepare];
 	if (![[self httpMethod] isEqualToString: @"GET"]) {
-		[request setHTTPBody:[[mArguments yajl_JSONString] dataUsingEncoding:NSUTF8StringEncoding]];	
+		[request setHTTPBody:[[mArguments JSONString] dataUsingEncoding:NSUTF8StringEncoding]];	
 		NSString *contentType = [NSString stringWithFormat:@"application/json"];
 		[request addValue:contentType forHTTPHeaderField: @"Content-Type"];
 	}

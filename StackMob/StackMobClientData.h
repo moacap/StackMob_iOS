@@ -11,9 +11,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#ifdef CoreLocation
 #import <CoreLocation/CoreLocation.h>
-#endif
+#import "StackMobConstants.h"
+#import "JSONKit.h"
 
 #define DEVICE_TAG_NAME						@"u"			
 #define DEVICE_NAME							@"dn"	
@@ -56,18 +56,12 @@
 #define IPHONE_SIMULATOR_IPHONE_NAMESTRING	@"iPhone Simulator"
 #define IPHONE_SIMULATOR_IPAD_NAMESTRING	@"iPad Simulator"
 
-#ifdef CoreLocation
 @interface StackMobClientData : NSObject <CLLocationManagerDelegate> {
-#else
-@interface StackMobClientData : NSObject {
-#endif
 	NSString *_clientDataString;
 	
 	BOOL _locationUpdatesStarted;
-#ifdef CoreLocation
 	CLLocationManager *_locationManager;
 	CLLocationCoordinate2D _location;
-#endif
 
 }
 
