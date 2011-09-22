@@ -22,6 +22,8 @@ Getting Started
 #define STACKMOB_API_VERSION        0   // 0 for sandbox, 1 for production
 ```
 
+6. ```#import "Stackmob.h"``` in any classes that interact with Stackmob.
+
 
 Coding
 =====
