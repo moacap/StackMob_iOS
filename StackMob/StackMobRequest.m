@@ -157,7 +157,7 @@
 	}
     
     NSString *urlString = [urlComponents componentsJoinedByString:@"?"];
-    SMLogVerbose(@"%@", urlString);
+    SMLog(@"%@", urlString);
     
 	return [NSURL URLWithString:urlString];
 }
@@ -210,9 +210,9 @@
 {
 	_requestFinished = NO;
 
-    SMLogVerbose(@"StackMob method: %@", self.method);
-    SMLogVerbose(@"Request Request with url: %@", self.url);
-    SMLogVerbose(@"Request Request with HTTP Method: %@", self.httpMethod);
+    SMLog(@"StackMob method: %@", self.method);
+    SMLog(@"Request Request with url: %@", self.url);
+    SMLog(@"Request Request with HTTP Method: %@", self.httpMethod);
 				
 	OAConsumer *consumer = [[OAConsumer alloc] initWithKey:session.apiKey
 														secret:session.apiSecret];
@@ -236,13 +236,13 @@
 
 	if (!([[self httpMethod] isEqualToString: @"GET"] || [[self httpMethod] isEqualToString:@"DELETE"])) {
         NSData* postData = [[mArguments JSONString] dataUsingEncoding:NSUTF8StringEncoding];
-        SMLogVerbose(@"POST Data: %d", [postData length]);
+        SMLog(@"POST Data: %d", [postData length]);
         [request setHTTPBody:postData];	
         NSString *contentType = [NSString stringWithFormat:@"application/json"];
         [request addValue:contentType forHTTPHeaderField: @"Content-Type"]; 
 	}
 		
-  SMLogVerbose(@"StackMobRequest: sending asynchronous oauth request: %@", request);
+  SMLog(@"StackMobRequest: sending asynchronous oauth request: %@", request);
     
 	[mConnectionData setLength:0];		
 	self.result = nil;
@@ -270,7 +270,7 @@
 
 	[mConnectionData appendData:data];
 	
-    SMLogVerbose(@"StackMobRequest: Got data of length %u", [mConnectionData length]);
+    SMLog(@"StackMobRequest: Got data of length %u", [mConnectionData length]);
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
@@ -293,16 +293,16 @@
 {
 	_requestFinished = YES;
 
-    SMLogVerbose(@"StackMobRequest %p: Received Request: %@", self, self.method);
+    SMLog(@"StackMobRequest %p: Received Request: %@", self, self.method);
     
 	NSString *textResult = nil;
 	NSDictionary *result = nil;
     NSInteger statusCode = [self getStatusCode];
 
-    SMLogVerbose(@"RESPONSE CODE %d", statusCode);
+    SMLog(@"RESPONSE CODE %d", statusCode);
     if ([mConnectionData length] > 0) {
         textResult = [[[NSString alloc] initWithData:mConnectionData encoding:NSUTF8StringEncoding] autorelease];
-        SMLogVerbose(@"RESPONSE BODY %@", textResult);
+        SMLog(@"RESPONSE BODY %@", textResult);
     }
 
 
@@ -323,31 +323,31 @@
         }
     }
   
-    SMLogVerbose(@"Request Processed: %@", self.method);
+    SMLog(@"Request Processed: %@", self.method);
 
     self.result = result;
 	
-    if (!self.delegate) SMLogVerbose(@"No delegate");
+    if (!self.delegate) SMLog(@"No delegate");
     
 	if (self.delegate && [self.delegate respondsToSelector:@selector(requestCompleted:)]){
-        SMLogVerbose(@"Calling delegate %d, self %d", [mDelegate retainCount], [self retainCount]);
+        SMLog(@"Calling delegate %d, self %d", [mDelegate retainCount], [self retainCount]);
         [self.delegate requestCompleted:self];
     } else {
-        SMLogVerbose(@"Delegate does not respond to selector\ndelegate: %@", mDelegate);
+        SMLog(@"Delegate does not respond to selector\ndelegate: %@", mDelegate);
     }
 }
 
 - (id) sendSynchronousRequestProvidingError:(NSError**)error {
-    SMLogVerbose(@"Sending Request: %@", self.method);
-    SMLogVerbose(@"Request URL: %@", self.url);
-    SMLogVerbose(@"Request HTTP Method: %@", self.httpMethod);
+    SMLog(@"Sending Request: %@", self.method);
+    SMLog(@"Request URL: %@", self.url);
+    SMLog(@"Request HTTP Method: %@", self.httpMethod);
     id result = [self sendSynchronousRequest];
     *error = self.connectionError;
     return result;
 }
 
 - (id) sendSynchronousRequest {
-    SMLogVerbose(@"StackMobRequest %p: Sending Synch Request httpMethod=%@ method=%@ url=%@", self, self.httpMethod, self.method, self.url);
+    SMLog(@"StackMobRequest %p: Sending Synch Request httpMethod=%@ method=%@ url=%@", self, self.httpMethod, self.method, self.url);
 	
 	OAConsumer *consumer = [[OAConsumer alloc] initWithKey:session.apiKey
 													secret:session.apiSecret];
@@ -371,7 +371,7 @@
 	
 	[mConnectionData setLength:0];
 
-    SMLogVerbose(@"StackMobRequest %p: sending synchronous oauth request: %@", self, request);
+    SMLog(@"StackMobRequest %p: sending synchronous oauth request: %@", self, request);
   
     _requestFinished = NO;
     self.connectionError = nil;

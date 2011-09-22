@@ -166,7 +166,7 @@ static StackMobSession* sharedSession = nil;
 }
 
 - (void)dealloc {
-    SMLogVerbose(@"StackMobSession: dealloc");
+    SMLog(@"StackMobSession: dealloc");
 	if (sharedSession == self) {
 		sharedSession = nil;
 	}
@@ -187,7 +187,7 @@ static StackMobSession* sharedSession = nil;
 	[secureURL release];
 	[regularURL release];
 	[super dealloc];
-    SMLogVerbose(@"StackMobSession: dealloc finished");
+    SMLog(@"StackMobSession: dealloc finished");
 }
 
 - (NSString*)apiURL {

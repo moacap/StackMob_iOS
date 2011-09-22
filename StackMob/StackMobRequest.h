@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #import "StackMobSession.h"
-#import "StackMobConstants.h"
+#import "StackMobConfiguration.h"
 #import "JSONKit.h"
 
 @class StackMob;
