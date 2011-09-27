@@ -15,6 +15,13 @@
 #import <Foundation/Foundation.h>
 #import "StackMobSession.h"
 #import "StackMobRequest.h"
+#import "StackMobConfiguration.h"
+
+typedef enum {
+    SMEnvironmentProduction = 0,
+    SMEnvironmentDevelopment = 1
+} SMEnvironment;
+
 
 typedef void (^StackMobCallback)(BOOL success, id result);
 
@@ -157,7 +164,7 @@ typedef void (^StackMobCallback)(BOOL success, id result);
  * @param token the device's PUSH notification token
  * @param arguments a Dictionary 
  */
-- (StackMobRequest *)registerForPushWithUser:(NSString *)userId andToken:(NSString *)token andCallback:(StackMobCallback)callback;
+- (StackMobRequest *)registerForPushWithUser:(NSString *)userId token:(NSString *)token andCallback:(StackMobCallback)callback;
 
 /********************** CRUD Methods **********************/
 /* 

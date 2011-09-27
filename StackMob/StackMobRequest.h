@@ -12,8 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 #import "StackMobSession.h"
+#import "StackMobConfiguration.h"
+#import "JSONKit.h"
+
+@class StackMob;
 
 typedef enum {
 	GET,
@@ -108,6 +111,9 @@ typedef enum {
  */
 - (id)sendSynchronousRequestProvidingError:(NSError**)error __attribute__((deprecated));
 - (id)sendSynchronousRequest;
+
+/* translate enum to string */
++ (NSString*)stringFromHttpVerb:(SMHttpVerb)httpVerb;
 
 @end
 
