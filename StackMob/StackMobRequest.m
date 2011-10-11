@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#import <netinet/in.h>
 #import "StackMobRequest.h"
 #import "Reachability.h"
 #import "OAConsumer.h"
@@ -20,10 +21,6 @@
 #import "StackMobSession.h"
 #import "StackMobPushRequest.h"
 #import "NSData+JSON.h"
-
-@interface StackMobRequest (Private)
-+ (NSString*)stringFromHttpVerb:(SMHttpVerb)httpVerb;
-@end
 
 @implementation StackMobRequest;
 
@@ -86,22 +83,33 @@
 
 + (id)requestForMethod:(NSString*)method withArguments:(NSDictionary*)arguments  withHttpVerb:(SMHttpVerb)httpVerb
 {
+	return [self requestForMethod:method withObject:arguments withHttpVerb:httpVerb];
+}
+
+
++ (id)requestForMethod:(NSString*)method withObject:(id)object withHttpVerb:(SMHttpVerb)httpVerb
+{
 	StackMobRequest* request = [StackMobRequest request];
 	request.method = method;
 	request.httpMethod = [self stringFromHttpVerb:httpVerb];
-	if (arguments != nil) {
-		[request setArguments:arguments];
+	if (object != nil) {
+		[request setArguments:object];
 	}
 	return request;
 }
 
 + (id)userRequestForMethod:(NSString*)method withArguments:(NSDictionary*)arguments withHttpVerb:(SMHttpVerb)httpVerb
 {
+	return [self userRequestForMethod:method withObject:arguments withHttpVerb:httpVerb];
+}
+
++ (id)userRequestForMethod:(NSString*)method withObject:(id)object withHttpVerb:(SMHttpVerb)httpVerb
+{
 	StackMobRequest* request = [StackMobRequest userRequest];
 	request.method = method;
 	request.httpMethod = [self stringFromHttpVerb:httpVerb];
-	if (arguments != nil) {
-		[request setArguments:arguments];
+	if (object != nil) {
+		[request setArguments:object];
 	}
 	return request;
 }
@@ -115,7 +123,7 @@
 }
 
 + (id)pushRequestWithArguments:(NSDictionary*)arguments withHttpVerb:(SMHttpVerb) httpVerb {
-	StackMobRequest* request = [StackMobPushRequest request];
+    StackMobRequest* request = [StackMobPushRequest request];
 	request.httpMethod = [self stringFromHttpVerb:httpVerb];
 	if (arguments != nil) {
 		[request setArguments:arguments];
@@ -190,6 +198,11 @@
 	[mArguments setDictionary:arguments];
 }
 
+- (void) setObject:(id)object
+{
+    mObject = object;
+}
+
 - (void)setValue:(NSString*)value forArgument:(NSString*)argument
 {
 	[mArguments setValue:value forKey:argument];
@@ -204,7 +217,6 @@
 {
 	[mArguments setValue:(value ? @"true" : @"false") forKey:argument];
 }
-
 
 - (void)sendRequest
 {
@@ -231,7 +243,8 @@
     
 	[request prepare];
 	if (!([[self httpMethod] isEqualToString: @"GET"] || [[self httpMethod] isEqualToString:@"DELETE"])) {
-        NSData* postData = [[mArguments yajl_JSONString] dataUsingEncoding:NSUTF8StringEncoding];
+        NSString *dataString = [mArguments yajl_JSONString];
+        NSData* postData = [dataString dataUsingEncoding:NSUTF8StringEncoding];
         SMLogVerbose(@"POST Data: %d", [postData length]);
         [request setHTTPBody:postData];	
         NSString *contentType = [NSString stringWithFormat:@"application/json"];
@@ -391,6 +404,5 @@
 - (NSString*) description {
   return [NSString stringWithFormat:@"%@: %@", [super description], self.url];
 }
-	
-	
+
 @end

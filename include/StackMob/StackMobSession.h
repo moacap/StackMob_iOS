@@ -15,6 +15,7 @@
 #import <Foundation/Foundation.h>
 
 static NSString *const SMDefaultDomain = @"stackmob.com";
+@class StackMobDataProvider;
 
 @interface StackMobSession : NSObject {
     NSString *url;
@@ -35,8 +36,9 @@ static NSString *const SMDefaultDomain = @"stackmob.com";
 	NSDate* _lastRequestTime;
 	int _requestBurstCount;
 	NSTimer* _requestTimer;
-  NSNumber* _apiVersionNumber;
+    NSNumber* _apiVersionNumber;
 }
+
 
 /**
  * The URL used for API HTTP requests.
@@ -116,7 +118,7 @@ static NSString *const SMDefaultDomain = @"stackmob.com";
  *
  */
 + (StackMobSession*)sessionForApplication:(NSString*)key secret:(NSString*)secret
-						   appName:(NSString*)appName subDomain:(NSString*)subDomain apiVersionNumber:(NSNumber*)apiVersionNumber;
+                                  appName:(NSString*)appName subDomain:(NSString*)subDomain apiVersionNumber:(NSNumber*)apiVersionNumber;
 
 /**
  * Constructs a session and stores it as the globally shared session instance.
@@ -131,9 +133,9 @@ static NSString *const SMDefaultDomain = @"stackmob.com";
  */
 + (StackMobSession*)sessionForApplication:(NSString*)key secret:(NSString*)secret
 								  appName:(NSString*)appName 
-								  subDomain:(NSString*)subDomain
-					  			  domain:(NSString*)domain
-          apiVersionNumber:(NSNumber*)apiVersionNumber;
+                                subDomain:(NSString*)subDomain
+                                   domain:(NSString*)domain
+                         apiVersionNumber:(NSNumber*)apiVersionNumber;
 /**
  * Constructs a session for an application.
  *
@@ -181,6 +183,7 @@ static NSString *const SMDefaultDomain = @"stackmob.com";
                          domain:(NSString*)domain 
                  userObjectName:(NSString*)userObjectName
                apiVersionNumber:(NSNumber*)apiVersionNumber;
+
 
 /**
  * Returns the formatted url for the passedMethod.

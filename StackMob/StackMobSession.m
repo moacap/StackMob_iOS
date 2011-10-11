@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #import "StackMobSession.h"
+#import "StackMobDataProvider.h"
 
 @interface StackMobSession(Private)
 - (void)setup;
@@ -39,7 +40,6 @@ static StackMobSession* sharedSession = nil;
 + (StackMobSession*)session {
 	return sharedSession;
 }
-
 
 + (StackMobSession*)sessionForApplication:(NSString*)key 
                                    secret:(NSString*)secret
@@ -87,22 +87,22 @@ static StackMobSession* sharedSession = nil;
 
 - (NSMutableString*)urlForMethod:(NSString*)method isUserBased:(BOOL)userBasedRequest isSecure:(BOOL)isSecure
 {
-  NSMutableArray *parts = [NSMutableArray array];
-  [parts addObject:(isSecure ? secureURL : regularURL)];
-  
-  if(userBasedRequest) [parts addObject:self.userObjectName];
-  [parts addObject:method];
-  
-  NSMutableString *urlString = [NSMutableString stringWithString:[parts componentsJoinedByString:@"/"]];
-  return urlString;
+    NSMutableArray *parts = [NSMutableArray array];
+    [parts addObject:(isSecure ? secureURL : regularURL)];
+    
+    if(userBasedRequest) [parts addObject:self.userObjectName];
+    [parts addObject:method];
+    
+    NSMutableString *urlString = [NSMutableString stringWithString:[parts componentsJoinedByString:@"/"]];
+    return urlString;
 }
 
 - (NSMutableString*)secureURLForMethod:(NSString*)method isUserBased:(BOOL)userBasedRequest {
-  return  [self urlForMethod:method isUserBased:userBasedRequest isSecure:YES];
+    return  [self urlForMethod:method isUserBased:userBasedRequest isSecure:YES];
 }
 
 - (NSMutableString*)urlForMethod:(NSString*)method isUserBased:(BOOL)userBasedRequest {
-  return  [self urlForMethod:method isUserBased:userBasedRequest isSecure:NO];
+    return  [self urlForMethod:method isUserBased:userBasedRequest isSecure:NO];
 }
 
 - (StackMobSession*)initWithKey:(NSString*)key 
@@ -162,6 +162,7 @@ static StackMobSession* sharedSession = nil;
     pushURL = [[NSString stringWithFormat:@"http://%@.%@/push/%@/%@/device_tokens",_subDomain,_domain,_apiVersionNumber,_appName] retain];
     secureURL = [[NSString stringWithFormat:@"https://%@", url] retain];
     regularURL = [[NSString stringWithFormat:@"http://%@", url] retain];
+    
 }
 
 - (void)dealloc {

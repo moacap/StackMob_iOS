@@ -15,6 +15,7 @@
 #import "StackMobClientData.h"
 #import <CoreLocation/CoreLocation.h>
 #import <UIKit/UIKit.h>
+#import <netinet/in.h>
 #import "Reachability.h"
 #include <sys/sysctl.h>
 #include <net/if.h>

@@ -16,7 +16,6 @@
 #import "StackMobRequest.h"
 
 @interface StackMobPushRequest : StackMobRequest {
-    
 }
 
 @end
