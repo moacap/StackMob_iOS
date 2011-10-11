@@ -17,6 +17,12 @@
 #import "StackMobRequest.h"
 #import "StackMobPushRequest.h"
 #import "RestKitConfiguration.h"
+#import "StackMob.h"
+#import "StackMobSession.h"
+
+@interface RestkitDataProvider (Private)
+- (void) prepareRouter:(RKObjectRouter *)router withRequest:(RestKitRequest *)request;
+@end
 
 @implementation RestkitDataProvider
 @synthesize restKitConfiguration;
@@ -42,9 +48,37 @@
         request.objectManager.mappingProvider = [self.restKitConfiguration mappingProvider];
     
     if([self.restKitConfiguration router])
+    {
         request.objectManager.router = [self.restKitConfiguration router];
+        [self prepareRouter:request.objectManager.router withRequest:request];
+    }
     
     request.objectManager.inferMappingsFromObjectTypes = self.restKitConfiguration.inferMappingsFromObjectTypes;
+}
+
+/* Appends the base path to the relative path. Required because RestKit OAuth expects 
+   the full relative path. */
+- (void) prepareRouter:(RKObjectRouter *)router withRequest:(RestKitRequest *)request
+{
+    StackMobSession *sess = [[StackMob stackmob] session];
+    NSString *path = [[NSURL URLWithString:sess.apiURL] relativePath];    
+    if([request userBased])
+    {
+        [path stringByAppendingFormat:@"/%@",sess.userObjectName];
+    }
+    NSMutableDictionary *routes = [request.objectManager.router routes];
+    for( NSString *className in [routes allKeys] )
+    {
+        NSMutableDictionary *classRoutes = [routes objectForKey:className];
+        for( NSString *method in [classRoutes allKeys] )
+        {
+            NSMutableDictionary *routeEntry = [classRoutes objectForKey:method];
+            // prepend the base path
+            NSString *resourcePath = [path stringByAppendingString:[routeEntry objectForKey:@"resourcePath"]];
+            // update the resource path with the new value;
+            [routeEntry setObject:resourcePath forKey:@"resourcePath"];
+        }
+    }
 }
 
 - (StackMobRequest *)request

@@ -14,8 +14,8 @@
 
 #ifdef __OBJC__
     #import <Foundation/Foundation.h>
-    #import "StackMobAdditions.h"
     #import "RestKit/Code/RestKit.h"
+    #import "StackMobAdditions.h"
 	
 	#define kLogVersbose YES
 	#define kLogRequestSteps YES

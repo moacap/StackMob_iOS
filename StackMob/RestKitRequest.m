@@ -15,6 +15,7 @@
 @interface RestKitRequest (Private)
 - (RKRequestMethod) requestMethodFromString:(NSString *)verb;
 - (RestKitObjectLoaderDelegate *) loaderDelegate:(id<SMRequestDelegate>)requestDelegate;
+- (NSString *)baseUrlWithSession:(StackMobSession *)sess;
 @end
 
 @implementation RestKitRequest
@@ -110,20 +111,21 @@
     return nil;
 }
 
+- (NSString *)baseUrlWithSession:(StackMobSession *)sess
+{
+    NSString *protocol = (self.isSecure) ? @"https" : @"http";
+    NSString *url = [NSString stringWithFormat:@"%@://%@.%@", protocol, sess.subDomain, sess.domain];
+    return url;
+}
+
 - (id)init
 {
 	self = [super init];
     if(self){
         
-        NSString *baseUrl = nil;
-        
-        if([self isSecure])
-            baseUrl = [session secureURLForMethod:[NSString string] isUserBased:[self userBased]];
-        else
-            baseUrl = [session urlForMethod:[NSString string] isUserBased:[self userBased]];
-        
+        NSString *baseUrl = [self baseUrlWithSession:session];
         _objectManager = [[RKObjectManager objectManagerWithBaseURL:baseUrl] retain];
-        _objectManager.client.baseURL = [NSString stringWithFormat:@"%@/",baseUrl];
+        _objectManager.client.baseURL = [NSString stringWithFormat:@"%@",baseUrl];
         _objectManager.client.OAuth1ConsumerKey =session.apiKey;
         _objectManager.client.OAuth1ConsumerSecret = session.apiSecret;
         //_objectManager.client.OAuth1AccessToken = @"YOUR ACCESS TOKEN";

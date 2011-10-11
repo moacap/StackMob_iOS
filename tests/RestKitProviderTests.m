@@ -74,7 +74,7 @@
     RestKitConfiguration *c = [RestKitConfiguration new];
     RKObjectRouter *r = [[RKObjectRouter new] autorelease];
     c.inferMappingsFromObjectTypes = YES;
-    [r routeClass:[UserResponseData class] toResourcePath:@"user" forMethod:RKRequestMethodPOST];
+    [r routeClass:[UserResponseData class] toResourcePath:@"/user" forMethod:RKRequestMethodPOST];
     
     RKObjectMappingProvider *provider = [[RKObjectMappingProvider new] autorelease];
     

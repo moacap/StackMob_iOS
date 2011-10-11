@@ -8,3 +8,4 @@
 
 #import "NSDictionary+StackMob.h"
 #import "NSArray+StackMob.h"
+#import "RKObjectRouter+StackMob.h"

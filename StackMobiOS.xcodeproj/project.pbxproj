@@ -136,6 +136,9 @@
 		C670D9A7144405BD009CC39A /* libRestKitSupport.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C661EE17144400F00029B331 /* libRestKitSupport.a */; };
 		C670D9A814440605009CC39A /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82CE43251288EF9100A73E9C /* CFNetwork.framework */; };
 		C670D9AA14440635009CC39A /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C670D9A914440635009CC39A /* MobileCoreServices.framework */; };
+		C670D9B314441F8D009CC39A /* RKObjectRouter+StackMob.h in Headers */ = {isa = PBXBuildFile; fileRef = C670D9B114441F8D009CC39A /* RKObjectRouter+StackMob.h */; };
+		C670D9B414441F8D009CC39A /* RKObjectRouter+StackMob.m in Sources */ = {isa = PBXBuildFile; fileRef = C670D9B214441F8D009CC39A /* RKObjectRouter+StackMob.m */; };
+		C670D9B514441F8D009CC39A /* RKObjectRouter+StackMob.m in Sources */ = {isa = PBXBuildFile; fileRef = C670D9B214441F8D009CC39A /* RKObjectRouter+StackMob.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -363,6 +366,8 @@
 		C670D99714440554009CC39A /* UserResponseData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserResponseData.h; path = tests/testdata/UserResponseData.h; sourceTree = "<group>"; };
 		C670D99814440554009CC39A /* UserResponseData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserResponseData.m; path = tests/testdata/UserResponseData.m; sourceTree = "<group>"; };
 		C670D9A914440635009CC39A /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		C670D9B114441F8D009CC39A /* RKObjectRouter+StackMob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RKObjectRouter+StackMob.h"; sourceTree = "<group>"; };
+		C670D9B214441F8D009CC39A /* RKObjectRouter+StackMob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RKObjectRouter+StackMob.m"; sourceTree = "<group>"; };
 		D2AAC07E0554694100DB518D /* libStackMobiOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libStackMobiOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -528,6 +533,8 @@
 				038CB1E014283272001DEAC9 /* NSData+Base64.m */,
 				038CB1E114283272001DEAC9 /* NSData+JSON.h */,
 				038CB1E214283272001DEAC9 /* NSData+JSON.m */,
+				C670D9B114441F8D009CC39A /* RKObjectRouter+StackMob.h */,
+				C670D9B214441F8D009CC39A /* RKObjectRouter+StackMob.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -665,6 +672,7 @@
 				C661EE591444019C0029B331 /* RestKitSession.h in Headers */,
 				C661EE5C1444019C0029B331 /* StackMobDataProvider.h in Headers */,
 				C661EE84144404970029B331 /* LCLLogFileConfig.h in Headers */,
+				C670D9B314441F8D009CC39A /* RKObjectRouter+StackMob.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -904,6 +912,7 @@
 				C670D99914440554009CC39A /* RestKitProviderTests.m in Sources */,
 				C670D99A14440554009CC39A /* StackMobTestCase.m in Sources */,
 				C670D99B14440554009CC39A /* UserResponseData.m in Sources */,
+				C670D9B514441F8D009CC39A /* RKObjectRouter+StackMob.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -942,6 +951,7 @@
 				C661EE571444019C0029B331 /* RestKitRequest.m in Sources */,
 				C661EE5A1444019C0029B331 /* RestKitSession.m in Sources */,
 				C661EE5D1444019C0029B331 /* StackMobDataProvider.m in Sources */,
+				C670D9B414441F8D009CC39A /* RKObjectRouter+StackMob.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
