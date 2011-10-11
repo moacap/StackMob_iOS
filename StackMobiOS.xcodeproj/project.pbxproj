@@ -115,8 +115,9 @@
 		C661EDCE1442B1B00029B331 /* libRestKitSupport.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C69386C01442478900762FBD /* libRestKitSupport.a */; };
 		C661EDD01442B20F0029B331 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C661EDCF1442B20E0029B331 /* MobileCoreServices.framework */; };
 		C661EDD11442B26F0029B331 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82CE43251288EF9100A73E9C /* CFNetwork.framework */; };
-		C661EDD41442B3590029B331 /* UserResponseData.h in Headers */ = {isa = PBXBuildFile; fileRef = C661EDD21442B3590029B331 /* UserResponseData.h */; };
-		C661EDD61442B3590029B331 /* UserResponseData.m in Sources */ = {isa = PBXBuildFile; fileRef = C661EDD31442B3590029B331 /* UserResponseData.m */; };
+		C661EDF81443F7BA0029B331 /* UserResponseData.h in Headers */ = {isa = PBXBuildFile; fileRef = C661EDF61443F7BA0029B331 /* UserResponseData.h */; };
+		C661EDF91443F7BA0029B331 /* UserResponseData.m in Sources */ = {isa = PBXBuildFile; fileRef = C661EDF71443F7BA0029B331 /* UserResponseData.m */; };
+		C661EDFA1443F7BA0029B331 /* UserResponseData.m in Sources */ = {isa = PBXBuildFile; fileRef = C661EDF71443F7BA0029B331 /* UserResponseData.m */; };
 		C693867E1442354E00762FBD /* NSArray+StackMob.h in Headers */ = {isa = PBXBuildFile; fileRef = C693867C1442354E00762FBD /* NSArray+StackMob.h */; };
 		C693867F1442354E00762FBD /* NSArray+StackMob.m in Sources */ = {isa = PBXBuildFile; fileRef = C693867D1442354E00762FBD /* NSArray+StackMob.m */; };
 		C69386801442354E00762FBD /* NSArray+StackMob.m in Sources */ = {isa = PBXBuildFile; fileRef = C693867D1442354E00762FBD /* NSArray+StackMob.m */; };
@@ -368,8 +369,8 @@
 		C661EDB31442AE050029B331 /* StackMobTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StackMobTestCase.h; path = tests/StackMobTestCase.h; sourceTree = "<group>"; };
 		C661EDB41442AE050029B331 /* StackMobTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StackMobTestCase.m; path = tests/StackMobTestCase.m; sourceTree = "<group>"; };
 		C661EDCF1442B20E0029B331 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		C661EDD21442B3590029B331 /* UserResponseData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserResponseData.h; path = RestKitData/UserResponseData.h; sourceTree = "<group>"; };
-		C661EDD31442B3590029B331 /* UserResponseData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserResponseData.m; path = RestKitData/UserResponseData.m; sourceTree = "<group>"; };
+		C661EDF61443F7BA0029B331 /* UserResponseData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserResponseData.h; path = tests/testdata/UserResponseData.h; sourceTree = "<group>"; };
+		C661EDF71443F7BA0029B331 /* UserResponseData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserResponseData.m; path = tests/testdata/UserResponseData.m; sourceTree = "<group>"; };
 		C693867C1442354E00762FBD /* NSArray+StackMob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+StackMob.h"; path = "StackMob/NSArray+StackMob.h"; sourceTree = "<group>"; };
 		C693867D1442354E00762FBD /* NSArray+StackMob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+StackMob.m"; path = "StackMob/NSArray+StackMob.m"; sourceTree = "<group>"; };
 		C69386811442359D00762FBD /* StackMobAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StackMobAdditions.h; path = StackMob/StackMobAdditions.h; sourceTree = "<group>"; };
@@ -553,7 +554,7 @@
 		82CE42D41288E4D200A73E9C /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				C661EDB81442AF920029B331 /* RestKitData */,
+				C661EDB81442AF920029B331 /* TestData */,
 				C661EDB31442AE050029B331 /* StackMobTestCase.h */,
 				C661EDB41442AE050029B331 /* StackMobTestCase.m */,
 				82CE45F312892FFA00A73E9C /* APIRequestTests.h */,
@@ -565,13 +566,13 @@
 			name = Tests;
 			sourceTree = "<group>";
 		};
-		C661EDB81442AF920029B331 /* RestKitData */ = {
+		C661EDB81442AF920029B331 /* TestData */ = {
 			isa = PBXGroup;
 			children = (
-				C661EDD21442B3590029B331 /* UserResponseData.h */,
-				C661EDD31442B3590029B331 /* UserResponseData.m */,
+				C661EDF61443F7BA0029B331 /* UserResponseData.h */,
+				C661EDF71443F7BA0029B331 /* UserResponseData.m */,
 			);
-			name = RestKitData;
+			name = TestData;
 			sourceTree = "<group>";
 		};
 		C69386611442250400762FBD /* DataProviders */ = {
@@ -698,7 +699,7 @@
 				C661EDAE1442ACEC0029B331 /* RestKitProviderTests.h in Headers */,
 				C661EDB21442AD430029B331 /* TestConstants.h in Headers */,
 				C661EDB51442AE050029B331 /* StackMobTestCase.h in Headers */,
-				C661EDD41442B3590029B331 /* UserResponseData.h in Headers */,
+				C661EDF81443F7BA0029B331 /* UserResponseData.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -941,7 +942,7 @@
 				C661EDAB1442A44B0029B331 /* RestKitConfiguration.m in Sources */,
 				C661EDB01442ACEC0029B331 /* RestKitProviderTests.m in Sources */,
 				C661EDB71442AE050029B331 /* StackMobTestCase.m in Sources */,
-				C661EDD61442B3590029B331 /* UserResponseData.m in Sources */,
+				C661EDFA1443F7BA0029B331 /* UserResponseData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -980,6 +981,7 @@
 				C661ED98144278510029B331 /* RestKitRequest.m in Sources */,
 				C661EDA314428A200029B331 /* RestKitObjectLoaderDelegate.m in Sources */,
 				C661EDAA1442A44B0029B331 /* RestKitConfiguration.m in Sources */,
+				C661EDF91443F7BA0029B331 /* UserResponseData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
