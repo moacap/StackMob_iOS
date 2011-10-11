@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #import "StackMob.h"
+#import "StackMobConfiguration.h"
 #import "StackMobPushRequest.h"
 #import "StackMobRequest.h"
 #import "StackMobAdditions.h"
@@ -27,6 +28,8 @@
 - (NSDictionary *)loadInfo;
 @end
 
+#define ENVIRONMENTS [NSArray arrayWithObjects:@"production", @"development", nil]
+
 @implementation StackMob
 
 @synthesize requests;
@@ -35,6 +38,7 @@
 @synthesize dataProvider = _dataProvider;
 
 static StackMob *_sharedManager = nil;
+static SMEnvironment environment;
 
 - (id) init
 {
@@ -61,6 +65,7 @@ static StackMob *_sharedManager = nil;
 {
     if (_sharedManager == nil) {
         _sharedManager = [[super allocWithZone:NULL] init];
+        environment = SMEnvironmentProduction;
         _sharedManager.session = [[StackMobSession sessionForApplication:apiKey
                                                                   secret:apiSecret
                                                                  appName:appName
@@ -77,7 +82,6 @@ static StackMob *_sharedManager = nil;
         
     }
     return _sharedManager;
-    
 }
 
 + (void) setSharedManager:(StackMob *)stackMob
@@ -91,15 +95,36 @@ static StackMob *_sharedManager = nil;
 
 + (StackMob *)stackmob {
     if (_sharedManager == nil) {
+        environment = SMEnvironmentProduction;
+
         _sharedManager = [[super allocWithZone:NULL] init];
         NSDictionary *appInfo = [_sharedManager loadInfo];
-        _sharedManager.session = [[StackMobSession sessionForApplication:[appInfo objectForKey:@"publicKey"]
-                                                                  secret:[appInfo objectForKey:@"privateKey"]
-                                                                 appName:[appInfo objectForKey:@"appName"]
-                                                               subDomain:[appInfo objectForKey:@"appSubdomain"]
-                                                                  domain:[appInfo objectForKey:@"domain"]
-                                                          userObjectName:[appInfo objectForKey:@"userObjectName"]
-                                                        apiVersionNumber:[appInfo objectForKey:@"apiVersion"]] retain];
+        if(appInfo){
+            NSLog(@"Loading applicatino info from StackMob.plist is being deprecated for security purposes.");
+            NSLog(@"Please define your application info in your app's prefix.pch");
+            _sharedManager.session = [StackMobSession sessionForApplication:[appInfo objectForKey:@"publicKey"]
+                                                                      secret:[appInfo objectForKey:@"privateKey"]
+                                                                     appName:[appInfo objectForKey:@"appName"]
+                                                                   subDomain:[appInfo objectForKey:@"appSubdomain"]
+                                                                      domain:[appInfo objectForKey:@"domain"]
+                                                              userObjectName:[appInfo objectForKey:@"userObjectName"]
+                                                            apiVersionNumber:[appInfo objectForKey:@"apiVersion"]];
+
+        }
+        else{
+#ifdef STACKMOB_PUBLIC_KEY
+            _sharedManager.session = [StackMobSession sessionForApplication:STACKMOB_PUBLIC_KEY
+                                                                      secret:STACKMOB_PRIVATE_KEY
+                                                                     appName:STACKMOB_APP_NAME
+                                                                   subDomain:STACKMOB_APP_SUBDOMAIN
+                                                                      domain:STACKMOB_APP_DOMAIN
+                                                              userObjectName:STACKMOB_USER_OBJECT_NAME
+                                                           apiVersionNumber:[NSNumber numberWithInt:STACKMOB_API_VERSION]];
+#else
+#warning "No configuration found"
+#endif
+
+        }
         _sharedManager.requests = [NSMutableArray array];
         _sharedManager.callbacks = [NSMutableArray array];
         
@@ -148,7 +173,7 @@ static StackMob *_sharedManager = nil;
 
 - (StackMobRequest *)logoutWithCallback:(StackMobCallback)callback
 {
-    return [self get:@"logout" withCallback:callback];
+    return [self destroy:session.userObjectName withArguments:NULL andCallback:callback];
 }
 
 - (StackMobRequest *)getUserInfowithArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
@@ -238,10 +263,13 @@ static StackMob *_sharedManager = nil;
 
 # pragma mark - PUSH Notifications
 
-- (StackMobRequest *)registerForPushWithUser:(NSString *)userId andToken:(NSString *)token andCallback:(StackMobCallback)callback
+- (StackMobRequest *)registerForPushWithUser:(NSString *)userId token:(NSString *)token andCallback:(StackMobCallback)callback
 {
-    NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:userId, @"user_id", token, @"token", nil];
-    StackMobPushRequest *request = [self.dataProvider pushRequest];
+    NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:userId, @"userId", token, @"token", nil];
+    StackMobPushRequest *request = [StackMobPushRequest request];
+    request.httpMethod = @"POST";
+    request.method = @"device_tokens";
+    SMLog(@"args %@", args);
     [request setArguments:args];
     [self queueRequest:request andCallback:callback];
     return request;
@@ -419,26 +447,26 @@ static StackMob *_sharedManager = nil;
 {
     NSString *filename = [[NSBundle mainBundle] pathForResource:@"StackMob" ofType:@"plist"];
     NSDictionary *info = [NSDictionary dictionaryWithContentsOfFile:filename];
-    NSMutableDictionary *appInfo = [NSMutableDictionary dictionaryWithDictionary:[info objectForKey:@"production"]];
-    SMLog(@"public key: %@", [appInfo objectForKey:@"publicKey"]);
-    SMLog(@"private key: %@", [appInfo objectForKey:@"privateKey"]);
-    if(!filename || !appInfo){
-        [NSException raise:@"StackMob.plist format error" format:@"Please ensure proper formatting.  Toplevel should have 'production' or 'development' key."];
-    }
-    else if(![appInfo objectForKey:@"publicKey"] || [[appInfo objectForKey:@"publicKey"] length] < 1 || ![appInfo objectForKey:@"privateKey"] || [[appInfo objectForKey:@"privateKey"] length] < 1 ){
-        [NSException raise:@"Initialization Error" format:@"Make sure you enter your publicKey and privateKey in StackMob.plist"];
-    }
-    else if(![appInfo objectForKey:@"appName"] || [[appInfo objectForKey:@"appName"] length] < 1 ){
-        [NSException raise:@"Initialization Error" format:@"Make sure you enter your appName in StackMob.plist"];
-    }
-    else if(![appInfo objectForKey:@"appSubdomain"] || [[appInfo objectForKey:@"appSubdomain"] length] < 1 ){
-        [NSException raise:@"Initialization Error" format:@"Make sure you enter your appSubdomain in StackMob.plist"];
-    }
-    else if(![appInfo objectForKey:@"domain"] || [[appInfo objectForKey:@"domain"] length] < 1 ){
-        [NSException raise:@"Initialization Error" format:@"Make sure you enter your domain in StackMob.plist"];
-    }
-    else if(![appInfo objectForKey:@"apiVersion"]){
-        [appInfo setValue:[NSNumber numberWithInt:1] forKey:@"apiVersion"];
+    NSString *env = [ENVIRONMENTS objectAtIndex:(int)environment];
+
+    NSMutableDictionary *appInfo = nil;
+    if(info){
+        appInfo = [NSMutableDictionary dictionaryWithDictionary:[info objectForKey:env]];
+        if(![appInfo objectForKey:@"publicKey"] || [[appInfo objectForKey:@"publicKey"] length] < 1 || ![appInfo objectForKey:@"privateKey"] || [[appInfo objectForKey:@"privateKey"] length] < 1 ){
+            [NSException raise:@"Initialization Error" format:@"Make sure you enter your publicKey and privateKey in StackMob.plist"];
+        }
+        else if(![appInfo objectForKey:@"appName"] || [[appInfo objectForKey:@"appName"] length] < 1 ){
+            [NSException raise:@"Initialization Error" format:@"Make sure you enter your appName in StackMob.plist"];
+        }
+        else if(![appInfo objectForKey:@"appSubdomain"] || [[appInfo objectForKey:@"appSubdomain"] length] < 1 ){
+            [NSException raise:@"Initialization Error" format:@"Make sure you enter your appSubdomain in StackMob.plist"];
+        }
+        else if(![appInfo objectForKey:@"domain"] || [[appInfo objectForKey:@"domain"] length] < 1 ){
+            [NSException raise:@"Initialization Error" format:@"Make sure you enter your domain in StackMob.plist"];
+        }
+        else if(![appInfo objectForKey:@"apiVersion"]){
+            [appInfo setValue:[NSNumber numberWithInt:1] forKey:@"apiVersion"];
+        }
     }
     return appInfo;
 }
