@@ -1,0 +1,3 @@
+[submodule "external/libraries/RestKit"]
+	path = external/libraries/RestKit
+	url = git://github.com/RestKit/RestKit.git
