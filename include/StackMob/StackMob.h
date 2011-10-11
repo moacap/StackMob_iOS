@@ -15,8 +15,10 @@
 #import <Foundation/Foundation.h>
 #import "StackMobSession.h"
 #import "StackMobRequest.h"
+#import "DataProviderProtocol.h"
 
 typedef void (^StackMobCallback)(BOOL success, id result);
+@class StackMobDataProvider;
 
 @interface StackMob : NSObject <SMRequestDelegate>{
     NSMutableArray *callbacks;
@@ -24,18 +26,42 @@ typedef void (^StackMobCallback)(BOOL success, id result);
     StackMobSession *session;
     StackMobRequest *currentRequest;
     BOOL _running;
+    id<DataProviderProtocol> _dataProvider;
 }
 
 @property (nonatomic, retain) StackMobSession *session;
 @property (nonatomic, retain) NSMutableArray *callbacks;
 @property (nonatomic, retain) NSMutableArray *requests;
 
+/** 
+ * Data bridge which handles network, data mapping, and serialization 
+ * features.
+ */
+@property(nonatomic,retain) id<DataProviderProtocol> dataProvider;
 
 /*
  * Manually configure your session.  Subsequent requests for the StackMob
- * singleton can use [StackMob stackmob]
+ * singleton can use [StackMob stackmob].
  */
-+ (StackMob *)setApplication:(NSString *)apiKey secret:(NSString *)apiSecret appName:(NSString *)appName subDomain:(NSString *)subDomain userObjectName:(NSString *)userObjectName apiVersionNumber:(NSNumber *)apiVersion;
+
+
++ (StackMob *)setApplication:(NSString *)apiKey secret:(NSString *)apiSecret 
+                     appName:(NSString *)appName subDomain:(NSString *)subDomain 
+              userObjectName:(NSString *)userObjectName apiVersionNumber:(NSNumber *)apiVersion;
+
+
+/*
+ * Manually configure your session.  Subsequent requests for the StackMob
+ * singleton can use [StackMob stackmob].
+ */
+
++ (StackMob *)setApplication:(NSString *)apiKey secret:(NSString *)apiSecret 
+                     appName:(NSString *)appName subDomain:(NSString *)subDomain 
+              userObjectName:(NSString *)userObjectName apiVersionNumber:(NSNumber *)apiVersion
+                  dataProvider:(id<DataProviderProtocol>)dataProvider;
+
+/** Sets the stackmob shared object. Set to nil to reset stackmob singleton. */
++ (void) setSharedManager:(StackMob *)stackMob;
 
 /*
  * Returns the pre-configured or auto-configured singleton
@@ -98,7 +124,8 @@ typedef void (^StackMobCallback)(BOOL success, id result);
  * assuming they have set one)
  * @param facebookToken the user's facebook access token
  */
-- (StackMobRequest *)registerWithFacebookToken:(NSString *)facebookToken username:(NSString *)username andCallback:(StackMobCallback)callback;
+- (StackMobRequest *)registerWithFacebookToken:(NSString *)facebookToken username:(NSString *)username
+                                   andCallback:(StackMobCallback)callback;
 
 /*
  * Links an existing user account to their facebook account.  Assumes the user
@@ -127,7 +154,8 @@ typedef void (^StackMobCallback)(BOOL success, id result);
  * @param token the user's twitter token
  * @param secret the user's twitter secret
  */
-- (StackMobRequest *)registerWithTwitterToken:(NSString *)token secret:(NSString *)secret username:(NSString *)username andCallback:(StackMobCallback)callback;
+- (StackMobRequest *)registerWithTwitterToken:(NSString *)token secret:(NSString *)secret 
+                                     username:(NSString *)username andCallback:(StackMobCallback)callback;
 
 /* 
  * Login an existing user via Twitter
@@ -160,47 +188,93 @@ typedef void (^StackMobCallback)(BOOL success, id result);
 - (StackMobRequest *)registerForPushWithUser:(NSString *)userId andToken:(NSString *)token andCallback:(StackMobCallback)callback;
 
 /********************** CRUD Methods **********************/
+
 /* 
- * Get the object with name "path" and arguments dictionary
+ * Get the object with name "path" and arguments dictionary. 
  * @param arguments a dictionary whose keys correspond to object field names on Stackmob Object Model
  */
 - (StackMobRequest *)get:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
 
 /* 
- * Get the object with name "path" with no arguments.  This will return all items of object type
+ * Get the object with name "path" with no arguments.  This will return all items of object type. 
  * @param path the name of the object to get in your stackmob app
  */
 - (StackMobRequest *)get:(NSString *)path withCallback:(StackMobCallback)callback;
 
 /* 
- * POST the arguments to the given object model with name of "path"
+ * POST the arguments to the given object model with name of "path".  
  * @param path the name of the object in your stackmob app to be created
  * @param arguments a dictionary whose keys correspond to field names of the object in your Stackmob app
  */
 - (StackMobRequest *)post:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
 
 /*
- * POST the arguments for a user
+ * POST the arguments for a user. 
  * @param path the name of the object in your stackmob app to be created
  * @param arguments a dictionary whose keys correspond to field names of the object in your Stackmob app
  */
-- (StackMobRequest *)post:(NSString *)path forUser:(NSString *)user withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
+- (StackMobRequest *)post:(NSString *)path forUser:(NSString *)user withArguments:(NSDictionary *)arguments
+              andCallback:(StackMobCallback)callback;
 
 /*
- * PUT the arguments to the given object path
+ * PUT the arguments to the given object path. 
  * @path the name of the object in your Stackmob app
  * @param arguments a Dictionary of attributes whose  keys correspond to field names of the object in your Stackmob app
  */
 - (StackMobRequest *)put:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
 
 /* 
- * DELETE the object at the given path
+ * DELETE the object at the given path. 
  * @path the name of the object in your stackmob app
  * @param arguments a Dictonary with one key that corresponds to your object's primary key
  *   the value of which is the item to delete
  */
 - (StackMobRequest *)destroy:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
 
+
+/********************** NEW CRUD Methods **********************/
+
+/* 
+ * Get the object with name "path" and arguments dictionary. 
+ * @param object whose property correspond to field names request url
+ */
+- (StackMobRequest *)get:(NSString *)path withObject:(id)object andCallback:(StackMobCallback)callback;
+
+/* 
+ * Get the object with name "path" with no arguments.  This will return all items of object type. 
+ * @param object the name of the object to get in your stackmob app
+ */
+- (StackMobRequest *)get:(NSString *)path withCallback:(StackMobCallback)callback;
+
+/* 
+ * POST the arguments to the given object model with name of "path".
+ * @param path the name of the object in your stackmob app to be created
+ * @param object whose property correspond to field names of the object in your Stackmob app
+ */
+- (StackMobRequest *)post:(NSString *)path withObject:(id)object andCallback:(StackMobCallback)callback;
+
+/*
+ * POST the data for a user.  
+ * @param path the name of the object in your stackmob app to be created
+ * @param object whose property correspond to field names of the object in your Stackmob app
+ */
+- (StackMobRequest *)post:(NSString *)path forUser:(NSString *)user withObject:(id)object
+              andCallback:(StackMobCallback)callback;
+
+/*
+ * PUT the data to the given object path. 
+ * @path the name of the object in your Stackmob app
+ * @param object whose property correspond to field names of the object in your Stackmob app
+ */
+- (StackMobRequest *)put:(NSString *)path withObject:(id)object andCallback:(StackMobCallback)callback;
+
+/* 
+ * DELETE the object at the given path. 
+ * @path the name of the object in your stackmob app
+ * @param object a with a primary key which will be used in request to delete object.
+ *   the value of which is the item to delete
+ */
+- (StackMobRequest *)destroy:(NSString *)path withObject:(id)object andCallback:(StackMobCallback)callback;
 
 /**************** Heroku Methods *****************/
 

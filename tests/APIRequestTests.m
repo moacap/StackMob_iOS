@@ -15,31 +15,8 @@
 
 #import "APIRequestTests.h"
 
-NSString * const kAPIKey = @"201543b9-7b81-4934-a353-c22d979c891a";
-NSString * const kAPISecret = @"7a099db4-e09a-4e71-8348-3fea8ef5164f";
-NSString * const kSubDomain = @"stackmob";
-NSString * const kAppName = @"iossdktest";
-NSInteger  const kVersion = 0;
-
-StackMobSession *mySession = nil;
-
 @implementation APIRequestTests
 
-- (void) setUp
-{
-	NSLog(@"In setup");
-	if (!mySession) 
-	{
-        [StackMob setApplication:kAPIKey secret:kAPISecret appName:kAppName subDomain:kSubDomain userObjectName:@"user" apiVersionNumber:[NSNumber numberWithInt:kVersion]];
-		NSLog(@"Created new session");
-	}
-}
-
-- (void) tearDown
-{
-	NSLog(@"In teardown");
-	mySession = nil;
-}
 
 - (void) testGet {
     NSMutableDictionary* userArgs = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"ty", @"username",nil];

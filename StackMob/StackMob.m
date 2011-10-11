@@ -18,6 +18,7 @@
 #import "StackMobAdditions.h"
 #import "StackMobClientData.h"
 #import "StackMobHerokuRequest.h"
+#import "StackMobDataProvider.h"
 
 @interface StackMob (Private)
 - (void)queueRequest:(StackMobRequest *)request andCallback:(StackMobCallback)callback;
@@ -31,10 +32,32 @@
 @synthesize requests;
 @synthesize callbacks;
 @synthesize session;
+@synthesize dataProvider = _dataProvider;
 
 static StackMob *_sharedManager = nil;
 
-+ (StackMob *)setApplication:(NSString *)apiKey secret:(NSString *)apiSecret appName:(NSString *)appName subDomain:(NSString *)subDomain userObjectName:(NSString *)userObjectName apiVersionNumber:(NSNumber *)apiVersion
+- (id) init
+{
+    self = [super init];
+    if(self)
+    {
+    }
+    return self;
+}
+
+
++ (StackMob *)setApplication:(NSString *)apiKey secret:(NSString *)apiSecret 
+                     appName:(NSString *)appName subDomain:(NSString *)subDomain 
+              userObjectName:(NSString *)userObjectName apiVersionNumber:(NSNumber *)apiVersion
+{
+    return [self setApplication:apiKey secret:apiSecret appName:appName subDomain:subDomain
+          userObjectName:userObjectName apiVersionNumber:apiVersion dataProvider:nil];
+}
+
++ (StackMob *)setApplication:(NSString *)apiKey secret:(NSString *)apiSecret 
+                     appName:(NSString *)appName subDomain:(NSString *)subDomain 
+              userObjectName:(NSString *)userObjectName apiVersionNumber:(NSNumber *)apiVersion
+                 dataProvider:(id<DataProviderProtocol> )dataProvider
 {
     if (_sharedManager == nil) {
         _sharedManager = [[super allocWithZone:NULL] init];
@@ -47,9 +70,23 @@ static StackMob *_sharedManager = nil;
                                                         apiVersionNumber:apiVersion] retain];
         _sharedManager.requests = [NSMutableArray array];
         _sharedManager.callbacks = [NSMutableArray array];
+        _sharedManager.dataProvider = dataProvider;
+        
+        if(!dataProvider)
+            _sharedManager.dataProvider = [[[StackMobDataProvider alloc]init] autorelease];
+        
     }
     return _sharedManager;
     
+}
+
++ (void) setSharedManager:(StackMob *)stackMob
+{
+    if(_sharedManager != stackMob)
+    {
+        [_sharedManager release];
+        _sharedManager = [stackMob retain];
+    }
 }
 
 + (StackMob *)stackmob {
@@ -65,6 +102,8 @@ static StackMob *_sharedManager = nil;
                                                         apiVersionNumber:[appInfo objectForKey:@"apiVersion"]] retain];
         _sharedManager.requests = [NSMutableArray array];
         _sharedManager.callbacks = [NSMutableArray array];
+        
+        _sharedManager.dataProvider = [[[StackMobDataProvider alloc]init] autorelease];
     }
     return _sharedManager;
 }
@@ -72,13 +111,13 @@ static StackMob *_sharedManager = nil;
 #pragma mark - Session Methods
 
 - (StackMobRequest *)startSession{
-    StackMobRequest *request = [StackMobRequest requestForMethod:@"startsession" withHttpVerb:POST];
+    StackMobRequest *request = [self.dataProvider requestForMethod:@"startsession" withHttpVerb:POST];
     [self queueRequest:request andCallback:nil];
     return request;
 }
 
 - (StackMobRequest *)endSession{
-    StackMobRequest *request = [StackMobRequest requestForMethod:@"endsession" withHttpVerb:POST];
+    StackMobRequest *request = [self.dataProvider requestForMethod:@"endsession" withHttpVerb:POST];
     [self queueRequest:request andCallback:nil];
     return request;
 }
@@ -87,8 +126,8 @@ static StackMob *_sharedManager = nil;
 
 - (StackMobRequest *)registerWithArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
 {
-    StackMobRequest *request = [StackMobRequest requestForMethod:session.userObjectName
-                                                   withArguments:arguments
+    StackMobRequest *request = [self.dataProvider requestForMethod:session.userObjectName
+                                                   withObject:arguments
                                                     withHttpVerb:POST]; 
     request.isSecure = YES;
     [self queueRequest:request andCallback:callback];
@@ -98,8 +137,8 @@ static StackMob *_sharedManager = nil;
 
 - (StackMobRequest *)loginWithArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
 {
-    StackMobRequest *request = [StackMobRequest requestForMethod:[NSString stringWithFormat:@"%@/login", session.userObjectName]
-                                                   withArguments:arguments
+    StackMobRequest *request = [self.dataProvider requestForMethod:[NSString stringWithFormat:@"%@/login", session.userObjectName]
+                                                   withObject:arguments
                                                     withHttpVerb:GET]; 
     request.isSecure = YES;
     [self queueRequest:request andCallback:callback];
@@ -123,7 +162,7 @@ static StackMob *_sharedManager = nil;
 - (StackMobRequest *)loginWithFacebookToken:(NSString *)facebookToken andCallback:(StackMobCallback)callback
 {
     NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:facebookToken, @"fb_at", nil];
-    StackMobRequest *request = [StackMobRequest userRequestForMethod:@"facebookLogin" withArguments:args withHttpVerb:GET];
+    StackMobRequest *request = [self.dataProvider userRequestForMethod:@"facebookLogin" withObject:args withHttpVerb:GET];
     request.isSecure = YES;
     [self queueRequest:request andCallback:callback];
     return request;
@@ -132,7 +171,7 @@ static StackMob *_sharedManager = nil;
 - (StackMobRequest *)registerWithFacebookToken:(NSString *)facebookToken username:(NSString *)username andCallback:(StackMobCallback)callback
 {
     NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:facebookToken, @"fb_at", username, @"username", nil];
-    StackMobRequest *request = [StackMobRequest userRequestForMethod:@"createUserWithFacebook" withArguments:args withHttpVerb:GET];
+    StackMobRequest *request = [self.dataProvider userRequestForMethod:@"createUserWithFacebook" withObject:args withHttpVerb:GET];
     request.isSecure = YES;
     [self queueRequest:request andCallback:callback];
     return request;
@@ -141,7 +180,7 @@ static StackMob *_sharedManager = nil;
 - (StackMobRequest *)linkUserWithFacebookToken:(NSString *)facebookToken withCallback:(StackMobCallback)callback
 {
     NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:facebookToken, @"fb_at", nil];
-    StackMobRequest *request = [StackMobRequest userRequestForMethod:@"linkUserWithFacebook" withArguments:args withHttpVerb:GET];
+    StackMobRequest *request = [self.dataProvider userRequestForMethod:@"linkUserWithFacebook" withObject:args withHttpVerb:GET];
     request.isSecure = YES;
     [self queueRequest:request andCallback:callback];
     return request;    
@@ -150,7 +189,7 @@ static StackMob *_sharedManager = nil;
 - (StackMobRequest *)postFacebookMessage:(NSString *)message withCallback:(StackMobCallback)callback
 {
     NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:message, @"message", nil];
-    StackMobRequest *request = [StackMobRequest userRequestForMethod:@"postFacebookMessage" withArguments:args withHttpVerb:GET];
+    StackMobRequest *request = [self.dataProvider userRequestForMethod:@"postFacebookMessage" withObject:args withHttpVerb:GET];
     [self queueRequest:request andCallback:callback];
     return request;
 }
@@ -165,7 +204,7 @@ static StackMob *_sharedManager = nil;
 - (StackMobRequest *)registerWithTwitterToken:(NSString *)token secret:(NSString *)secret username:(NSString *)username andCallback:(StackMobCallback)callback
 {
     NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:token, @"tw_tk", secret, @"tw_ts", username, @"username", nil];
-    StackMobRequest *request = [StackMobRequest userRequestForMethod:@"createUserWithTwitter" withArguments:args withHttpVerb:GET];
+    StackMobRequest *request = [self.dataProvider userRequestForMethod:@"createUserWithTwitter" withObject:args withHttpVerb:GET];
     request.isSecure = YES;
     [self queueRequest:request andCallback:callback];
     return request;
@@ -174,7 +213,7 @@ static StackMob *_sharedManager = nil;
 - (StackMobRequest *)loginWithTwitterToken:(NSString *)token secret:(NSString *)secret andCallback:(StackMobCallback)callback
 {
     NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:token, @"tw_tk", secret, @"tw_ts", nil];
-    StackMobRequest *request = [StackMobRequest userRequestForMethod:@"twitterLogin" withArguments:args withHttpVerb:GET];
+    StackMobRequest *request = [self.dataProvider userRequestForMethod:@"twitterLogin" withObject:args withHttpVerb:GET];
     request.isSecure = YES;
     [self queueRequest:request andCallback:callback];
     return request;    
@@ -183,7 +222,7 @@ static StackMob *_sharedManager = nil;
 - (StackMobRequest *)linkUserWithTwitterToken:(NSString *)token secret:(NSString *)secret andCallback:(StackMobCallback)callback
 {
     NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:token, @"tw_tk", secret, @"tw_ts", nil];
-    StackMobRequest *request = [StackMobRequest userRequestForMethod:@"linkUserWithTwitter" withArguments:args withHttpVerb:GET];
+    StackMobRequest *request = [self.dataProvider userRequestForMethod:@"linkUserWithTwitter" withObject:args withHttpVerb:GET];
     request.isSecure = YES;
     [self queueRequest:request andCallback:callback];
     return request;    
@@ -192,7 +231,7 @@ static StackMob *_sharedManager = nil;
 - (StackMobRequest *)twitterStatusUpdate:(NSString *)message withCallback:(StackMobCallback)callback
 {
     NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:message, @"tw_st", nil];
-    StackMobRequest *request = [StackMobRequest userRequestForMethod:@"twitterStatusUpdate" withArguments:args withHttpVerb:GET];
+    StackMobRequest *request = [self.dataProvider userRequestForMethod:@"twitterStatusUpdate" withObject:args withHttpVerb:GET];
     [self queueRequest:request andCallback:callback];
     return request;    
 }
@@ -202,7 +241,7 @@ static StackMob *_sharedManager = nil;
 - (StackMobRequest *)registerForPushWithUser:(NSString *)userId andToken:(NSString *)token andCallback:(StackMobCallback)callback
 {
     NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:userId, @"user_id", token, @"token", nil];
-    StackMobPushRequest *request = [StackMobPushRequest request];
+    StackMobPushRequest *request = [self.dataProvider pushRequest];
     [request setArguments:args];
     [self queueRequest:request andCallback:callback];
     return request;
@@ -212,7 +251,7 @@ static StackMob *_sharedManager = nil;
 
 - (StackMobRequest *)herokuGet:(NSString *)path withCallback:(StackMobCallback)callback
 {
-    StackMobHerokuRequest *request = [StackMobHerokuRequest requestForMethod:path
+    StackMobRequest *request = [StackMobHerokuRequest requestForMethod:path
                                                                withArguments:NULL
                                                                 withHttpVerb:GET];
     [self queueRequest:request andCallback:callback];
@@ -258,57 +297,90 @@ static StackMob *_sharedManager = nil;
 # pragma mark - CRUD methods
 
 - (StackMobRequest *)get:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback{
-    StackMobRequest *request = [StackMobRequest requestForMethod:path
-                                                   withArguments:arguments
-                                                    withHttpVerb:GET]; 
-    [self queueRequest:request andCallback:callback];
-    return request;
+    return [self get:path withObject:arguments andCallback:callback];
 }
 
 - (StackMobRequest *)get:(NSString *)path withCallback:(StackMobCallback)callback
 {
-    StackMobRequest *request = [StackMobRequest requestForMethod:path
-                                                   withArguments:NULL
-                                                    withHttpVerb:GET];
+    StackMobRequest *request = [self.dataProvider requestForMethod:path
+                                                        withObject:NULL
+                                                      withHttpVerb:GET];
+    [self queueRequest:request andCallback:callback];
+    return request;
+}
+
+- (StackMobRequest *)get:(NSString *)path withObject:(id)object andCallback:(StackMobCallback)callback
+{
+    StackMobRequest *request = [self.dataProvider requestForMethod:path
+                                                        withObject:object
+                                                      withHttpVerb:GET]; 
     [self queueRequest:request andCallback:callback];
     return request;
 }
 
 - (StackMobRequest *)post:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
 {
-    StackMobRequest *request = [StackMobRequest requestForMethod:path
-                                                   withArguments:arguments
-                                                    withHttpVerb:POST];
-    [self queueRequest:request andCallback:callback];
-    return request;
+    return [self post:path withObject:arguments andCallback:callback];
 }
 
 - (StackMobRequest *)post:(NSString *)path forUser:(NSString *)user withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
 {
-    NSDictionary *modifiedArguments = [NSMutableDictionary dictionaryWithDictionary:arguments];
-    [modifiedArguments setValue:user forKey:session.userObjectName];
-    StackMobRequest *request = [StackMobRequest requestForMethod:[NSString stringWithFormat:@"%@/%@", session.userObjectName, path]
-                                                   withArguments:modifiedArguments
-                                                    withHttpVerb:POST];
+    return [self post:path forUser:user withObject:arguments andCallback:callback];
+}
+
+- (StackMobRequest *)post:(NSString *)path withObject:(id)object andCallback:(StackMobCallback)callback
+{
+    StackMobRequest *request = [self.dataProvider requestForMethod:path
+                                                     withObject:object
+                                                      withHttpVerb:POST];
+    [self queueRequest:request andCallback:callback];
+    return request;
+}
+
+- (StackMobRequest *)post:(NSString *)path forUser:(NSString *)user withObject:(id)object
+              andCallback:(StackMobCallback)callback
+{
+    id modifiedObject = object;
+    if([object isKindOfClass:[NSDictionary class]])
+    {
+        modifiedObject = [NSMutableDictionary dictionaryWithDictionary:object];
+        [modifiedObject setValue:user forKey:session.userObjectName];
+    }
+
+    StackMobRequest *request = [self.dataProvider requestForMethod:[NSString stringWithFormat:@"%@/%@", session.userObjectName, path]
+                                                     withObject:modifiedObject
+                                                      withHttpVerb:POST];
     [self queueRequest:request andCallback:callback];
     return request;
 }
 
 - (StackMobRequest *)put:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback{
-    StackMobRequest *request = [StackMobRequest requestForMethod:path
-                                                   withArguments:arguments
-                                                    withHttpVerb:PUT];
+    return [self put:path withObject:arguments andCallback:callback];
+}
+
+- (StackMobRequest *)put:(NSString *)path withObject:(id)object andCallback:(StackMobCallback)callback;
+{
+    StackMobRequest *request = [self.dataProvider requestForMethod:path
+                                                     withObject:object
+                                                      withHttpVerb:PUT];
+     [self queueRequest:request andCallback:callback];
+     return request;
+
+}
+
+- (StackMobRequest *)destroy:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback{
+    return [self destroy:path withObject:arguments andCallback:callback];
+}
+
+- (StackMobRequest *)destroy:(NSString *)path withObject:(id)object andCallback:(StackMobCallback)callback
+{
+    StackMobRequest *request = [self.dataProvider requestForMethod:path
+                                                     withObject:object
+                                                      withHttpVerb:DELETE];
     [self queueRequest:request andCallback:callback];
     return request;
 }
 
-- (StackMobRequest *)destroy:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback{
-    StackMobRequest *request = [StackMobRequest requestForMethod:path
-                                                   withArguments:arguments
-                                                    withHttpVerb:DELETE];
-    [self queueRequest:request andCallback:callback];
-    return request;
-}
 
 # pragma mark - Private methods
 - (void)queueRequest:(StackMobRequest *)request andCallback:(StackMobCallback)callback
@@ -414,7 +486,7 @@ static StackMob *sharedSession = nil;
     return self;
 }
 
-- (void)release
+- (oneway void)release
 {
     // do nothing
 }
@@ -433,4 +505,9 @@ static StackMob *sharedSession = nil;
 {
     return self;
 }
+- (void) dealloc
+{
+    [_dataProvider release];
+}
+
 @end
