@@ -1,3 +1,6 @@
 [submodule "external/libraries/RestKit"]
 	path = external/libraries/RestKit
 	url = git://github.com/RestKit/RestKit.git
+[submodule "StackMob/External/libraries/RestKit"]
+	path = StackMob/External/libraries/RestKit
+	url = git://github.com/RestKit/RestKit.git
