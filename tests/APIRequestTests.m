@@ -15,10 +15,10 @@
 
 #import "APIRequestTests.h"
 
-NSString * const kAPIKey = @"201543b9-7b81-4934-a353-c22d979c891a";
-NSString * const kAPISecret = @"7a099db4-e09a-4e71-8348-3fea8ef5164f";
-NSString * const kSubDomain = @"stackmob";
-NSString * const kAppName = @"iossdktest";
+NSString * const kAPIKey = @"TEST_APP_PUB_KEY";
+NSString * const kAPISecret = @"TEST_APP_PUB_KEY";
+NSString * const kSubDomain = @"TEST_APP_SUBDOMAIN";
+NSString * const kAppName = @"TEST_APP_NAME";
 NSInteger  const kVersion = 0;
 
 StackMobSession *mySession = nil;
