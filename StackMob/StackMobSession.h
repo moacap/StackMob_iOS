@@ -14,6 +14,7 @@
 
 #import <Foundation/Foundation.h>
 #import "StackMobConfiguration.h"
+#import "StackMobVersion.h"
 
 static NSString *const SMDefaultDomain = @"stackmob.com";
 
@@ -201,9 +202,9 @@ static NSString *const SMDefaultDomain = @"stackmob.com";
  */
 - (NSMutableString*)secureURLForMethod:(NSString*)method isUserBased:(BOOL)userBasedRequest;
 
-/**
- * returns a a base url for the method
+/* 
+ * Returns the User-Agent String
  */
-
+- (NSString *)userAgentString;
 
 @end
