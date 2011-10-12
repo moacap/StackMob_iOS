@@ -231,6 +231,7 @@
 		
 	[request addValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
 	[request addValue:@"deflate" forHTTPHeaderField:@"Accept-Encoding"];
+    [request addValue:[session userAgentString] forHTTPHeaderField:@"User-Agent"];
     
 	[request prepare];
 

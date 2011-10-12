@@ -99,6 +99,7 @@
 		82CE45F412892FFA00A73E9C /* APIRequestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 82CE45F212892FFA00A73E9C /* APIRequestTests.m */; };
 		AA747D9F0F9514B9006C5449 /* StackMobiOS_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = AA747D9E0F9514B9006C5449 /* StackMobiOS_Prefix.pch */; };
 		AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
+		E33D87DB144616CF00FBEB96 /* StackMobVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = E33D87DA144616CF00FBEB96 /* StackMobVersion.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -165,6 +166,7 @@
 		AA747D9E0F9514B9006C5449 /* StackMobiOS_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StackMobiOS_Prefix.pch; sourceTree = SOURCE_ROOT; };
 		AACBBE490F95108600F1A2B1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D2AAC07E0554694100DB518D /* libStackMobiOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libStackMobiOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E33D87DA144616CF00FBEB96 /* StackMobVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StackMobVersion.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -221,6 +223,7 @@
 				038CB1DC14283272001DEAC9 /* StackMobSession.h */,
 				038CB1DD14283272001DEAC9 /* StackMobSession.m */,
 				038CB1DE14283272001DEAC9 /* Utils */,
+				E33D87DA144616CF00FBEB96 /* StackMobVersion.h */,
 			);
 			path = StackMob;
 			sourceTree = "<group>";
@@ -394,6 +397,7 @@
 				038CB21114283272001DEAC9 /* NSData+Base64.h in Headers */,
 				038CB21314283272001DEAC9 /* NSData+JSON.h in Headers */,
 				038CB28F14284C3F001DEAC9 /* JSONKit.h in Headers */,
+				E33D87DB144616CF00FBEB96 /* StackMobVersion.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
