@@ -15,6 +15,7 @@
 #import <Foundation/Foundation.h>
 #import "StackMobSession.h"
 #import "StackMobRequest.h"
+#import "StackMobQuery.h"
 #import "StackMobConfiguration.h"
 
 typedef enum {

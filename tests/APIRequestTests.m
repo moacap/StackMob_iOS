@@ -42,10 +42,13 @@ StackMobSession *mySession = nil;
 }
 
 - (void) testGet {
-    NSMutableDictionary* userArgs = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"ty", @"username",nil];
+    StackMobQuery *q = [StackMobQuery query];
+    [q field:@"username" mustEqualValue:@"ty"];
+    [q field:@"createddate" mustBeGreaterThanOrEqualToValue:[NSNumber numberWithInt:2]];
+    
 	
 	StackMobRequest *request = [StackMobRequest requestForMethod:@"user" 
-												   withArguments:userArgs
+                                                       withQuery:q
 												  withHttpVerb:GET];
 	[request sendRequest];
 	//we need to loop until the request comes back, its just a test its OK
