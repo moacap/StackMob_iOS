@@ -14,6 +14,7 @@
 
 #import "StackMobSession.h"
 #import "StackMobConfiguration.h"
+#import "StackMobQuery.h"
 #import "JSONKit.h"
 
 @class StackMob;
@@ -71,6 +72,7 @@ typedef enum {
 + (id)requestForMethod:(NSString*)method;
 + (id)requestForMethod:(NSString*)method withHttpVerb:(SMHttpVerb) httpVerb;
 + (id)requestForMethod:(NSString*)method withArguments:(NSDictionary*)arguments withHttpVerb:(SMHttpVerb) httpVerb;
++ (id)requestForMethod:(NSString*)method withQuery:(StackMobQuery *)query withHttpVerb:(SMHttpVerb) httpVerb;
 + (id)requestForMethod:(NSString *)method withData:(NSData *)data;
 
 /* 

@@ -83,7 +83,7 @@
 	return [StackMobRequest userRequestForMethod:method withArguments:nil withHttpVerb:httpVerb];    
 }
 
-+ (id)requestForMethod:(NSString*)method withArguments:(NSDictionary*)arguments  withHttpVerb:(SMHttpVerb)httpVerb
++ (id)requestForMethod:(NSString*)method withArguments:(NSDictionary*)arguments withHttpVerb:(SMHttpVerb)httpVerb
 {
 	StackMobRequest* request = [StackMobRequest request];
 	request.method = method;
@@ -104,6 +104,11 @@
 	}
 	return request;
 }
+
++ (id)requestForMethod:(NSString*)method withQuery:(StackMobQuery *)query withHttpVerb:(SMHttpVerb) httpVerb {
+    return [StackMobRequest requestForMethod:method withArguments:[query dictionary] withHttpVerb:httpVerb];
+}
+
 
 + (id)requestForMethod:(NSString *)method withData:(NSData *)data{
     StackMobRequest *request = [StackMobRequest request];
