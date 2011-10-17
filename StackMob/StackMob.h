@@ -91,6 +91,12 @@ typedef void (^StackMobCallback)(BOOL success, id result);
  */
 - (StackMobRequest *)getUserInfowithArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
 
+/*
+ * Gets user object data user the user object specified in configuration with a StackMobQuery
+ * @param query StackMobQuery instance
+ */
+- (StackMobRequest *)getUserInfowithQuery:(StackMobQuery *)query andCallback:(StackMobCallback)callback;
+
 /********************** Facebook Methods ******************/
 
 /*

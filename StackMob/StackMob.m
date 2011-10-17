@@ -139,9 +139,11 @@ static SMEnvironment environment;
 
 - (StackMobRequest *)getUserInfowithArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
 {
-    return [self get:session.userObjectName
-   withArguments:arguments
-  andCallback:callback];
+    return [self get:session.userObjectName withArguments:arguments andCallback:callback];
+}
+
+- (StackMobRequest *)getUserInfowithQuery:(StackMobQuery *)query andCallback:(StackMobCallback)callback {
+    return [self get:session.userObjectName withQuery:query andCallback:callback];
 }
 
 # pragma mark - Facebook methods
