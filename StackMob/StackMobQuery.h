@@ -20,6 +20,7 @@
 - (void)field:(NSString *)f mustBeGreaterThanValue:(id)v;
 - (void)field:(NSString *)f mustBeGreaterThanOrEqualToValue:(id)v;
 - (void)field:(NSString *)f mustBeOneOf:(NSArray *)arr;
+- (void)setExpandDepth:(NSUInteger)depth;
 
 
 @end

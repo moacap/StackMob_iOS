@@ -91,6 +91,12 @@ typedef void (^StackMobCallback)(BOOL success, id result);
  */
 - (StackMobRequest *)getUserInfowithArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
 
+/*
+ * Gets user object data user the user object specified in configuration with a StackMobQuery
+ * @param query StackMobQuery instance
+ */
+- (StackMobRequest *)getUserInfowithQuery:(StackMobQuery *)query andCallback:(StackMobCallback)callback;
+
 /********************** Facebook Methods ******************/
 
 /*
@@ -179,6 +185,12 @@ typedef void (^StackMobCallback)(BOOL success, id result);
  * @param path the name of the object to get in your stackmob app
  */
 - (StackMobRequest *)get:(NSString *)path withCallback:(StackMobCallback)callback;
+
+/*
+ * Get data for object with StackMobQuery
+ * @param query StackMobQuery instance
+ */
+- (StackMobRequest *)get:(NSString *)path withQuery:(StackMobQuery *)query andCallback:(StackMobCallback)callback;
 
 /* 
  * POST the arguments to the given object model with name of "path"
