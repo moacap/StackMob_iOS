@@ -293,6 +293,12 @@ static SMEnvironment environment;
     return request;
 }
 
+- (StackMobRequest *)get:(NSString *)path withQuery:(StackMobQuery *)query andCallback:(StackMobCallback)callback {
+    StackMobRequest *request = [StackMobRequest requestForMethod:path withQuery:query withHttpVerb:GET];
+    [self queueRequest:request andCallback:callback];
+    return request;
+}
+
 - (StackMobRequest *)get:(NSString *)path withCallback:(StackMobCallback)callback
 {
     StackMobRequest *request = [StackMobRequest requestForMethod:path

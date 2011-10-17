@@ -180,6 +180,12 @@ typedef void (^StackMobCallback)(BOOL success, id result);
  */
 - (StackMobRequest *)get:(NSString *)path withCallback:(StackMobCallback)callback;
 
+/*
+ * Get data for object with StackMobQuery
+ * @param query StackMobQuery instance
+ */
+- (StackMobRequest *)get:(NSString *)path withQuery:(StackMobQuery *)query andCallback:(StackMobCallback)callback;
+
 /* 
  * POST the arguments to the given object model with name of "path"
  * @param path the name of the object in your stackmob app to be created
