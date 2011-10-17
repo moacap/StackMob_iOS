@@ -316,20 +316,34 @@
     }
 
 
-    // If it's a 500, it probably isn't JSON so don't attempt to parse it as such
-    if (statusCode < 500) {
-        if (textResult == nil) {
-            result = [NSDictionary dictionary];
-        }
-        else {
-            @try{
-                [mConnectionData setLength:0];
+    if (textResult == nil) {
+        result = [NSDictionary dictionary];
+    }   
+    else {
+        @try{
+            [mConnectionData setLength:0];
+            if (statusCode < 400) {
                 result = [textResult objectFromJSONString];
+            } else {
+                NSDictionary *errResult = (NSDictionary *)[textResult objectFromJSONString]; 
+                NSString *failMsg;
+                if ([errResult objectForKey:@"error"] == nil) {
+                    failMsg = [NSString stringWithFormat:@"Response failed with code: %d", statusCode];
+                    
+                } else {
+                    failMsg = [errResult objectForKey:@"error"];
+                }
+                result = [NSError errorWithDomain:@"StackMob"         
+                                            code:1 
+                                        userInfo:[NSDictionary dictionaryWithObjectsAndKeys:failMsg, NSLocalizedDescriptionKey, nil]];   
             }
-            @catch (NSException *e) { // catch parsing errors
-                result = nil;
-                SMLog(@"Unable to parse json '%@'", textResult);
-            }
+        }
+        @catch (NSException *e) { // catch parsing errors
+            NSString *failMsg = [NSString stringWithFormat:@"Response failed with code: %d", statusCode];
+            result = [NSError errorWithDomain:@"StackMob"         
+                                         code:1 
+                                     userInfo:[NSDictionary dictionaryWithObjectsAndKeys:failMsg, NSLocalizedDescriptionKey, nil]];
+            SMLog(@"Unable to parse json '%@'", textResult);
         }
     }
   
