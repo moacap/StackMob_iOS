@@ -290,7 +290,7 @@
 	SMLog(@"StackMobRequest %p: Connection failed! Error - %@ %@",
     self,
 		[error localizedDescription],
-		[[error userInfo] objectForKey:NSErrorFailingURLStringKey]);
+		[[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
     
 	// inform the user
 	self.result = [NSDictionary dictionaryWithObjectsAndKeys:[error localizedDescription], @"statusDetails", nil];  
