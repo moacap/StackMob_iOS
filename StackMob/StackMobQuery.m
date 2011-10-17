@@ -49,6 +49,10 @@
     [self.dictionary setValue:arr forKey:[NSString stringWithFormat:@"%@[in]", f]];
 }
 
+- (void)setExpandDepth:(NSUInteger)depth {
+    [self.dictionary setValue:[NSNumber numberWithInt:depth] forKey:@"_expand"];
+}
+
 - (void)dealloc {
     self.dictionary = nil;
     [super dealloc];
