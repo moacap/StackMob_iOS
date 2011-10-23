@@ -11,6 +11,8 @@
 #import "StackMobRequest.h"
 #import "StackMobSession.h"
 #import "RestKitObjectLoaderDelegate.h"
+#import "RestKitObjectLoader.h"
+#import "RestKitObjectManager.h"
 
 @interface RestKitRequest (Private)
 - (RKRequestMethod) requestMethodFromString:(NSString *)verb;
@@ -124,13 +126,14 @@
     if(self){
         
         NSString *baseUrl = [self baseUrlWithSession:session];
-        _objectManager = [[RKObjectManager objectManagerWithBaseURL:baseUrl] retain];
+        _objectManager = [[RestKitObjectManager objectManagerWithBaseURL:baseUrl] retain];
         _objectManager.client.baseURL = [NSString stringWithFormat:@"%@",baseUrl];
         _objectManager.client.OAuth1ConsumerKey =session.apiKey;
         _objectManager.client.OAuth1ConsumerSecret = session.apiSecret;
         //_objectManager.client.OAuth1AccessToken = @"YOUR ACCESS TOKEN";
         //_objectManager.client.OAuth1AccessTokenSecret = @"YOUR ACCESS TOKEN SECRET";
         _objectManager.client.authenticationType = RKRequestAuthenticationTypeOAuth1;
+        _objectManager.serializationMIMEType = RKMIMETypeJSON;
     }
     
     
@@ -209,50 +212,7 @@
 }
 
 - (id) sendSynchronousRequest {
-    
-    /*
-     if (kLogVersbose == YES) {
-     SMLog(@"RestkitRequest %p: Sending Synch Request httpMethod=%@ method=%@ url=%@", self, self.httpMethod, self.method, self.url);
-     }
-     
-     OAConsumer *consumer = [[OAConsumer alloc] initWithKey:session.apiKey
-     secret:session.apiSecret];
-     
-     OAMutableURLRequest *request = [[OAMutableURLRequest alloc] initWithURL:self.url
-     consumer:consumer
-     token:nil   // we don't need a token
-     realm:nil   // should we set a realm?
-     signatureProvider:nil]; // use the default method, HMAC-SHA1
-     [consumer release];
-     [request setHTTPMethod:[self httpMethod]];
-     
-     [request addValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
-     [request addValue:@"deflate" forHTTPHeaderField:@"Accept-Encoding"];
-     [request prepare];
-     if (![[self httpMethod] isEqualToString: @"GET"]) {
-     [request setHTTPBody:[[mArguments yajl_JSONString] dataUsingEncoding:NSUTF8StringEncoding]];	
-     NSString *contentType = [NSString stringWithFormat:@"application/json"];
-     [request addValue:contentType forHTTPHeaderField: @"Content-Type"];
-     }
-     
-     [mConnectionData setLength:0];
-     
-     if (kLogVersbose) {
-     SMLog(@"StackMobRequest %p: sending synchronous oauth request: %@", self, request);
-     }
-     
-     _requestFinished = NO;
-     self.connectionError = nil;
-     self.delegate = nil;
-     self.connection = [[[NSURLConnection alloc] initWithRequest:request delegate:self] retain];
-     
-     NSDate *loopUntil = [NSDate dateWithTimeIntervalSinceNow:0.1];
-     while (!_requestFinished && [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:loopUntil]) {
-     loopUntil = [NSDate dateWithTimeIntervalSinceNow:0.1];
-     }
-     
-     return self.result;
-     */
+    [self doesNotRecognizeSelector:_cmd];
     return nil;
 }
 

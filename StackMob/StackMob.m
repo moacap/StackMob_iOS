@@ -480,7 +480,7 @@ static SMEnvironment environment;
         SMLog(@"status %d", request.httpResponse.statusCode);
         if(callback != [NSNull null]){
             StackMobCallback mCallback = (StackMobCallback)callback;
-            BOOL wasSuccessful = request.httpResponse.statusCode < 300 && request.httpResponse.statusCode > 199;
+            BOOL wasSuccessful = [request getStatusCode] < 300 && [request getStatusCode] > 199;
             mCallback(wasSuccessful, [request result]);
             Block_release(mCallback);
         }else{

@@ -254,7 +254,7 @@
         [request addValue:contentType forHTTPHeaderField: @"Content-Type"]; 
 	}
 		
-  SMLog(@"StackMobRequest: sending asynchronous oauth request: %@", request);
+  SMLog(@"StackMobRequest: sending asynchronous oauth request: %@ \n with headers: %@", request, [request allHTTPHeaderFields]);
     
 	[mConnectionData setLength:0];		
 	self.result = nil;

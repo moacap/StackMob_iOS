@@ -26,4 +26,13 @@
     [super dealloc];
 }
 
+- (BOOL) isEqual:(id)object
+{
+    return ([email isEqualToString:[object email]] &&
+            [firstname isEqualToString:[object firstname]] &&
+            [lastname isEqualToString:[object lastname]] &&
+            [lastmoddate isEqual:[object lastmoddate]] &&
+            [username isEqualToString:[object username]]);
+}
+
 @end

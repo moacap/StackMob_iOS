@@ -27,7 +27,7 @@ typedef enum {
 
 @protocol SMRequestDelegate;
 
-@interface StackMobRequest : NSObject
+@interface StackMobRequest : NSObject <NSURLConnectionDataDelegate>
 {
 	NSURLConnection*		mConnection;
 	id<SMRequestDelegate>	mDelegate;

@@ -31,10 +31,20 @@
 	
     StackMobRequest *request = [[StackMob stackmob] post:@"user" withObject:userData andCallback:^(BOOL success, id result){
         if(success){
-            NSLog(@"testPost result was: %@", result);
-            //NSDictionary *info = (NSDictionary *)result;
-            //NSString *userId = [info objectForKey:@"username"];
-            STAssertNotNil(result, @"Returned value for POST is not correct");
+            NSMutableDictionary *info = [NSMutableDictionary dictionary];
+            UserResponseData *userResponse = result;
+            [info setObject:userResponse.firstname forKey:@"firstname"];
+            [info setObject:userResponse.lastname forKey:@"lastname"];
+            [info setObject:userResponse.email forKey:@"email"];
+            
+            NSLog(@"testPost result was: %@", info);
+            
+            STAssertNotNil(result, @"Returned value for POST should not be nil.");
+            STAssertEquals(userResponse.firstname, userData.firstname, @"First name does not match");
+            STAssertEquals(userResponse.email, userData.email, @"emails do not match.");
+            STAssertEquals(userResponse.lastname, userData.lastname, @"lastname does not match.");
+            STAssertNotNil(userResponse.lastmoddate, @"lastmoddate should not be nil.");
+            
         }
         else{
             STFail(@"creating a user failed");
@@ -73,16 +83,20 @@
 {
     RestKitConfiguration *c = [RestKitConfiguration new];
     RKObjectRouter *r = [[RKObjectRouter new] autorelease];
-    c.inferMappingsFromObjectTypes = YES;
+    //c.inferMappingsFromObjectTypes = YES;
     [r routeClass:[UserResponseData class] toResourcePath:@"/user" forMethod:RKRequestMethodPOST];
     
     RKObjectMappingProvider *provider = [[RKObjectMappingProvider new] autorelease];
+    
     
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[UserResponseData class] block:^(RKObjectMapping *m){
         [m mapAttributes:@"firstname",@"lastname",@"email",nil]; 
     }];
                                
-    [provider registerMapping:mapping withRootKeyPath:@""];
+    // No "wrapped" namesapce objects
+    [provider setMapping:mapping forKeyPath:@""];
+    RKObjectMapping *inverseMapping = [mapping inverseMapping];
+    [provider setSerializationMapping:inverseMapping forClass:[UserResponseData class]];
     
     c.router = r;
     c.mappingProvider = provider;
