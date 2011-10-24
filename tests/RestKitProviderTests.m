@@ -40,11 +40,11 @@
             NSLog(@"testPost result was: %@", info);
             
             STAssertNotNil(result, @"Returned value for POST should not be nil.");
-            STAssertEquals(userResponse.firstname, userData.firstname, @"First name does not match");
-            STAssertEquals(userResponse.email, userData.email, @"emails do not match.");
-            STAssertEquals(userResponse.lastname, userData.lastname, @"lastname does not match.");
+            STAssertEqualObjects(userResponse.firstname, userData.firstname, @"first name does not match");
+            STAssertEqualObjects(userResponse.email, userData.email, @"emails do not match.");
+            STAssertEqualObjects(userResponse.lastname, userData.lastname, @"lastname does not match.");
             STAssertNotNil(userResponse.lastmoddate, @"lastmoddate should not be nil.");
-            
+            STAssertNotNil(userResponse.lastmoddate, @"createddate should not be nil.");            
         }
         else{
             STFail(@"creating a user failed");
@@ -90,7 +90,7 @@
     
     
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[UserResponseData class] block:^(RKObjectMapping *m){
-        [m mapAttributes:@"firstname",@"lastname",@"email",nil]; 
+        [m mapAttributes:@"firstname",@"lastname",@"email", @"lastmoddate",@"username",@"createddate",nil]; 
     }];
                                
     // No "wrapped" namesapce objects

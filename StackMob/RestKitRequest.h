@@ -20,7 +20,5 @@
 @property (nonatomic, retain) RKOAuthClient *authClient;
 
 - (void) onRequestComplete;
-- (NSInteger) getStatusCode;
-- (void) setStatusCode:(NSInteger) statusCode_;
 
 @end

@@ -199,4 +199,9 @@ static StackMobSession* sharedSession = nil;
 	return secureURL;
 }
 
+
+- (NSString *)userAgentString {
+    return [NSString stringWithFormat:@"StackMob (iOS; %@)/%@", STACKMOB_SDK_VERSION, _appName];
+}
+
 @end

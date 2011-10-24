@@ -80,7 +80,7 @@
 	return [StackMobRequest userRequestForMethod:method withArguments:nil withHttpVerb:httpVerb];    
 }
 
-+ (id)requestForMethod:(NSString*)method withArguments:(NSDictionary*)arguments  withHttpVerb:(SMHttpVerb)httpVerb
++ (id)requestForMethod:(NSString*)method withArguments:(NSDictionary*)arguments withHttpVerb:(SMHttpVerb)httpVerb
 {
 	return [self requestForMethod:method withObject:arguments withHttpVerb:httpVerb];
 }
@@ -112,6 +112,15 @@
 	}
 	return request;
 }
+
++ (id)userRequestForMethod:(NSString *)method withQuery:(StackMobQuery *)query withHttpVerb:(SMHttpVerb)httpVerb {
+    return [StackMobRequest userRequestForMethod:method withArguments:query.dictionary withHttpVerb:httpVerb];
+}
+
++ (id)requestForMethod:(NSString*)method withQuery:(StackMobQuery *)query withHttpVerb:(SMHttpVerb) httpVerb {
+    return [StackMobRequest requestForMethod:method withArguments:[query dictionary] withHttpVerb:httpVerb];
+}
+
 
 + (id)requestForMethod:(NSString *)method withData:(NSData *)data{
     StackMobRequest *request = [StackMobRequest request];
@@ -243,6 +252,7 @@
 		
 	[request addValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
 	[request addValue:@"deflate" forHTTPHeaderField:@"Accept-Encoding"];
+    [request addValue:[session userAgentString] forHTTPHeaderField:@"User-Agent"];
     
 	[request prepare];
 
@@ -292,7 +302,7 @@
 	SMLog(@"StackMobRequest %p: Connection failed! Error - %@ %@",
     self,
 		[error localizedDescription],
-		[[error userInfo] objectForKey:NSErrorFailingURLStringKey]);
+		[[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
     
 	// inform the user
 	self.result = [NSDictionary dictionaryWithObjectsAndKeys:[error localizedDescription], @"statusDetails", nil];  
@@ -318,20 +328,34 @@
     }
 
 
-    // If it's a 500, it probably isn't JSON so don't attempt to parse it as such
-    if (statusCode < 500) {
-        if (textResult == nil) {
-            result = [NSDictionary dictionary];
-        }
-        else {
-            @try{
-                [mConnectionData setLength:0];
+    if (textResult == nil) {
+        result = [NSDictionary dictionary];
+    }   
+    else {
+        @try{
+            [mConnectionData setLength:0];
+            if (statusCode < 400) {
                 result = [textResult objectFromJSONString];
+            } else {
+                NSDictionary *errResult = (NSDictionary *)[textResult objectFromJSONString]; 
+                NSString *failMsg;
+                if ([errResult objectForKey:@"error"] == nil) {
+                    failMsg = [NSString stringWithFormat:@"Response failed with code: %d", statusCode];
+                    
+                } else {
+                    failMsg = [errResult objectForKey:@"error"];
+                }
+                result = [NSError errorWithDomain:@"StackMob"         
+                                            code:1 
+                                        userInfo:[NSDictionary dictionaryWithObjectsAndKeys:failMsg, NSLocalizedDescriptionKey, nil]];   
             }
-            @catch (NSException *e) { // catch parsing errors
-                result = nil;
-                SMLog(@"Unable to parse json '%@'", textResult);
-            }
+        }
+        @catch (NSException *e) { // catch parsing errors
+            NSString *failMsg = [NSString stringWithFormat:@"Response failed with code: %d", statusCode];
+            result = [NSError errorWithDomain:@"StackMob"         
+                                         code:1 
+                                     userInfo:[NSDictionary dictionaryWithObjectsAndKeys:failMsg, NSLocalizedDescriptionKey, nil]];
+            SMLog(@"Unable to parse json '%@'", textResult);
         }
     }
   

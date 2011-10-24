@@ -14,6 +14,7 @@
 }
 @property (nonatomic, retain) NSString *username;
 @property (nonatomic, retain) NSNumber *lastmoddate;
+@property (nonatomic, retain) NSNumber *createddate;
 @property (nonatomic, retain) NSString *lastname;
 @property (nonatomic, retain) NSString *firstname;
 @property (nonatomic, retain) NSString *email;

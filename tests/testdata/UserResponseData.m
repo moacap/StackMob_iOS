@@ -13,10 +13,12 @@
 @synthesize firstname;
 @synthesize lastname;
 @synthesize lastmoddate;
+@synthesize createddate;
 @synthesize username;
 
 - (void) dealloc
 {
+    [createddate release];
     [email release];
     [firstname release];
     [lastname release];

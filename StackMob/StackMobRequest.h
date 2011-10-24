@@ -14,6 +14,7 @@
 
 #import "StackMobSession.h"
 #import "StackMobConfiguration.h"
+#import "StackMobQuery.h"
 #import "JSONKit.h"
 
 @class StackMob;
@@ -72,6 +73,7 @@ typedef enum {
 + (id)requestForMethod:(NSString*)method withHttpVerb:(SMHttpVerb) httpVerb;
 + (id)requestForMethod:(NSString*)method withArguments:(NSDictionary*)arguments withHttpVerb:(SMHttpVerb) httpVerb;
 + (id)requestForMethod:(NSString*)method withObject:(id)object withHttpVerb:(SMHttpVerb)httpVerb;
++ (id)requestForMethod:(NSString*)method withQuery:(StackMobQuery *)query withHttpVerb:(SMHttpVerb) httpVerb;
 + (id)requestForMethod:(NSString *)method withData:(NSData *)data;
 
 /* 
@@ -82,6 +84,7 @@ typedef enum {
 + (id)userRequestForMethod:(NSString *)method withHttpVerb:(SMHttpVerb)httpVerb;
 + (id)userRequestForMethod:(NSString*)method withArguments:(NSDictionary*)arguments withHttpVerb:(SMHttpVerb)httpVerb;
 + (id)userRequestForMethod:(NSString*)method withObject:(id)object withHttpVerb:(SMHttpVerb)httpVerb;
++ (id)userRequestForMethod:(NSString *)method withQuery:(StackMobQuery *)query withHttpVerb:(SMHttpVerb)httpVerb;
 
 /*
  * Create a request for an iOS PUSH notification

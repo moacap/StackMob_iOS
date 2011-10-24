@@ -15,14 +15,25 @@
 
 #import "APIRequestTests.h"
 
+/*NSString * const kAPIKey = @"TEST_APP_PUB_KEY";
+NSString * const kAPISecret = @"TEST_APP_PUB_KEY";
+NSString * const kSubDomain = @"TEST_APP_SUBDOMAIN";
+NSString * const kAppName = @"TEST_APP_NAME";
+NSInteger  const kVersion = 0; */
+
+StackMobSession *mySession = nil;
+
 @implementation APIRequestTests
 
 
 - (void) testGet {
-    NSMutableDictionary* userArgs = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"ty", @"username",nil];
+    StackMobQuery *q = [StackMobQuery query];
+    [q field:@"username" mustEqualValue:@"ty"];
+    [q field:@"createddate" mustBeGreaterThanOrEqualToValue:[NSNumber numberWithInt:2]];
+    
 	
 	StackMobRequest *request = [StackMobRequest requestForMethod:@"user" 
-												   withArguments:userArgs
+                                                       withQuery:q
 												  withHttpVerb:GET];
 	[request sendRequest];
 	//we need to loop until the request comes back, its just a test its OK

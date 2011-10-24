@@ -74,7 +74,6 @@
 		038CB29314284C97001DEAC9 /* StackMob.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB1D014283272001DEAC9 /* StackMob.m */; };
 		038CB29414284C97001DEAC9 /* StackMobRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB1DB14283272001DEAC9 /* StackMobRequest.m */; };
 		038CB29514284F04001DEAC9 /* StackMobPushRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB1D914283272001DEAC9 /* StackMobPushRequest.m */; };
-		038CB29614284F04001DEAC9 /* StackMobSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB1DD14283272001DEAC9 /* StackMobSession.m */; };
 		038CB29714284F1B001DEAC9 /* OAConsumer.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB1BB14283272001DEAC9 /* OAConsumer.m */; };
 		038CB29814284F1B001DEAC9 /* StackMobHerokuRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB1D714283272001DEAC9 /* StackMobHerokuRequest.m */; };
 		038CB29914284F33001DEAC9 /* OAMutableURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB1C114283272001DEAC9 /* OAMutableURLRequest.m */; };
@@ -97,12 +96,18 @@
 		82CE45F412892FFA00A73E9C /* APIRequestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 82CE45F212892FFA00A73E9C /* APIRequestTests.m */; };
 		AA747D9F0F9514B9006C5449 /* StackMobiOS_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = AA747D9E0F9514B9006C5449 /* StackMobiOS_Prefix.pch */; };
 		AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
-		C62DEE6C1444F557002E1F47 /* RestKitObjectLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = C62DEE6A1444F557002E1F47 /* RestKitObjectLoader.h */; };
-		C62DEE6D1444F557002E1F47 /* RestKitObjectLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = C62DEE6B1444F557002E1F47 /* RestKitObjectLoader.m */; };
-		C62DEE701444F95E002E1F47 /* RestKitObjectManager.h in Headers */ = {isa = PBXBuildFile; fileRef = C62DEE6E1444F95E002E1F47 /* RestKitObjectManager.h */; };
-		C62DEE711444F95E002E1F47 /* RestKitObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C62DEE6F1444F95E002E1F47 /* RestKitObjectManager.m */; };
-		C62DEE721444F95E002E1F47 /* RestKitObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C62DEE6F1444F95E002E1F47 /* RestKitObjectManager.m */; };
-		C62DEE731444FD48002E1F47 /* RestKitObjectLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = C62DEE6B1444F557002E1F47 /* RestKitObjectLoader.m */; };
+		C620A89E1454E31700FDCF73 /* StackMobSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 038CB1DD14283272001DEAC9 /* StackMobSession.m */; };
+		C620A8A81454E45400FDCF73 /* RestKitObjectLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = C620A8A01454E45200FDCF73 /* RestKitObjectLoader.h */; };
+		C620A8A91454E45400FDCF73 /* RestKitObjectLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = C620A8A11454E45200FDCF73 /* RestKitObjectLoader.m */; };
+		C620A8AA1454E45400FDCF73 /* RestKitObjectManager.h in Headers */ = {isa = PBXBuildFile; fileRef = C620A8A21454E45200FDCF73 /* RestKitObjectManager.h */; };
+		C620A8AB1454E45400FDCF73 /* RestKitObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C620A8A31454E45300FDCF73 /* RestKitObjectManager.m */; };
+		C620A8AC1454E45400FDCF73 /* ScoutMobNotificationType.h in Headers */ = {isa = PBXBuildFile; fileRef = C620A8A41454E45300FDCF73 /* ScoutMobNotificationType.h */; };
+		C620A8AD1454E45400FDCF73 /* StackMobQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = C620A8A51454E45300FDCF73 /* StackMobQuery.h */; };
+		C620A8AE1454E45400FDCF73 /* StackMobQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = C620A8A61454E45300FDCF73 /* StackMobQuery.m */; };
+		C620A8AF1454E45400FDCF73 /* StackMobVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = C620A8A71454E45400FDCF73 /* StackMobVersion.h */; };
+		C620A8B01454E4AC00FDCF73 /* StackMobQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = C620A8A61454E45300FDCF73 /* StackMobQuery.m */; };
+		C620A8B11454E4D500FDCF73 /* RestKitObjectLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = C620A8A11454E45200FDCF73 /* RestKitObjectLoader.m */; };
+		C620A8B21454E4D500FDCF73 /* RestKitObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C620A8A31454E45300FDCF73 /* RestKitObjectManager.m */; };
 		C661EE311444011D0029B331 /* libRestKitJSONParserSBJSON.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C661EE1D144400F00029B331 /* libRestKitJSONParserSBJSON.a */; };
 		C661EE321444011D0029B331 /* libRestKitNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C661EE13144400F00029B331 /* libRestKitNetwork.a */; };
 		C661EE331444011D0029B331 /* libRestKitObjectMapping.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C661EE15144400F00029B331 /* libRestKitObjectMapping.a */; };
@@ -345,10 +350,14 @@
 		82CE45F312892FFA00A73E9C /* APIRequestTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = APIRequestTests.h; path = tests/APIRequestTests.h; sourceTree = "<group>"; };
 		AA747D9E0F9514B9006C5449 /* StackMobiOS_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StackMobiOS_Prefix.pch; sourceTree = SOURCE_ROOT; };
 		AACBBE490F95108600F1A2B1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		C62DEE6A1444F557002E1F47 /* RestKitObjectLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RestKitObjectLoader.h; sourceTree = "<group>"; };
-		C62DEE6B1444F557002E1F47 /* RestKitObjectLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RestKitObjectLoader.m; sourceTree = "<group>"; };
-		C62DEE6E1444F95E002E1F47 /* RestKitObjectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RestKitObjectManager.h; sourceTree = "<group>"; };
-		C62DEE6F1444F95E002E1F47 /* RestKitObjectManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RestKitObjectManager.m; sourceTree = "<group>"; };
+		C620A8A01454E45200FDCF73 /* RestKitObjectLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RestKitObjectLoader.h; sourceTree = "<group>"; };
+		C620A8A11454E45200FDCF73 /* RestKitObjectLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RestKitObjectLoader.m; sourceTree = "<group>"; };
+		C620A8A21454E45200FDCF73 /* RestKitObjectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RestKitObjectManager.h; sourceTree = "<group>"; };
+		C620A8A31454E45300FDCF73 /* RestKitObjectManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RestKitObjectManager.m; sourceTree = "<group>"; };
+		C620A8A41454E45300FDCF73 /* ScoutMobNotificationType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoutMobNotificationType.h; sourceTree = "<group>"; };
+		C620A8A51454E45300FDCF73 /* StackMobQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StackMobQuery.h; sourceTree = "<group>"; };
+		C620A8A61454E45300FDCF73 /* StackMobQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StackMobQuery.m; sourceTree = "<group>"; };
+		C620A8A71454E45400FDCF73 /* StackMobVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StackMobVersion.h; sourceTree = "<group>"; };
 		C661EDFE144400EF0029B331 /* RestKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RestKit.xcodeproj; path = StackMob/External/libraries/RestKit/RestKit.xcodeproj; sourceTree = "<group>"; };
 		C661EE351444019B0029B331 /* DataProviderProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataProviderProtocol.h; sourceTree = "<group>"; };
 		C661EE361444019B0029B331 /* NSArray+StackMob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+StackMob.h"; sourceTree = "<group>"; };
@@ -445,10 +454,6 @@
 				C661EE411444019B0029B331 /* RestKitRequest.m */,
 				C661EE421444019B0029B331 /* RestKitSession.h */,
 				C661EE431444019C0029B331 /* RestKitSession.m */,
-				C62DEE6A1444F557002E1F47 /* RestKitObjectLoader.h */,
-				C62DEE6B1444F557002E1F47 /* RestKitObjectLoader.m */,
-				C62DEE6E1444F95E002E1F47 /* RestKitObjectManager.h */,
-				C62DEE6F1444F95E002E1F47 /* RestKitObjectManager.m */,
 				C661EE441444019C0029B331 /* StackMobDataProvider.h */,
 				C661EE451444019C0029B331 /* StackMobDataProvider.m */,
 				038CB1CF14283272001DEAC9 /* StackMob.h */,
@@ -461,10 +466,18 @@
 				038CB1D714283272001DEAC9 /* StackMobHerokuRequest.m */,
 				038CB1D814283272001DEAC9 /* StackMobPushRequest.h */,
 				038CB1D914283272001DEAC9 /* StackMobPushRequest.m */,
+				C620A8A01454E45200FDCF73 /* RestKitObjectLoader.h */,
+				C620A8A11454E45200FDCF73 /* RestKitObjectLoader.m */,
+				C620A8A21454E45200FDCF73 /* RestKitObjectManager.h */,
+				C620A8A31454E45300FDCF73 /* RestKitObjectManager.m */,
 				038CB1DA14283272001DEAC9 /* StackMobRequest.h */,
 				038CB1DB14283272001DEAC9 /* StackMobRequest.m */,
 				038CB1DC14283272001DEAC9 /* StackMobSession.h */,
 				038CB1DD14283272001DEAC9 /* StackMobSession.m */,
+				C620A8A41454E45300FDCF73 /* ScoutMobNotificationType.h */,
+				C620A8A51454E45300FDCF73 /* StackMobQuery.h */,
+				C620A8A61454E45300FDCF73 /* StackMobQuery.m */,
+				C620A8A71454E45400FDCF73 /* StackMobVersion.h */,
 			);
 			path = StackMob;
 			sourceTree = "<group>";
@@ -687,8 +700,11 @@
 				C661EE5C1444019C0029B331 /* StackMobDataProvider.h in Headers */,
 				C661EE84144404970029B331 /* LCLLogFileConfig.h in Headers */,
 				C670D9B314441F8D009CC39A /* RKObjectRouter+StackMob.h in Headers */,
-				C62DEE6C1444F557002E1F47 /* RestKitObjectLoader.h in Headers */,
-				C62DEE701444F95E002E1F47 /* RestKitObjectManager.h in Headers */,
+				C620A8A81454E45400FDCF73 /* RestKitObjectLoader.h in Headers */,
+				C620A8AA1454E45400FDCF73 /* RestKitObjectManager.h in Headers */,
+				C620A8AC1454E45400FDCF73 /* ScoutMobNotificationType.h in Headers */,
+				C620A8AD1454E45400FDCF73 /* StackMobQuery.h in Headers */,
+				C620A8AF1454E45400FDCF73 /* StackMobVersion.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -913,7 +929,6 @@
 				038CB29714284F1B001DEAC9 /* OAConsumer.m in Sources */,
 				038CB29814284F1B001DEAC9 /* StackMobHerokuRequest.m in Sources */,
 				038CB29514284F04001DEAC9 /* StackMobPushRequest.m in Sources */,
-				038CB29614284F04001DEAC9 /* StackMobSession.m in Sources */,
 				038CB29314284C97001DEAC9 /* StackMob.m in Sources */,
 				038CB29414284C97001DEAC9 /* StackMobRequest.m in Sources */,
 				82CE45F412892FFA00A73E9C /* APIRequestTests.m in Sources */,
@@ -929,8 +944,10 @@
 				C670D99A14440554009CC39A /* StackMobTestCase.m in Sources */,
 				C670D99B14440554009CC39A /* UserResponseData.m in Sources */,
 				C670D9B514441F8D009CC39A /* RKObjectRouter+StackMob.m in Sources */,
-				C62DEE721444F95E002E1F47 /* RestKitObjectManager.m in Sources */,
-				C62DEE731444FD48002E1F47 /* RestKitObjectLoader.m in Sources */,
+				C620A89E1454E31700FDCF73 /* StackMobSession.m in Sources */,
+				C620A8B01454E4AC00FDCF73 /* StackMobQuery.m in Sources */,
+				C620A8B11454E4D500FDCF73 /* RestKitObjectLoader.m in Sources */,
+				C620A8B21454E4D500FDCF73 /* RestKitObjectManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -970,8 +987,9 @@
 				C661EE5A1444019C0029B331 /* RestKitSession.m in Sources */,
 				C661EE5D1444019C0029B331 /* StackMobDataProvider.m in Sources */,
 				C670D9B414441F8D009CC39A /* RKObjectRouter+StackMob.m in Sources */,
-				C62DEE6D1444F557002E1F47 /* RestKitObjectLoader.m in Sources */,
-				C62DEE711444F95E002E1F47 /* RestKitObjectManager.m in Sources */,
+				C620A8A91454E45400FDCF73 /* RestKitObjectLoader.m in Sources */,
+				C620A8AB1454E45400FDCF73 /* RestKitObjectManager.m in Sources */,
+				C620A8AE1454E45400FDCF73 /* StackMobQuery.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
