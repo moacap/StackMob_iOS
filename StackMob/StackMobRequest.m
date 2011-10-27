@@ -22,6 +22,7 @@
 #import "StackMobPushRequest.h"
 #import "NSData+JSON.h"
 
+
 @interface StackMobRequest (Private)
 + (NSString*)stringFromHttpVerb:(SMHttpVerb)httpVerb;
 @end
@@ -245,7 +246,23 @@
 	[request prepare];
 
 	if (!([[self httpMethod] isEqualToString: @"GET"] || [[self httpMethod] isEqualToString:@"DELETE"])) {
-        NSData* postData = [[mArguments JSONString] dataUsingEncoding:NSUTF8StringEncoding];
+        
+        NSError* error = nil;
+        NSData* postData = [mArguments JSONDataWithOptions:JKSerializeOptionNone
+                     serializeUnsupportedClassesUsingBlock:^id(id object){
+            
+                         if ( [object isKindOfClass:[NSData class]] )
+                         {
+                             NSString* base64String = [(NSData*)object JSON];
+                             return base64String;
+                         }
+                         else
+                         {
+                             return nil;
+                         }
+                     }
+                                                     error:&error];
+//        NSData* postData = [[mArguments JSONString] dataUsingEncoding:NSUTF8StringEncoding];
         SMLog(@"POST Data: %d", [postData length]);
         [request setHTTPBody:postData];	
         NSString *contentType = [NSString stringWithFormat:@"application/json"];
