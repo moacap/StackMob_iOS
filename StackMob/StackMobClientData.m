@@ -47,20 +47,20 @@ static StackMobClientData * _sharedInstance=nil;
 	if((self = [super init])) {
 		// Device info.
 		UIDevice *device = [UIDevice currentDevice];
-		identifier = [device uniqueIdentifier];
-		model = [device model];
-		systemVersion = [device systemVersion];
+		identifier = [[device uniqueIdentifier] retain];
+		model = [[device model] retain];
+		systemVersion = [[device systemVersion] retain];
 		
 						
 		// Locale info.
 		NSLocale *locale = [NSLocale currentLocale];
-		countryCode = [locale objectForKey:NSLocaleCountryCode];
-		language = [[NSLocale currentLocale] objectForKey: NSLocaleLanguageCode];	
+		countryCode = [[locale objectForKey:NSLocaleCountryCode] retain];
+		language = [[[NSLocale currentLocale] objectForKey: NSLocaleLanguageCode] retain];	
 		
 		// App info.
-		bundleVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleVersionKey];
+		bundleVersion = [[[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleVersionKey] retain];
 		
-		jailBroken = [self isJailBrokenStr];
+		jailBroken = [[self isJailBrokenStr] retain];
 		
 		[self startLocationUpdates];
 		[self startReachabilityUpdates];
