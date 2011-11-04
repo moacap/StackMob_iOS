@@ -10,7 +10,7 @@
 
 @implementation StackMobQuery
 
-@synthesize params = _dictionary;
+@synthesize params = _params;
 
 + (StackMobQuery *)query {
     return [[[StackMobQuery alloc] init] autorelease];
@@ -19,7 +19,7 @@
 - (id)init {
     self = [super init];
     if (self) {
-        _dictionary = [[NSMutableDictionary alloc] initWithCapacity:4];
+        _params = [[NSMutableDictionary alloc] initWithCapacity:4];
     }
     
     return self;
