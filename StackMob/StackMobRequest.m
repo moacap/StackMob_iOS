@@ -107,11 +107,11 @@
 }
 
 + (id)userRequestForMethod:(NSString *)method withQuery:(StackMobQuery *)query withHttpVerb:(SMHttpVerb)httpVerb {
-    return [StackMobRequest userRequestForMethod:method withArguments:query.dictionary withHttpVerb:httpVerb];
+    return [StackMobRequest userRequestForMethod:method withArguments:query.params withHttpVerb:httpVerb];
 }
 
 + (id)requestForMethod:(NSString*)method withQuery:(StackMobQuery *)query withHttpVerb:(SMHttpVerb) httpVerb {
-    return [StackMobRequest requestForMethod:method withArguments:[query dictionary] withHttpVerb:httpVerb];
+    return [StackMobRequest requestForMethod:method withArguments:[query params] withHttpVerb:httpVerb];
 }
 
 

@@ -10,7 +10,7 @@
 
 @interface StackMobQuery : NSObject
     
-@property(nonatomic, copy) NSMutableDictionary *dictionary;
+@property(nonatomic, copy) NSMutableDictionary *params;
 
 + (StackMobQuery *)query;
 
