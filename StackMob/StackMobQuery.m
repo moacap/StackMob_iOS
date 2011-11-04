@@ -55,6 +55,10 @@
     [self.headers setValue:[NSString stringWithFormat:@"%d", depth] forKey:@"X-StackMob-Expand"];
 }
 
+- (void)setRangeStart:(NSUInteger)start andEnd:(NSUInteger)end {
+    [self.headers setValue:[NSString stringWithFormat:@"objects=%d-%d", start, end] forKey:@"Range"];
+}
+
 - (void)dealloc {
     self.params = nil;
     self.headers = nil;
