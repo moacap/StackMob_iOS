@@ -11,6 +11,7 @@
 @implementation StackMobQuery
 
 @synthesize params = _params;
+@synthesize headers = _headers;
 
 + (StackMobQuery *)query {
     return [[[StackMobQuery alloc] init] autorelease];
@@ -20,6 +21,7 @@
     self = [super init];
     if (self) {
         _params = [[NSMutableDictionary alloc] initWithCapacity:4];
+        _headers = [[NSMutableDictionary alloc] initWithCapacity:4];
     }
     
     return self;
@@ -50,11 +52,12 @@
 }
 
 - (void)setExpandDepth:(NSUInteger)depth {
-    [self.params setValue:[NSNumber numberWithInt:depth] forKey:@"_expand"];
+    [self.headers setValue:[NSString stringWithFormat:@"%d", depth] forKey:@"X-StackMob-Expand"];
 }
 
 - (void)dealloc {
     self.params = nil;
+    self.headers = nil;
     [super dealloc];
 }
 

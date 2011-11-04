@@ -36,6 +36,7 @@ typedef enum {
   BOOL          mIsSecure;
 	NSString*				mMethod;
 	NSMutableDictionary*	mArguments;
+    NSMutableDictionary*    mHeaders;
     NSData*                 mBody;
 	NSMutableData*			mConnectionData;
 	NSDictionary*			mResult;
@@ -97,6 +98,12 @@ typedef enum {
 - (void)setValue:(NSString*)value forArgument:(NSString*)argument;
 - (void)setInteger:(NSUInteger)value forArgument:(NSString*)argument;
 - (void)setBool:(BOOL)value forArgument:(NSString*)argument;
+
+/*
+ * Set headers for requests, overwrites all headers set for the request
+ * @param headers, the headers to set
+ */
+- (void)setHeaders:(NSDictionary *)headers;
 
 /*
  * Send a configured request and wait for callback

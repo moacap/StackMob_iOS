@@ -52,6 +52,7 @@
 	[mResult release];
 	[mHttpMethod release];
 	[mHttpResponse release];
+    [mHeaders release];    
 	[super dealloc];
 }
 
@@ -107,11 +108,15 @@
 }
 
 + (id)userRequestForMethod:(NSString *)method withQuery:(StackMobQuery *)query withHttpVerb:(SMHttpVerb)httpVerb {
-    return [StackMobRequest userRequestForMethod:method withArguments:query.params withHttpVerb:httpVerb];
+    StackMobRequest *request = [StackMobRequest userRequestForMethod:method withArguments:query.params withHttpVerb:httpVerb];
+    [request setHeaders:query.headers];
+    return request;
 }
 
 + (id)requestForMethod:(NSString*)method withQuery:(StackMobQuery *)query withHttpVerb:(SMHttpVerb) httpVerb {
-    return [StackMobRequest requestForMethod:method withArguments:[query params] withHttpVerb:httpVerb];
+    StackMobRequest *request = [StackMobRequest requestForMethod:method withArguments:[query params] withHttpVerb:httpVerb];
+    [request setHeaders:query.headers];
+    return request;
 }
 
 
@@ -186,6 +191,7 @@
         self.method = nil;
         self.result = nil;
         mArguments = [[NSMutableDictionary alloc] init];
+        mHeaders = [[NSMutableDictionary alloc] init];
         mConnectionData = [[NSMutableData alloc] init];
         mResult = nil;
         session = [StackMobSession session];
@@ -215,6 +221,9 @@
 	[mArguments setValue:(value ? @"true" : @"false") forKey:argument];
 }
 
+- (void)setHeaders:(NSDictionary *)headers {
+    [mHeaders setDictionary:headers];
+}
 
 - (void)sendRequest
 {
@@ -242,6 +251,11 @@
 	[request addValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
 	[request addValue:@"deflate" forHTTPHeaderField:@"Accept-Encoding"];
     [request addValue:[session userAgentString] forHTTPHeaderField:@"User-Agent"];
+    for(NSString *header in mHeaders) {
+        if (!([header isEqualToString:@"Accept-Encoding"] || [header isEqualToString:@"User-Agent"] || [header isEqualToString:@"Content-Type"])) {
+            [request addValue:(NSString *)[mHeaders objectForKey:header] forHTTPHeaderField:header];
+        }
+    }
     
 	[request prepare];
 
