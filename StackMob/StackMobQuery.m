@@ -59,6 +59,24 @@
     [self.headers setValue:[NSString stringWithFormat:@"objects=%d-%d", start, end] forKey:@"Range"];
 }
 
+- (void)orderByField:(NSString *)f withDirection:(SMOrderDirection)dir {
+    NSString *orderStr;
+    NSString *currentHeader = [self.headers objectForKey:@"X-StackMob-OrderBy"];
+    NSString *newHeaderValue;
+    if (dir == SMOrderAscending) {
+        orderStr = @"asc";
+    } else {
+        orderStr = @"desc";
+    }    
+
+    if ([currentHeader isKindOfClass:[NSString class]]) {
+        newHeaderValue = [NSString stringWithFormat:@"%@,%@:%@", currentHeader, f, orderStr];
+    } else {
+        newHeaderValue = [NSString stringWithFormat:@"%@:%@", f, orderStr];
+    }
+    [self.headers setValue:newHeaderValue forKey:@"X-StackMob-OrderBy"];
+}
+
 - (void)dealloc {
     self.params = nil;
     self.headers = nil;
