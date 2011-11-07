@@ -173,6 +173,13 @@ typedef void (^StackMobCallback)(BOOL success, id result);
  */
 - (StackMobRequest *)registerForPushWithUser:(NSString *)userId token:(NSString *)token andCallback:(StackMobCallback)callback;
 
+
+/*
+ * Send a push notification broadcast
+ * @param args push request arguments, the dictionary should contain the message, badge and alert (badge and alert optional)
+ */
+- (StackMobRequest *)sendPushBroadcastWithArguments:(NSDictionary *)args andCallback:(StackMobCallback)callback;
+
 /********************** CRUD Methods **********************/
 /* 
  * Get the object with name "path" and arguments dictionary
