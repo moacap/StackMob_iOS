@@ -238,6 +238,15 @@ static SMEnvironment environment;
     return request;
 }
 
+- (StackMobRequest *)sendPushBroadcastWithArguments:(NSDictionary *)args andCallback:(StackMobCallback)callback {
+    StackMobPushRequest *request = [StackMobPushRequest request];
+    request.httpMethod = @"POST";
+    request.method = @"push_broadcast_universal";
+    [request setArguments:[NSDictionary dictionaryWithObjectsAndKeys:[NSDictionary dictionaryWithObjectsAndKeys:args, @"kvPairs", nil], @"payload", nil]];
+    [self queueRequest:request andCallback:callback];
+    return request;
+}
+
 # pragma mark - Heroku methods
 
 - (StackMobRequest *)herokuGet:(NSString *)path withCallback:(StackMobCallback)callback
