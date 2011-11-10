@@ -134,7 +134,14 @@ static SMEnvironment environment;
 
 - (StackMobRequest *)logoutWithCallback:(StackMobCallback)callback
 {
-    return [self destroy:session.userObjectName withArguments:NULL andCallback:callback];
+    StackMobRequest *request = [StackMobRequest requestForMethod:[NSString stringWithFormat:@"%@/logout", session.userObjectName]
+                                                   withArguments:[NSDictionary dictionary]
+                                                    withHttpVerb:GET]; 
+    request.isSecure = YES;
+    [self queueRequest:request andCallback:callback];
+    
+    return request;
+
 }
 
 - (StackMobRequest *)getUserInfowithArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
