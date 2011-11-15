@@ -15,22 +15,16 @@
 
 #import "APIRequestTests.h"
 
-NSString * const kAPIKey = @"TEST_APP_PUB_KEY";
-NSString * const kAPISecret = @"TEST_APP_PUB_KEY";
-NSString * const kSubDomain = @"TEST_APP_SUBDOMAIN";
-NSString * const kAppName = @"TEST_APP_NAME";
-NSInteger  const kVersion = 0;
-
 StackMobSession *mySession = nil;
 
 @implementation APIRequestTests
 
 - (void) setUp
 {
+    [super setUp];
 	NSLog(@"In setup");
-	if (!mySession) 
+	if (!mySession)
 	{
-        [StackMob setApplication:kAPIKey secret:kAPISecret appName:kAppName subDomain:kSubDomain userObjectName:@"user" apiVersionNumber:[NSNumber numberWithInt:kVersion]];
 		NSLog(@"Created new session");
 	}
 }
@@ -39,6 +33,7 @@ StackMobSession *mySession = nil;
 {
 	NSLog(@"In teardown");
 	mySession = nil;
+    [super tearDown];
 }
 
 - (void) testGet {
@@ -52,12 +47,7 @@ StackMobSession *mySession = nil;
 												  withHttpVerb:GET];
 	[request sendRequest];
 	//we need to loop until the request comes back, its just a test its OK
-	NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
-	do {
-		NSAutoreleasePool *loopPool = [[NSAutoreleasePool alloc] init];
-		[runLoop acceptInputForMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.5]];
-		[loopPool drain];
-	} while(![request finished]);
+    [StackMobTestUtils runRunLoop:[NSRunLoop currentRunLoop] untilRequestFinished:request];
 	    
     STAssertTrue([[request result] isKindOfClass:[NSArray class]], @"Did not get a valid GET result");
 	request = nil;
@@ -85,14 +75,7 @@ StackMobSession *mySession = nil;
     }];
 
 	//we need to loop until the request comes back, its just a test its OK
-	NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
-	do {
-		NSAutoreleasePool *loopPool = [[NSAutoreleasePool alloc] init];
-		[runLoop acceptInputForMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.5]];
-		[loopPool drain];
-	} while(![request finished]);
-	
-	NSDictionary *result = [request result];
+    NSDictionary * result = [StackMobTestUtils runDefaultRunLoopAndGetDictionaryResultFromRequest:request];
     NSLog(@"result %@", result);
 	NSString *userId = [result objectForKey:@"username"];
 	STAssertNotNil(userId, @"Returned value for POST is not correct");
@@ -135,30 +118,37 @@ StackMobSession *mySession = nil;
 
 - (void) testRequestsThatDefaultToSecure {
     StackMobRequest *r;
-    StackMobCallback emptyCallback = ^(BOOL success, id result) {};
     
     r = [[StackMob stackmob] loginWithArguments:[NSDictionary dictionary] andCallback:emptyCallback];
+    [self assertNotNSError:r];
     STAssertTrue(r.isSecure, @"Login Request Should Default to SSL");
                     
     r = [[StackMob stackmob] loginWithFacebookToken:@"WHOCARES" andCallback:emptyCallback];
+    [self assertNotNSError:r];
     STAssertTrue(r.isSecure, @"Login w/ Facebook Request Should Default to SSL");
     
     r = [[StackMob stackmob] loginWithTwitterToken:@"WHOCARES" secret:@"WHOCARES2" andCallback:emptyCallback];
+    [self assertNotNSError:r];
     STAssertTrue(r.isSecure, @"Login w/ Twitter Request Should Default to SSL");
     
     r = [[StackMob stackmob] linkUserWithFacebookToken:@"ASD" withCallback:emptyCallback];
+    [self assertNotNSError:r];
     STAssertTrue(r.isSecure, @"Link With Facebook Token Should Default to SSL");
     
     r = [[StackMob stackmob] linkUserWithTwitterToken:@"WHOCARES" secret:@"WHOCARES" andCallback:emptyCallback];
+    [self assertNotNSError:r];
     STAssertTrue(r.isSecure, @"Link With Twitter Token Should Default to SSL");
 
     r = [[StackMob stackmob] registerWithArguments:[NSDictionary dictionary] andCallback:emptyCallback];
+    [self assertNotNSError:r];
     STAssertTrue(r.isSecure, @"Register User Should Default to SSL");
     
     r = [[StackMob stackmob] registerWithFacebookToken:@"TOKEN" username:@"UNAME" andCallback:emptyCallback];
+    [self assertNotNSError:r];
     STAssertTrue(r.isSecure, @"Register With Facebook Token Should Default to SSL");
     
     r = [[StackMob stackmob] registerWithTwitterToken:@"TOKEN" secret:@"SECRET" username:@"UNAME" andCallback:emptyCallback];
+    [self assertNotNSError:r];
     STAssertTrue(r.isSecure, @"Register With Twitter Token Should Defult to SSL");
         
 }

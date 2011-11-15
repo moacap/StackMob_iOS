@@ -235,21 +235,69 @@ static SMEnvironment environment;
 
 - (StackMobRequest *)registerForPushWithUser:(NSString *)userId token:(NSString *)token andCallback:(StackMobCallback)callback
 {
-    NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:userId, @"userId", token, @"token", nil];
-    StackMobPushRequest *request = [StackMobPushRequest request];
-    request.httpMethod = @"POST";
-    request.method = @"device_tokens";
-    SMLog(@"args %@", args);
-    [request setArguments:args];
+    NSDictionary *tokenDict = [NSDictionary dictionaryWithObjectsAndKeys:token, @"token",
+                           @"ios", @"type",
+                           nil];
+    
+    NSDictionary *body = [NSDictionary dictionaryWithObjectsAndKeys:userId, @"userId",
+                          tokenDict, @"token",
+                          nil];
+    
+    StackMobPushRequest *pushRequest = [StackMobPushRequest requestForMethod:@"register_device_token_universal"];
+    SMLog(@"args %@", body);
+    [pushRequest setArguments:body];
+    [self queueRequest:pushRequest andCallback:callback];
+    return pushRequest;
+}
+
+- (StackMobRequest *)sendPushBroadcastWithArguments:(NSDictionary *)args andCallback:(StackMobCallback)callback {
+    //{"kvPairs":{"key1":"val1",...}}
+    NSDictionary *body = [NSDictionary dictionaryWithObjectsAndKeys:args, @"kvPairs", nil];
+    StackMobPushRequest *request = [StackMobPushRequest requestForMethod:@"push_broadcast_universal" withArguments:body];
     [self queueRequest:request andCallback:callback];
     return request;
 }
 
-- (StackMobRequest *)sendPushBroadcastWithArguments:(NSDictionary *)args andCallback:(StackMobCallback)callback {
-    StackMobPushRequest *request = [StackMobPushRequest request];
-    request.httpMethod = @"POST";
-    request.method = @"push_broadcast_universal";
-    [request setArguments:[NSDictionary dictionaryWithObjectsAndKeys:[NSDictionary dictionaryWithObjectsAndKeys:args, @"kvPairs", nil], @"payload", nil]];
+- (StackMobRequest *)sendPushToTokensWithArguments:(NSDictionary *)args withTokens:(NSArray *)tokens andCallback:(StackMobCallback)callback
+{
+    //{"payload":{"kvPairs":{"recipients":"asdf","alert":"asdfasdf"}},"tokens":[{"type":"iOS","token":"ASDF"}]}
+    NSDictionary *payload = [NSDictionary dictionaryWithObjectsAndKeys:args, @"kvPairs", nil];
+    NSMutableArray * tokensArray = [NSMutableArray array];
+    for(NSString * tkn in tokens) {
+        NSDictionary * tknDict = [NSDictionary dictionaryWithObjectsAndKeys:tkn, @"token", @"ios", @"type", nil];
+        [tokensArray addObject:tknDict];
+    }
+
+    NSDictionary *body = [NSDictionary dictionaryWithObjectsAndKeys:tokensArray, @"tokens", payload, @"payload", nil];
+    StackMobPushRequest *request = [StackMobPushRequest requestForMethod:@"push_tokens_universal" withArguments:body];
+    [self queueRequest:request andCallback:callback];
+    return request;
+}
+
+- (StackMobRequest *)sendPushToUsersWithArguments:(NSDictionary *)args withUserIds:(NSArray *)userIds andCallback:(StackMobCallback)callback
+{
+    //{kvPairs: {"asdas":"asdasd"}, "userIds":["user1", "user2"]}
+    NSDictionary *body = [NSDictionary dictionaryWithObjectsAndKeys:args, @"kvPairs", userIds, @"userIds", nil];
+    StackMobPushRequest *request = [StackMobPushRequest requestForMethod:@"push_users_universal" withArguments:body];
+    [self queueRequest:request andCallback:callback];
+    return request;
+}
+
+- (StackMobRequest *)getPushTokensForUsers:(NSArray *)userIds andCallback:(StackMobCallback)callback
+{
+    //?userIds=user1,user2,user3
+    NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:userIds, @"userIds", nil];
+    StackMobPushRequest *request = [StackMobPushRequest requestForMethod:@"get_tokens_for_users_universal" withArguments:args];
+    request.httpMethod = @"GET";
+    [self queueRequest:request andCallback:callback];
+    return request;
+}
+
+- (StackMobRequest *)deletePushToken:(NSString *)token andCallback:(StackMobCallback)callback
+{
+    //{"token":"asdasdASASasd", "type":"android|ios"}
+    NSDictionary *body = [NSDictionary dictionaryWithObjectsAndKeys:token, @"token", @"ios", @"type", nil];
+    StackMobPushRequest *request = [StackMobPushRequest requestForMethod:@"remove_token_universal" withArguments:body];
     [self queueRequest:request andCallback:callback];
     return request;
 }
