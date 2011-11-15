@@ -12,23 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#define USE_APPLICATION_UNIT_TEST 0
-
 #import <SenTestingKit/SenTestingKit.h>
-#import <UIKit/UIKit.h>
-#import "StackMob.h"
 #import "StackMobTestUtils.h"
-#import "StackMobTestCommon.h"
 
-//#import "application_headers" as required
-
-
-@interface APIRequestTests : StackMobTestCommon {
-
+@interface StackMobTestCommon : SenTestCase {
+    StackMobCallback emptyCallback;
 }
 
-- (void) testURLGeneration;
-- (void) testGet;           
-- (void) testPost; 
-- (void) testAPIList; 
+- (void)setUp;
+- (void)tearDown;
+- (void)assertNotNSError:(id)obj;
+
 @end

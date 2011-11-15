@@ -17,11 +17,6 @@
 #import <UIKit/UIKit.h>
 //#import "application_headers" as required
 
-NSString * PUSH_USER = @"IOS_TEST_PUSH_USER";
-NSString * PUSH_TOKEN = @"DEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEF";
-NSDictionary * PUSH_PAYLOAD = nil;
-StackMobCallback EMPTY_CB = ^(BOOL success, id result) {};
-
 @implementation StackMobPushTests
 
 - (void)assertResultIsQueued:(NSDictionary *)result {
@@ -29,68 +24,71 @@ StackMobCallback EMPTY_CB = ^(BOOL success, id result) {};
 }
 
 - (void)registerToken {
-    StackMobRequest * request = [[StackMob stackmob] registerForPushWithUser:PUSH_USER token:PUSH_TOKEN andCallback:EMPTY_CB];
+    StackMobRequest * request = [[StackMob stackmob] registerForPushWithUser:pushUser token:pushToken andCallback:emptyCallback];
     [StackMobTestUtils runDefaultRunLoopAndGetDictionaryResultFromRequest:request];
 }
 
 - (void)setUp {
-    [StackMobTestUtils setStackMobApplication];
-    if(!PUSH_PAYLOAD) {
-        PUSH_PAYLOAD = [NSDictionary dictionaryWithObjectsAndKeys:@"val1", @"key1", nil];
-    }
-    if(!PUSH_USER_TARGETS) {
-        PUSH_USER_TARGETS = [NSArray arrayWithObject:PUSH_USER];
-    }
-    if(!PUSH_TOKEN_TARGETS) {
-        PUSH_TOKEN_TARGETS = [NSArray arrayWithObject:PUSH_TOKEN];
-    }
-    
-    StackMobRequest * request = [[StackMob stackmob] deletePushToken:PUSH_TOKEN andCallback:EMPTY_CB];
+    [super setUp];
+
+    if(!pushUser) pushUser = @"IOS_TEST_PUSH_USER";
+    if(!pushToken) pushToken = @"DEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEF";
+    if(!pushPayload) pushPayload = [NSDictionary dictionaryWithObjectsAndKeys:@"val1", @"key1", nil];
+    if(!pushUserTargets) pushUserTargets = [NSArray arrayWithObject:pushUser];
+    if(!pushTokenTargets) pushTokenTargets = [NSArray arrayWithObject:pushToken];
+
+    StackMobRequest * request = [[StackMob stackmob] deletePushToken:pushToken andCallback:emptyCallback];
     [StackMobTestUtils runRunLoop:[NSRunLoop currentRunLoop] untilRequestFinished:request];
 }
 
 - (void)tearDown {
-    StackMobRequest * request = [[StackMob stackmob] deletePushToken:PUSH_TOKEN andCallback:EMPTY_CB];
+    StackMobRequest * request = [[StackMob stackmob] deletePushToken:pushToken andCallback:emptyCallback];
     [StackMobTestUtils runRunLoop:[NSRunLoop currentRunLoop] untilRequestFinished:request];
+    [super tearDown];
 }
 
 - (void)testRegisterDeviceToken {
-    StackMobRequest * request = [[StackMob stackmob] registerForPushWithUser:PUSH_USER token:PUSH_TOKEN andCallback:EMPTY_CB];
+    StackMobRequest * request = [[StackMob stackmob] registerForPushWithUser:pushUser token:pushToken andCallback:emptyCallback];
     NSDictionary * result = [StackMobTestUtils runDefaultRunLoopAndGetDictionaryResultFromRequest:request];
     NSLog(@"result: %@", result);
+    [self assertNotNSError:result];
     STAssertTrue((BOOL)[result objectForKey:@"registered"], @"token not reported as registered");
 }
 
 - (void)testGetDeviceTokens {
-    StackMobRequest * request = [[StackMob stackmob] getPushTokensForUsers:[NSArray arrayWithObject:PUSH_USER] andCallback:EMPTY_CB];
+    StackMobRequest * request = [[StackMob stackmob] getPushTokensForUsers:[NSArray arrayWithObject:pushUser] andCallback:emptyCallback];
     NSDictionary * result = [StackMobTestUtils runDefaultRunLoopAndGetDictionaryResultFromRequest:request];
     NSLog(@"result: %@", result);
+    [self assertNotNSError:result];
     STAssertNotNil([result objectForKey:@"tokens"], @"no tokens value returned");
 }
 
 
 - (void)testSendPushBroadcastWithArguments {
-    StackMobRequest * request = [[StackMob stackmob] sendPushBroadcastWithArguments:PUSH_PAYLOAD andCallback:EMPTY_CB];
+    StackMobRequest * request = [[StackMob stackmob] sendPushBroadcastWithArguments:pushPayload andCallback:emptyCallback];
     NSDictionary * result = [StackMobTestUtils runDefaultRunLoopAndGetDictionaryResultFromRequest:request];
     NSLog(@"result: %@", result);
+    [self assertNotNSError:result];
     [self assertResultIsQueued:result];
 }
 
 - (void)testSendPushToUsersWithArguments {
     [self registerToken];
     
-    StackMobRequest * request = [[StackMob stackmob] sendPushToUsersWithArguments:PUSH_PAYLOAD withUserIds:PUSH_USER_TARGETS andCallback:EMPTY_CB];
+    StackMobRequest * request = [[StackMob stackmob] sendPushToUsersWithArguments:pushPayload withUserIds:pushUserTargets andCallback:emptyCallback];
     NSDictionary * result = [StackMobTestUtils runDefaultRunLoopAndGetDictionaryResultFromRequest:request];
     NSLog(@"result: %@", result);
+    [self assertNotNSError:result];
     [self assertResultIsQueued:result];
 }
 
 - (void)testSendPushToTokensWithArguments {
     [self registerToken];
     
-    StackMobRequest * request = [[StackMob stackmob] sendPushToTokensWithArguments:PUSH_PAYLOAD withTokens:PUSH_TOKEN_TARGETS andCallback:EMPTY_CB];
+    StackMobRequest * request = [[StackMob stackmob] sendPushToTokensWithArguments:pushPayload withTokens:pushTokenTargets andCallback:emptyCallback];
     NSDictionary * result = [StackMobTestUtils runDefaultRunLoopAndGetDictionaryResultFromRequest:request];
     NSLog(@"result: %@", result);
+    [self assertNotNSError:result];
     [self assertResultIsQueued:result];
 }
 

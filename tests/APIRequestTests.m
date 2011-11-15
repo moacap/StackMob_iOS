@@ -21,10 +21,10 @@ StackMobSession *mySession = nil;
 
 - (void) setUp
 {
+    [super setUp];
 	NSLog(@"In setup");
-	if (!mySession) 
+	if (!mySession)
 	{
-        [StackMobTestUtils setStackMobApplication];
 		NSLog(@"Created new session");
 	}
 }
@@ -33,6 +33,7 @@ StackMobSession *mySession = nil;
 {
 	NSLog(@"In teardown");
 	mySession = nil;
+    [super tearDown];
 }
 
 - (void) testGet {
@@ -117,30 +118,37 @@ StackMobSession *mySession = nil;
 
 - (void) testRequestsThatDefaultToSecure {
     StackMobRequest *r;
-    StackMobCallback emptyCallback = ^(BOOL success, id result) {};
     
     r = [[StackMob stackmob] loginWithArguments:[NSDictionary dictionary] andCallback:emptyCallback];
+    [self assertNotNSError:r];
     STAssertTrue(r.isSecure, @"Login Request Should Default to SSL");
                     
     r = [[StackMob stackmob] loginWithFacebookToken:@"WHOCARES" andCallback:emptyCallback];
+    [self assertNotNSError:r];
     STAssertTrue(r.isSecure, @"Login w/ Facebook Request Should Default to SSL");
     
     r = [[StackMob stackmob] loginWithTwitterToken:@"WHOCARES" secret:@"WHOCARES2" andCallback:emptyCallback];
+    [self assertNotNSError:r];
     STAssertTrue(r.isSecure, @"Login w/ Twitter Request Should Default to SSL");
     
     r = [[StackMob stackmob] linkUserWithFacebookToken:@"ASD" withCallback:emptyCallback];
+    [self assertNotNSError:r];
     STAssertTrue(r.isSecure, @"Link With Facebook Token Should Default to SSL");
     
     r = [[StackMob stackmob] linkUserWithTwitterToken:@"WHOCARES" secret:@"WHOCARES" andCallback:emptyCallback];
+    [self assertNotNSError:r];
     STAssertTrue(r.isSecure, @"Link With Twitter Token Should Default to SSL");
 
     r = [[StackMob stackmob] registerWithArguments:[NSDictionary dictionary] andCallback:emptyCallback];
+    [self assertNotNSError:r];
     STAssertTrue(r.isSecure, @"Register User Should Default to SSL");
     
     r = [[StackMob stackmob] registerWithFacebookToken:@"TOKEN" username:@"UNAME" andCallback:emptyCallback];
+    [self assertNotNSError:r];
     STAssertTrue(r.isSecure, @"Register With Facebook Token Should Default to SSL");
     
     r = [[StackMob stackmob] registerWithTwitterToken:@"TOKEN" secret:@"SECRET" username:@"UNAME" andCallback:emptyCallback];
+    [self assertNotNSError:r];
     STAssertTrue(r.isSecure, @"Register With Twitter Token Should Defult to SSL");
         
 }

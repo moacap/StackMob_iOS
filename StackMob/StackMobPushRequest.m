@@ -33,20 +33,8 @@
     return r;
 }
 
-- (NSURL*)getURL
-{
-    // nil method is an invalid request
-	if(!self.method) return nil;
-    
-	NSString* baseURL = [session pushURL];
-    NSString * urlString = [baseURL stringByAppendingFormat:@"/%@", self.method];
-    
-    //add query string if necessary
-    if(([[self httpMethod] isEqualToString:@"GET"] || [[self httpMethod] isEqualToString:@"DELETE"]) && [mArguments count] > 0) {
-        urlString = [urlString stringByAppendingFormat:@"?%@", [mArguments queryString]];
-    }
-    SMLog(@"%@", urlString);
-    return [NSURL URLWithString:urlString];
+- (NSString *)getBaseURL {
+    return [[session pushURL] stringByAppendingFormat:@"/%@", self.method];
 }
 
 @end

@@ -12,33 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#define USE_APPLICATION_UNIT_TEST 0
-
+#import <Foundation/Foundation.h>
 #import <SenTestingKit/SenTestingKit.h>
-#import <UIKit/UIKit.h>
 #import "StackMob.h"
-#import "StackMobTestUtils.h"
 
-//#import "application_headers" as required
+extern NSString * const kAPIKey;
+extern NSString * const kAPISecret;
+extern NSString * const kSubDomain;
+extern NSString * const kAppName;
+extern NSInteger  const kVersion;
 
-extern StackMobCallback EMPTY_CB;
-extern NSString * PUSH_USER;
-extern NSString * PUSH_TOKEN;
 
-@interface StackMobPushTests : SenTestCase {
-    NSDictionary * PUSH_PAYLOAD;
-    NSArray * PUSH_USER_TARGETS;
-    NSArray * PUSH_TOKEN_TARGETS;
-}
+@interface StackMobTestUtils : NSObject
++ (void)runRunLoop:(NSRunLoop *)runLoop untilRequestFinished:(StackMobRequest *)request;
++ (NSDictionary *)runDefaultRunLoopAndGetDictionaryResultFromRequest:(StackMobRequest *)request;
 
-- (void)assertResultIsQueued:(NSDictionary *)result;
-- (void)registerToken;
-
-- (void)setUp;
-- (void)tearDown;
-
-- (void)testRegisterDeviceToken;
-- (void)testGetDeviceTokens;
-- (void)testSendPushBroadcastWithArguments;
 @end
-

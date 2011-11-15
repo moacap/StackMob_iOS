@@ -33,7 +33,7 @@ typedef enum {
 	NSURLConnection*		mConnection;
 	id<SMRequestDelegate>	mDelegate;
 	SEL						mSelector;
-  BOOL          mIsSecure;
+    BOOL          mIsSecure;
 	NSString*				mMethod;
 	NSMutableDictionary*	mArguments;
     NSMutableDictionary*    mHeaders;
@@ -46,8 +46,8 @@ typedef enum {
 	NSHTTPURLResponse*		mHttpResponse;
 	
 	@protected
-        BOOL userBased;
-		StackMobSession *session;
+    BOOL userBased;
+	StackMobSession *session;
 }
 
 @property(readwrite, retain) id delegate;
@@ -61,6 +61,7 @@ typedef enum {
 @property(readonly) BOOL finished;
 @property(readonly) NSHTTPURLResponse* httpResponse;
 @property(readonly, getter=getStatusCode) NSInteger statusCode;
+@property(readonly, getter=getBaseURL) NSString* baseURL;
 @property(readonly, getter=getURL) NSURL* url;
 @property(nonatomic) BOOL userBased;
 
@@ -78,7 +79,7 @@ typedef enum {
 
 /* 
  * User based requests 
- * Use these to 
+ * Use these to execute a method on a user object
  */
 + (id)userRequest;
 + (id)userRequestForMethod:(NSString *)method withHttpVerb:(SMHttpVerb)httpVerb;

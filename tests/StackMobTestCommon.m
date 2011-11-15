@@ -12,23 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#define USE_APPLICATION_UNIT_TEST 0
-
-#import <SenTestingKit/SenTestingKit.h>
-#import <UIKit/UIKit.h>
-#import "StackMob.h"
-#import "StackMobTestUtils.h"
 #import "StackMobTestCommon.h"
+#import <UIKit/UIKit.h>
 
-//#import "application_headers" as required
+@implementation StackMobTestCommon
 
-
-@interface APIRequestTests : StackMobTestCommon {
-
+- (void)setUp {
+    [StackMob setApplication:kAPIKey secret:kAPISecret appName:kAppName subDomain:kSubDomain userObjectName:@"user" apiVersionNumber:[NSNumber numberWithInt:kVersion]];
+    emptyCallback = ^(BOOL success, id result) {};
 }
 
-- (void) testURLGeneration;
-- (void) testGet;           
-- (void) testPost; 
-- (void) testAPIList; 
+- (void)tearDown {
+}
+
+- (void)assertNotNSError:(id)obj {
+    if([obj class] == [NSError class]) STFail(@"object %@ is an error", obj);
+}
+
+
 @end

@@ -151,6 +151,13 @@
 	}
 }
 
+- (NSString *)getBaseURL {
+    if(mIsSecure) {
+        return [session secureURLForMethod:self.method isUserBased:userBased];
+    }
+    return [session urlForMethod:self.method isUserBased:userBased];
+}
+
 - (NSURL*)getURL
 {
     // nil method is an invalid request
@@ -158,14 +165,8 @@
     
     // build URL and add query string if necessary
     NSMutableArray *urlComponents = [NSMutableArray arrayWithCapacity:2];
-    NSMutableString* sessionUrlString;
-    if (mIsSecure) { 
-      sessionUrlString = [session secureURLForMethod:self.method isUserBased:userBased];
-    } else {
-      sessionUrlString = [session urlForMethod:self.method isUserBased:userBased];
-    }
-    [urlComponents addObject:sessionUrlString];
-  
+    [urlComponents addObject:self.baseURL]; 
+      
     if (([[self httpMethod] isEqualToString:@"GET"] || [[self httpMethod] isEqualToString:@"DELETE"]) &&    
 		[mArguments count] > 0) {
 		[urlComponents addObject:[mArguments queryString]];
