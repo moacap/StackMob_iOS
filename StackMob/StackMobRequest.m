@@ -230,8 +230,8 @@
 	_requestFinished = NO;
 
     SMLog(@"StackMob method: %@", self.method);
-    SMLog(@"Request Request with url: %@", self.url);
-    SMLog(@"Request Request with HTTP Method: %@", self.httpMethod);
+    SMLog(@"Request with url: %@", self.url);
+    SMLog(@"Request with HTTP Method: %@", self.httpMethod);
 				
 	OAConsumer *consumer = [[OAConsumer alloc] initWithKey:session.apiKey
 														secret:session.apiSecret];

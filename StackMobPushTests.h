@@ -21,13 +21,24 @@
 
 //#import "application_headers" as required
 
+extern StackMobCallback EMPTY_CB;
+extern NSString * PUSH_USER;
+extern NSString * PUSH_TOKEN;
 
-@interface APIRequestTests : SenTestCase {
-
+@interface StackMobPushTests : SenTestCase {
+    NSDictionary * PUSH_PAYLOAD;
+    NSArray * PUSH_USER_TARGETS;
+    NSArray * PUSH_TOKEN_TARGETS;
 }
 
-- (void) testURLGeneration;
-- (void) testGet;           
-- (void) testPost; 
-- (void) testAPIList; 
+- (void)assertResultIsQueued:(NSDictionary *)result;
+- (void)registerToken;
+
+- (void)setUp;
+- (void)tearDown;
+
+- (void)testRegisterDeviceToken;
+- (void)testGetDeviceTokens;
+- (void)testSendPushBroadcastWithArguments;
 @end
+

@@ -16,15 +16,37 @@
 
 @implementation StackMobPushRequest
 
-+ (StackMobRequest*)request	{
-	StackMobRequest *r = [[[StackMobPushRequest alloc] init] autorelease];
++ (id)requestForMethod:(NSString*)method {
+    StackMobRequest *r = [[[StackMobPushRequest alloc] init] autorelease];
     r.httpMethod = [self stringFromHttpVerb:POST];
+    r.method = method;
     return r;
 }
 
-- (NSURL*)getURL {
-	NSString* stringURL = [session pushURL];
-	return [NSURL URLWithString: stringURL];
++ (id)requestForMethod:(NSString*)method withArguments:(NSDictionary*)arguments {
+    StackMobRequest *r = [[[StackMobPushRequest alloc] init] autorelease];
+    r.httpMethod = [self stringFromHttpVerb:POST];
+    r.method = method;
+    if(arguments != nil) {
+        [r setArguments: arguments];
+    }
+    return r;
+}
+
+- (NSURL*)getURL
+{
+    // nil method is an invalid request
+	if(!self.method) return nil;
+    
+	NSString* baseURL = [session pushURL];
+    NSString * urlString = [baseURL stringByAppendingFormat:@"/%@", self.method];
+    
+    //add query string if necessary
+    if(([[self httpMethod] isEqualToString:@"GET"] || [[self httpMethod] isEqualToString:@"DELETE"]) && [mArguments count] > 0) {
+        urlString = [urlString stringByAppendingFormat:@"?%@", [mArguments queryString]];
+    }
+    SMLog(@"%@", urlString);
+    return [NSURL URLWithString:urlString];
 }
 
 @end

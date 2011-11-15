@@ -15,12 +15,6 @@
 
 #import "APIRequestTests.h"
 
-NSString * const kAPIKey = @"TEST_APP_PUB_KEY";
-NSString * const kAPISecret = @"TEST_APP_PUB_KEY";
-NSString * const kSubDomain = @"TEST_APP_SUBDOMAIN";
-NSString * const kAppName = @"TEST_APP_NAME";
-NSInteger  const kVersion = 0;
-
 StackMobSession *mySession = nil;
 
 @implementation APIRequestTests
@@ -30,7 +24,7 @@ StackMobSession *mySession = nil;
 	NSLog(@"In setup");
 	if (!mySession) 
 	{
-        [StackMob setApplication:kAPIKey secret:kAPISecret appName:kAppName subDomain:kSubDomain userObjectName:@"user" apiVersionNumber:[NSNumber numberWithInt:kVersion]];
+        [StackMobTestUtils setStackMobApplication];
 		NSLog(@"Created new session");
 	}
 }
@@ -52,12 +46,7 @@ StackMobSession *mySession = nil;
 												  withHttpVerb:GET];
 	[request sendRequest];
 	//we need to loop until the request comes back, its just a test its OK
-	NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
-	do {
-		NSAutoreleasePool *loopPool = [[NSAutoreleasePool alloc] init];
-		[runLoop acceptInputForMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.5]];
-		[loopPool drain];
-	} while(![request finished]);
+    [StackMobTestUtils runRunLoop:[NSRunLoop currentRunLoop] untilRequestFinished:request];
 	    
     STAssertTrue([[request result] isKindOfClass:[NSArray class]], @"Did not get a valid GET result");
 	request = nil;
@@ -85,14 +74,7 @@ StackMobSession *mySession = nil;
     }];
 
 	//we need to loop until the request comes back, its just a test its OK
-	NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
-	do {
-		NSAutoreleasePool *loopPool = [[NSAutoreleasePool alloc] init];
-		[runLoop acceptInputForMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.5]];
-		[loopPool drain];
-	} while(![request finished]);
-	
-	NSDictionary *result = [request result];
+    NSDictionary * result = [StackMobTestUtils runDefaultRunLoopAndGetDictionaryResultFromRequest:request];
     NSLog(@"result %@", result);
 	NSString *userId = [result objectForKey:@"username"];
 	STAssertNotNil(userId, @"Returned value for POST is not correct");
