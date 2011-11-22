@@ -76,13 +76,55 @@ StackMobSession *mySession = nil;
 
 	//we need to loop until the request comes back, its just a test its OK
     NSDictionary * result = [StackMobTestUtils runDefaultRunLoopAndGetDictionaryResultFromRequest:request];
-    NSLog(@"result %@", result);
+    NSLog(@"result: %@", result);
 	NSString *userId = [result objectForKey:@"username"];
 	STAssertNotNil(userId, @"Returned value for POST is not correct");
 	request = nil;
 	[userArgs release];
 }
 
+- (void) testDoubleFieldSet {
+    NSMutableDictionary * dict = [NSMutableDictionary dictionary];
+    NSString * key = @"abc";
+    NSNumber * value = [NSNumber numberWithDouble:2.0];
+    [dict setValue:(NSNumber *)value forKey:key];
+ 
+    StackMobRequest * request = [[StackMob stackmob] post:@"test" withArguments:dict andCallback:^(BOOL success, id result) {
+        if (success) {
+            SMLog(@"response: %@", result);
+        } else {
+            STFail(@"failure with result %@", result);
+        }
+    }];
+    NSDictionary * result = [StackMobTestUtils runDefaultRunLoopAndGetDictionaryResultFromRequest:request];
+    NSLog(@"result: %@", result);
+}
+
+- (void) testDoubleJSONEncoding {
+    static NSString * key = @"doubleKey";
+    NSNumber * doubleNumber = [NSNumber numberWithDouble:22];
+    NSMutableDictionary * dict = [NSMutableDictionary dictionary];
+    [dict setObject:doubleNumber forKey:key];
+    
+    NSError * error = nil;
+    NSData * jsonData = [StackMobRequest JsonifyNSDictionary:dict withErrorOutput:&error];
+    STAssertNil(error, @"json encoding had error: %@", error);
+    
+    NSString * jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    id decodedObject = [jsonString objectFromJSONString];
+    if(![decodedObject isKindOfClass:[NSDictionary class]]) {
+        STFail(@"JSON decoded object is not a dictionary or subclass");
+    }
+    
+    NSDictionary * decodedDict = (NSDictionary *)decodedObject;
+    id decodedObjectValue = [decodedDict objectForKey:key];
+    if(![decodedObjectValue isKindOfClass:[NSNumber class]]) {
+        STFail(@"object taken from dictionary was not an NSNumber");
+    }
+    
+    NSNumber * decodedNumberValue = (NSNumber *)decodedObjectValue;
+    STAssertTrue([decodedNumberValue isEqual:doubleNumber], @"%@ was not equal to the value for %@ taken from the decoded dictionary", [decodedDict objectForKey:key], key);
+}
 
 - (void) testURLGeneration {
 

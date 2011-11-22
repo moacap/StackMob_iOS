@@ -88,9 +88,15 @@ typedef enum {
 
 /*
  * Create a request for an iOS PUSH notification
- @param arguments a dictionary of arguments including :alert, :badge and :sound
+ * @param arguments a dictionary of arguments including :alert, :badge and :sound
  */
 + (id)pushRequestWithArguments:(NSDictionary*)arguments withHttpVerb:(SMHttpVerb) httpVerb;
+
+/**
+ * Convert a NSDictionary to JSON
+ * @param dict the dictionary to convert to JSON
+ */
++ (NSData *)JsonifyNSDictionary:(NSMutableDictionary *)dict withErrorOutput:(NSError **)error;
 
 /*
  * Set parameters for requests
