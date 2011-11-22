@@ -226,6 +226,24 @@
     [mHeaders setDictionary:headers];
 }
 
++ (NSData *)JsonifyNSDictionary:(NSMutableDictionary *)dict withErrorOutput:(NSError **)error {
+    
+    static id(^unsupportedClassSerializerBlock)(id) = ^id(id object) {
+        if ( [object isKindOfClass:[NSData class]] ) {
+            NSString* base64String = [(NSData*)object JSON];
+            return base64String;
+        }
+        else {
+            return nil;
+        }
+    };
+    
+    NSData * json = [dict JSONDataWithOptions:JKSerializeOptionNone
+        serializeUnsupportedClassesUsingBlock:unsupportedClassSerializerBlock
+                                        error:error];
+    return json;
+}
+
 - (void)sendRequest
 {
 	_requestFinished = NO;
@@ -263,30 +281,17 @@
 	if (!([[self httpMethod] isEqualToString: @"GET"] || [[self httpMethod] isEqualToString:@"DELETE"])) {
         
         NSError* error = nil;
-        NSData* postData = [mArguments JSONDataWithOptions:JKSerializeOptionNone
-                     serializeUnsupportedClassesUsingBlock:^id(id object){
-            
-                         if ( [object isKindOfClass:[NSData class]] )
-                         {
-                             NSString* base64String = [(NSData*)object JSON];
-                             return base64String;
-                         }
-                         else
-                         {
-                             return nil;
-                         }
-                     }
-                                                     error:&error];
-//        NSData* postData = [[mArguments JSONString] dataUsingEncoding:NSUTF8StringEncoding];
-        SMLog(@"POST Data: %d", [postData length]);
+        NSData * postData = [StackMobRequest JsonifyNSDictionary:mArguments withErrorOutput:&error];
+        NSString * postDataString = [[NSString alloc] initWithData:postData encoding:NSUTF8StringEncoding];
+        SMLog(@"POST Data: %@", postDataString);
         [request setHTTPBody:postData];	
         NSString *contentType = [NSString stringWithFormat:@"application/json"];
         [request addValue:contentType forHTTPHeaderField: @"Content-Type"]; 
 	}
 		
-  SMLog(@"StackMobRequest: sending asynchronous oauth request: %@", request);
+    SMLog(@"StackMobRequest: sending asynchronous oauth request: %@", request);
     
-	[mConnectionData setLength:0];		
+	[mConnectionData setLength:0];
 	self.result = nil;
     self.connectionError = nil;
 	self.connection = [[[NSURLConnection alloc] initWithRequest:request delegate:self] retain]; // Why retaining this when already retained by synthesized method?
