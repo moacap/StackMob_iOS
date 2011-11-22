@@ -1,5 +1,8 @@
 # Release Notes
 
+## 0.3.2
+* Improved Push Support including several Bug Fixes
+
 ## 0.3.1
 * Removed dependency on CoreLocation
 * Resolved handling of binary uploads with JSONKit
