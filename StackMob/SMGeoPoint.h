@@ -17,6 +17,8 @@
 
 - (id)initWithLongitiude:(double)lon andLatitude:(double)lat;
 
-- (NSArray *)array;
+- (NSArray *)arrayValue;
+
+- (NSString *)stringValue;
 
 @end

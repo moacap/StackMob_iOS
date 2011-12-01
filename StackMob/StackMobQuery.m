@@ -8,8 +8,12 @@
 
 #import "StackMobQuery.h"
 
+const double earthRadianInMi = 3956.6;
+const double earthRadiamInKm = 6367.5;
+
 @interface StackMobQuery (Private)
 - (NSString *)keyForField:(NSString *)f andOperator:(NSString *)op;
+- (void)setGeoParam:(SMGeoPoint *)pt withRadius:(double)r andDiv:(double)d forField:(NSString *)f andOperator:(NSString *)o;
 @end
 
 @implementation StackMobQuery
@@ -55,6 +59,28 @@
     [self.params setValue:arr forKey:[self keyForField:f andOperator:@"in"]];
 }
 
+
+- (void)field:(NSString *)f centeredAt:(SMGeoPoint *)point mustBeWithinMi:(double)mi {
+    [self setGeoParam:point withRadius:mi andDiv:earthRadianInMi forField:f andOperator:@"within"];    
+}
+
+- (void)field:(NSString *)f centeredAt:(SMGeoPoint *)point mustBeWithinKm:(double)km {
+    [self setGeoParam:point withRadius:km andDiv:earthRadiamInKm forField:f andOperator:@"within"];
+}
+
+
+- (void)field:(NSString *)f mustBeNear:(SMGeoPoint *)point {
+    [self.params setValue:[point stringValue] forKey:[self keyForField:f andOperator:@"near"]];
+}
+
+- (void)field:(NSString *)f mustBeNear:(SMGeoPoint *)point withinMi:(double)mi {
+    [self setGeoParam:point withRadius:mi andDiv:earthRadianInMi forField:f andOperator:@"near"];
+}
+
+- (void)field:(NSString *)f mustBeNear:(SMGeoPoint *)point withinKm:(double)km {
+    [self setGeoParam:point withRadius:km andDiv:earthRadiamInKm forField:f andOperator:@"near"];
+}
+
 - (void)setExpandDepth:(NSUInteger)depth {
     [self.headers setValue:[NSString stringWithFormat:@"%d", depth] forKey:@"X-StackMob-Expand"];
 }
@@ -83,6 +109,13 @@
 
 - (NSString *)keyForField:(NSString *)f andOperator:(NSString *)op {
     return [NSString stringWithFormat:@"%@[%@]", f, op];
+}
+
+- (void)setGeoParam:(SMGeoPoint *)pt withRadius:(double)r andDiv:(double)d forField:(NSString *)f andOperator:(NSString *)o {
+    NSNumber *radius = [NSNumber numberWithDouble:r / d];
+    NSString *arg = [NSString stringWithFormat:@"%@,%@", [pt stringValue], radius];
+    [self.params setValue:arg forKey:[self keyForField:f andOperator:o]];
+
 }
 
 - (void)dealloc {

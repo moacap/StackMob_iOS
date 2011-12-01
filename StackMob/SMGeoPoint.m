@@ -27,8 +27,12 @@
     
 }
 
-- (NSArray *)array {
+- (NSArray *)arrayValue {
     return [NSArray arrayWithObjects:[NSNumber numberWithDouble:self.latitude], [NSNumber numberWithDouble:self.longitude], nil];
+}
+
+- (NSString *)stringValue {
+    return [[self arrayValue] componentsJoinedByString:@","];
 }
 
 @end

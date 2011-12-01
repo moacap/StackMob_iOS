@@ -23,5 +23,6 @@
 @interface StackMobQueryTests : StackMobTestCommon
 
 - (void)testBasicOperators;
+- (void)testGeoOperators;
 
 @end
