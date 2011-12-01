@@ -8,6 +8,10 @@
 
 #import "StackMobQuery.h"
 
+@interface StackMobQuery (Private)
+- (NSString *)keyForField:(NSString *)f andOperator:(NSString *)op;
+@end
+
 @implementation StackMobQuery
 
 @synthesize params = _params;
@@ -32,23 +36,23 @@
 }
 
 - (void)field:(NSString *)f mustBeLessThanValue:(id)v {
-    [self.params setValue:v forKey:[NSString stringWithFormat:@"%@[lt]", f]];
+    [self.params setValue:v forKey:[self keyForField:f andOperator:@"lt"]];  
 }
 
 - (void)field:(NSString *)f mustBeLessThanOrEqualToValue:(id)v {
-    [self.params setValue:v forKey:[NSString stringWithFormat:@"%@[lte]", f]];
+    [self.params setValue:v forKey:[self keyForField:f andOperator:@"lte"]]; 
 }
 
 - (void)field:(NSString *)f mustBeGreaterThanValue:(id)v {
-    [self.params setValue:v forKey:[NSString stringWithFormat:@"%@[gt]", f]];
+    [self.params setValue:v forKey:[self keyForField:f andOperator:@"gt"]];
 }
 
 - (void)field:(NSString *)f mustBeGreaterThanOrEqualToValue:(id)v {
-    [self.params setValue:v forKey:[NSString stringWithFormat:@"%@[gte]", f]];        
+    [self.params setValue:v forKey:[self keyForField:f andOperator:@"gte"]];
 }
 
 - (void)field:(NSString *)f mustBeOneOf:(NSArray *)arr {
-    [self.params setValue:arr forKey:[NSString stringWithFormat:@"%@[in]", f]];
+    [self.params setValue:arr forKey:[self keyForField:f andOperator:@"in"]];
 }
 
 - (void)setExpandDepth:(NSUInteger)depth {
@@ -75,6 +79,10 @@
         newHeaderValue = [NSString stringWithFormat:@"%@:%@", f, orderStr];
     }
     [self.headers setValue:newHeaderValue forKey:@"X-StackMob-OrderBy"];
+}
+
+- (NSString *)keyForField:(NSString *)f andOperator:(NSString *)op {
+    return [NSString stringWithFormat:@"%@[%@]", f, op];
 }
 
 - (void)dealloc {
