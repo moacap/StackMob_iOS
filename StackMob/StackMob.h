@@ -241,10 +241,19 @@ typedef void (^StackMobCallback)(BOOL success, id result);
 
 /*
  * PUT the arguments to the given object path
+ * @param path the name of the object in your Stackmob app
+ * @param objId the id of the object to update
+ * @param arguments a Dictionary of attributes whose  keys correspond to field names of the object in your Stackmob app
+ */
+- (StackMobRequest *)put:(NSString *)path withId:(NSString *)objectId andArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
+
+
+/*
+ * PUT the arguments to the given object path
  * @path the name of the object in your Stackmob app
  * @param arguments a Dictionary of attributes whose  keys correspond to field names of the object in your Stackmob app
  */
-- (StackMobRequest *)put:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
+- (StackMobRequest *)put:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback __attribute__((deprecated));
 
 /* 
  * DELETE the object at the given path
