@@ -300,6 +300,23 @@ typedef void (^StackMobCallback)(BOOL success, id result);
  */
 - (StackMobRequest *)destroy:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
 
+/*
+ * automically remove elements from an array or has many relationship
+ */
+- (StackMobRequest *)removeIds:(NSArray *)removeIds 
+                     forSchema:(NSString *)schema 
+                         andId:(NSString *)primaryId 
+                      andField:(NSString *)relField 
+                  withCallback:(StackMobCallback)callback;
+/*
+ * automically remove an element from an array or has many relationship or unset the value of a has one relationship
+ */
+- (StackMobRequest *)removeId:(NSString *)removeId 
+                     forSchema:(NSString *)schema 
+                         andId:(NSString *)primaryId 
+                      andField:(NSString *)relField 
+                  withCallback:(StackMobCallback)callback;
+
 
 /**************** Heroku Methods *****************/
 

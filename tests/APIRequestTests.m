@@ -119,6 +119,12 @@ StackMobSession *mySession = nil;
     [self assertNotNSError:[StackMobTestUtils runDefaultRunLoopAndGetDictionaryResultFromRequest:r]];
 }
 
+- (void)testRelatedDelete {
+    StackMobRequest *r = [[StackMob stackmob] removeIds:[NSArray arrayWithObjects:@"one", @"two", nil] forSchema:@"primary_schema" andId:@"primary_key2" andField:@"related_many" withCallback:^(BOOL success, id result) {}];
+    
+    [self assertNotNSError:[StackMobTestUtils runDefaultRunLoopAndGetDictionaryResultFromRequest:r]];
+}
+
 - (void) testDoubleFieldSet {
     NSMutableDictionary * dict = [NSMutableDictionary dictionary];
     NSString * key = @"abc";

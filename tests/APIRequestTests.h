@@ -33,5 +33,6 @@
 - (void) testBulkPost;
 - (void) testRelatedPost;
 - (void) testRelatedPut;
+- (void) testRelatedDelete;
 - (void) testAPIList; 
 @end

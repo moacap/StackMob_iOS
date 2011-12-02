@@ -446,6 +446,15 @@ static SMEnvironment environment;
     return request;
 }
 
+- (StackMobRequest *)removeIds:(NSArray *)removeIds forSchema:(NSString *)schema andId:(NSString *)primaryId andField:(NSString *)relField withCallback:(StackMobCallback)callback {
+    NSString *fullPath = [NSString stringWithFormat:@"%@/%@/%@/%@", schema, primaryId, relField, [removeIds componentsJoinedByString:@","]];
+    return [self destroy:fullPath withArguments:[NSDictionary dictionary] andCallback:callback];
+}
+
+- (StackMobRequest *)removeId:(NSString *)removeId forSchema:(NSString *)schema andId:(NSString *)primaryId andField:(NSString *)relField withCallback:(StackMobCallback)callback {
+    return [self removeId:[NSArray arrayWithObject:removeId] forSchema:schema andId:primaryId andField:relField withCallback:callback];
+}
+
 # pragma mark - Private methods
 - (void)queueRequest:(StackMobRequest *)request andCallback:(StackMobCallback)callback
 {
