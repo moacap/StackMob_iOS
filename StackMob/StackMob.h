@@ -240,6 +240,13 @@ typedef void (^StackMobCallback)(BOOL success, id result);
 - (StackMobRequest *)post:(NSString *)path forUser:(NSString *)user withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
 
 /*
+ * Bulk Insertion
+ * @param bulkArguments - an array of NSDictionary instances to insert
+ */
+- (StackMobRequest *)post:(NSString *)path
+        withBulkArguments:(NSArray *)arguments
+              andCallback:(StackMobCallback)callback;
+
  * PUT the arguments to the given object path
  * @param path the name of the object in your Stackmob app
  * @param objId the id of the object to update

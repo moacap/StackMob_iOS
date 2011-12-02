@@ -19,6 +19,7 @@
 #import "StackMobAdditions.h"
 #import "StackMobClientData.h"
 #import "StackMobHerokuRequest.h"
+#import "StackMobBulkRequest.h"
 
 @interface StackMob (Private)
 - (void)queueRequest:(StackMobRequest *)request andCallback:(StackMobCallback)callback;
@@ -391,6 +392,13 @@ static SMEnvironment environment;
                                                    withArguments:modifiedArguments
                                                     withHttpVerb:POST];
     [self queueRequest:request andCallback:callback];
+    return request;
+}
+
+- (StackMobRequest *)post:(NSString *)path withBulkArguments:(NSArray *)arguments andCallback:(StackMobCallback)callback {
+    StackMobBulkRequest *request = [StackMobBulkRequest requestForMethod:path withArguments:arguments];
+    [self queueRequest:request andCallback:callback];
+    
     return request;
 }
 

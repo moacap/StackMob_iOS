@@ -83,6 +83,23 @@ StackMobSession *mySession = nil;
 	[userArgs release];
 }
 
+
+- (void)testBulkPost {
+    NSMutableDictionary* userArgs1 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                     @"Ty", @"firstname",
+                                     @"Amell", @"lastname",
+                                     @"ty@stackmob.com", @"email",
+                                     nil];
+    NSMutableDictionary* userArgs2 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                      @"Jordan", @"firstname",
+                                      @"West", @"lastname",
+                                      @"jordan@stackmob.com", @"email",
+                                      nil];
+
+    StackMobRequest *r = [[StackMob stackmob] post:@"user" withBulkArguments:[NSArray arrayWithObjects:userArgs1, userArgs2, nil] andCallback:^(BOOL success, id result) {}];
+    
+    [self assertNotNSError:[StackMobTestUtils runDefaultRunLoopAndGetDictionaryResultFromRequest:r]];                          
+}
 - (void) testDoubleFieldSet {
     NSMutableDictionary * dict = [NSMutableDictionary dictionary];
     NSString * key = @"abc";
