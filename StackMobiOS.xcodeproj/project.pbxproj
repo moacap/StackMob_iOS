@@ -108,6 +108,10 @@
 		E3897ECA14885AC000E45FB7 /* StackMobBulkRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = E3897EC814885AC000E45FB7 /* StackMobBulkRequest.h */; };
 		E3897ECB14885AC000E45FB7 /* StackMobBulkRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = E3897EC914885AC000E45FB7 /* StackMobBulkRequest.m */; };
 		E3897ECC14885AC000E45FB7 /* StackMobBulkRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = E3897EC914885AC000E45FB7 /* StackMobBulkRequest.m */; };
+		E3C752391486FBA3007CFEF1 /* SMGeoPoint.h in Headers */ = {isa = PBXBuildFile; fileRef = E3C752371486FBA3007CFEF1 /* SMGeoPoint.h */; };
+		E3C7523A1486FBA3007CFEF1 /* SMGeoPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = E3C752381486FBA3007CFEF1 /* SMGeoPoint.m */; };
+		E3C7523E14871A19007CFEF1 /* StackMobQueryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E3C7523D14871A18007CFEF1 /* StackMobQueryTests.m */; };
+		E3C7523F14873321007CFEF1 /* SMGeoPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = E3C752381486FBA3007CFEF1 /* SMGeoPoint.m */; };
 		E3D728D71448BE5700804149 /* StackMobQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = E3D728D51448BE5700804149 /* StackMobQuery.h */; };
 		E3D728D81448BE5700804149 /* StackMobQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = E3D728D61448BE5700804149 /* StackMobQuery.m */; };
 		E3D728D91448BE5700804149 /* StackMobQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = E3D728D61448BE5700804149 /* StackMobQuery.m */; };
@@ -186,6 +190,10 @@
 		E33D87DA144616CF00FBEB96 /* StackMobVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StackMobVersion.h; sourceTree = "<group>"; };
 		E3897EC814885AC000E45FB7 /* StackMobBulkRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StackMobBulkRequest.h; sourceTree = "<group>"; };
 		E3897EC914885AC000E45FB7 /* StackMobBulkRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StackMobBulkRequest.m; sourceTree = "<group>"; };
+		E3C752371486FBA3007CFEF1 /* SMGeoPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMGeoPoint.h; sourceTree = "<group>"; };
+		E3C752381486FBA3007CFEF1 /* SMGeoPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMGeoPoint.m; sourceTree = "<group>"; };
+		E3C7523C14871A18007CFEF1 /* StackMobQueryTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StackMobQueryTests.h; path = tests/StackMobQueryTests.h; sourceTree = "<group>"; };
+		E3C7523D14871A18007CFEF1 /* StackMobQueryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StackMobQueryTests.m; path = tests/StackMobQueryTests.m; sourceTree = "<group>"; };
 		E3D728D51448BE5700804149 /* StackMobQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StackMobQuery.h; sourceTree = "<group>"; };
 		E3D728D61448BE5700804149 /* StackMobQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StackMobQuery.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -249,6 +257,8 @@
 				E3D728D61448BE5700804149 /* StackMobQuery.m */,
 				E3897EC814885AC000E45FB7 /* StackMobBulkRequest.h */,
 				E3897EC914885AC000E45FB7 /* StackMobBulkRequest.m */,
+				E3C752371486FBA3007CFEF1 /* SMGeoPoint.h */,
+				E3C752381486FBA3007CFEF1 /* SMGeoPoint.m */,
 			);
 			path = StackMob;
 			sourceTree = "<group>";
@@ -389,6 +399,8 @@
 				82CE45F212892FFA00A73E9C /* APIRequestTests.m */,
 				936948591472286900575176 /* StackMobTestCommon.h */,
 				9369485A1472286900575176 /* StackMobTestCommon.m */,
+				E3C7523C14871A18007CFEF1 /* StackMobQueryTests.h */,
+				E3C7523D14871A18007CFEF1 /* StackMobQueryTests.m */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -433,6 +445,7 @@
 				9369486614722C6500575176 /* StackMobTestCommon.h in Headers */,
 				9369486714722C8000575176 /* StackMobTestUtils.h in Headers */,
 				E3897ECA14885AC000E45FB7 /* StackMobBulkRequest.h in Headers */,
+				E3C752391486FBA3007CFEF1 /* SMGeoPoint.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -568,11 +581,13 @@
 				038CB29314284C97001DEAC9 /* StackMob.m in Sources */,
 				038CB29414284C97001DEAC9 /* StackMobRequest.m in Sources */,
 				82CE45F412892FFA00A73E9C /* APIRequestTests.m in Sources */,
+				E3C7523F14873321007CFEF1 /* SMGeoPoint.m in Sources */,
 				E3D728D91448BE5700804149 /* StackMobQuery.m in Sources */,
 				93694862147228B400575176 /* StackMobPushTests.m in Sources */,
 				93694863147228B400575176 /* StackMobTestUtils.m in Sources */,
 				9369486514722C5C00575176 /* StackMobTestCommon.m in Sources */,
 				E3897ECC14885AC000E45FB7 /* StackMobBulkRequest.m in Sources */,
+				E3C7523E14871A19007CFEF1 /* StackMobQueryTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -606,6 +621,7 @@
 				038CB29014284C3F001DEAC9 /* JSONKit.m in Sources */,
 				E3D728D81448BE5700804149 /* StackMobQuery.m in Sources */,
 				E3897ECB14885AC000E45FB7 /* StackMobBulkRequest.m in Sources */,
+				E3C7523A1486FBA3007CFEF1 /* SMGeoPoint.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
