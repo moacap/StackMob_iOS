@@ -14,10 +14,10 @@
 
 #import "StackMobTestUtils.h"
 
-NSString * const kAPIKey = @"201543b9-7b81-4934-a353-c22d979c891a";
-NSString * const kAPISecret = @"7a099db4-e09a-4e71-8348-3fea8ef5164f";
-NSString * const kSubDomain = @"stackmob";
-NSString * const kAppName = @"iossdktest";
+NSString * const kAPIKey = @"API_KEY";
+NSString * const kAPISecret = @"API_SECRET";
+NSString * const kSubDomain = @"SUB_DOMAIN";
+NSString * const kAppName = @"APP_NAME";
 NSInteger  const kVersion = 0;
 
 @implementation StackMobTestUtils
