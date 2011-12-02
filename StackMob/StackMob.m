@@ -428,6 +428,16 @@ static SMEnvironment environment;
     return request;
 }
 
+- (StackMobRequest *)put:(NSString *)path withId:(id)primaryId andField:(NSString *)relField andArguments:(NSArray *)args andCallback:(StackMobCallback)callback {
+    NSString *fullPath = [NSString stringWithFormat:@"%@/%@/%@", path, primaryId, relField];
+    StackMobBulkRequest *request = [StackMobBulkRequest requestForMethod:fullPath withArguments:args];
+    request.httpMethod = [StackMobRequest stringFromHttpVerb:PUT];
+
+    [self queueRequest:request andCallback:callback];
+    
+    return request;
+}
+
 - (StackMobRequest *)destroy:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback{
     StackMobRequest *request = [StackMobRequest requestForMethod:path
                                                    withArguments:arguments

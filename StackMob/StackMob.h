@@ -282,6 +282,16 @@ typedef void (^StackMobCallback)(BOOL success, id result);
  */
 - (StackMobRequest *)put:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback __attribute__((deprecated));
 
+/*
+ * Atomically update an array or has many relationship
+ * with relations API extensions
+ */
+- (StackMobRequest *)put:(NSString *)path 
+                  withId:(NSString *)primaryId 
+                andField:(NSString *)relField 
+            andArguments:(NSArray *)args 
+             andCallback:(StackMobCallback)callback;
+
 /* 
  * DELETE the object at the given path
  * @path the name of the object in your stackmob app

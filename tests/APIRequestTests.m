@@ -112,6 +112,13 @@ StackMobSession *mySession = nil;
     [self assertNotNSError:[StackMobTestUtils runDefaultRunLoopAndGetDictionaryResultFromRequest:r2]];
 }
 
+- (void)testRelatedPut {
+    NSArray *putArry = [NSArray arrayWithObjects:@"one", @"two", nil];
+    StackMobRequest *r = [[StackMob stackmob] put:@"primary_schema" withId:@"primary_key1" andField:@"array" andArguments:putArry andCallback:^(BOOL success, id result) {}];
+    
+    [self assertNotNSError:[StackMobTestUtils runDefaultRunLoopAndGetDictionaryResultFromRequest:r]];
+}
+
 - (void) testDoubleFieldSet {
     NSMutableDictionary * dict = [NSMutableDictionary dictionary];
     NSString * key = @"abc";
