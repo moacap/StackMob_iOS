@@ -100,6 +100,18 @@ StackMobSession *mySession = nil;
     
     [self assertNotNSError:[StackMobTestUtils runDefaultRunLoopAndGetDictionaryResultFromRequest:r]];                          
 }
+
+- (void)testRelatedPost {
+    NSDictionary *argsDict = [NSDictionary dictionaryWithObjectsAndKeys:@"abc", @"name", nil];
+    NSArray *argsArray = [NSArray arrayWithObject:argsDict];
+    StackMobRequest *r1 = [[StackMob stackmob] post:@"primary_schema" withId:@"primary_key1" andField:@"related_many" andArguments:argsDict andCallback:^(BOOL success, id result) {}];
+    StackMobRequest *r2 = [[StackMob stackmob] post:@"primary_schema" withId:@"primary_key2" andField:@"related_many" andBulkArguments:argsArray andCallback:^(BOOL success, id result) {}];
+    
+    
+    [self assertNotNSError:[StackMobTestUtils runDefaultRunLoopAndGetDictionaryResultFromRequest:r1]];
+    [self assertNotNSError:[StackMobTestUtils runDefaultRunLoopAndGetDictionaryResultFromRequest:r2]];
+}
+
 - (void) testDoubleFieldSet {
     NSMutableDictionary * dict = [NSMutableDictionary dictionary];
     NSString * key = @"abc";

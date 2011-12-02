@@ -402,6 +402,16 @@ static SMEnvironment environment;
     return request;
 }
 
+- (StackMobRequest *)post:(NSString *)path withId:(NSString *)primaryId andField:(NSString *)relField andArguments:(NSDictionary *)args andCallback:(StackMobCallback)callback {
+    NSString *fullPath = [NSString stringWithFormat:@"%@/%@/%@", path, primaryId, relField];
+    return [self post:fullPath withArguments:args andCallback:callback];
+}
+
+- (StackMobRequest *)post:(NSString *)path withId:(NSString *)primaryId andField:(NSString *)relField andBulkArguments:(NSArray *)arguments andCallback:(StackMobCallback)callback {
+    NSString *fullPath = [NSString stringWithFormat:@"%@/%@/%@", path, primaryId, relField];
+    return [self post:fullPath withBulkArguments:arguments andCallback:callback];
+}
+
 - (StackMobRequest *)put:(NSString *)path withId:(NSString *)objectId andArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback {
     NSString *fullPath = [NSString stringWithFormat:@"%@/%@", path, objectId];
 

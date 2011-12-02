@@ -247,6 +247,26 @@ typedef void (^StackMobCallback)(BOOL success, id result);
         withBulkArguments:(NSArray *)arguments
               andCallback:(StackMobCallback)callback;
 
+/*
+ * POST one related object with Relations API Extensions 
+ */
+- (StackMobRequest *)post:(NSString *)path 
+                   withId:(NSString *)primaryId 
+                 andField:(NSString *)relField 
+             andArguments:(NSDictionary *)args
+              andCallback:(StackMobCallback)callback;
+
+/*
+ * POST many related objects with Relations API Extensions
+ */
+- (StackMobRequest *)post:(NSString *)path
+                   withId:(NSString *)primaryId
+                 andField:(NSString *)relField
+             andBulkArguments:(NSArray *)arguments
+              andCallback:(StackMobCallback)callback;
+
+
+/*
  * PUT the arguments to the given object path
  * @param path the name of the object in your Stackmob app
  * @param objId the id of the object to update
