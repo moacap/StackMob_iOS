@@ -81,6 +81,11 @@ const double earthRadiamInKm = 6367.5;
     [self setGeoParam:point withRadius:km andDiv:earthRadiamInKm forField:f andOperator:@"near"];
 }
 
+- (void)field:(NSString *)f mustBeWithinBoxWithLowerLeft:(SMGeoPoint *)lowerLeft andUpperRight:(SMGeoPoint *)upperRight {
+    NSString *boxString = [NSString stringWithFormat:@"%@,%@", [lowerLeft stringValue], [upperRight stringValue]];
+    [self.params setValue:boxString forKey:[self keyForField:f andOperator:@"within"]];
+}
+
 - (void)setExpandDepth:(NSUInteger)depth {
     [self.headers setValue:[NSString stringWithFormat:@"%d", depth] forKey:@"X-StackMob-Expand"];
 }

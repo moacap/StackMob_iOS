@@ -46,6 +46,7 @@
     [q field:@"nearwithinkm" mustBeNear:pt withinKm:2.0];
     [q field:@"withinmi" centeredAt:pt mustBeWithinMi:2.0];
     [q field:@"withinkm" centeredAt:pt mustBeWithinKm:2.0];
+    [q field:@"withinbox" mustBeWithinBoxWithLowerLeft:pt andUpperRight:[SMGeoPoint geoPointWithLongitude:0.0 andLatitude:0.0]];
     
     NSString *near = [q.params objectForKey:@"near[near]"];
     STAssertTrue([near isEqualToString:@"2.1,1"], @"near failed");
@@ -65,6 +66,9 @@
     
     NSString *withinKm = [q.params objectForKey:@"withinkm[within]"];
     STAssertTrue([withinKm isEqualToString:expectedKm], @"within km failed");
+    
+    NSString *withinBox = [q.params objectForKey:@"withinbox[within]"];
+    STAssertTrue([withinBox isEqualToString:@"2.1,1,0,0"], @"within box failed");
     
 }
 
