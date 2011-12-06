@@ -30,6 +30,7 @@ typedef enum {
 - (void)field:(NSString *)f mustBeOneOf:(NSArray *)arr;
 - (void)field:(NSString *)f centeredAt:(SMGeoPoint *)point mustBeWithinMi:(double)radiusInMi;
 - (void)field:(NSString *)f centeredAt:(SMGeoPoint *)point mustBeWithinKm:(double)radiusInKm;
+- (void)field:(NSString *)f mustBeWithinBoxWithLowerLeft:(SMGeoPoint *)lowerLeft andUpperRight:(SMGeoPoint *)upperRight;
 - (void)field:(NSString *)f mustBeNear:(SMGeoPoint *)point;
 - (void)field:(NSString *)f mustBeNear:(SMGeoPoint *)point withinMi:(double)radiusInMi;
 - (void)field:(NSString *)f mustBeNear:(SMGeoPoint *)point withinKm:(double)radiusInKm;
