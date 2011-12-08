@@ -26,6 +26,7 @@
 - (void)run;
 - (void)next;
 - (NSDictionary *)loadInfo;
+- (StackMobRequest *)destroy:(NSString *)path withArguments:(NSDictionary *)arguments andHeaders:(NSDictionary *)headers andCallback:(StackMobCallback)callback;
 @end
 
 #define ENVIRONMENTS [NSArray arrayWithObjects:@"production", @"development", nil]
@@ -439,21 +440,58 @@ static SMEnvironment environment;
 }
 
 - (StackMobRequest *)destroy:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback{
+    return [self destroy:path withArguments:arguments andHeaders:[NSDictionary dictionary] andCallback:callback];
+}
+
+- (StackMobRequest *)destroy:(NSString *)path withArguments:(NSDictionary *)arguments andHeaders:(NSDictionary *)headers andCallback:(StackMobCallback)callback {
     StackMobRequest *request = [StackMobRequest requestForMethod:path
                                                    withArguments:arguments
                                                     withHttpVerb:DELETE];
+    [request setHeaders:headers];
     [self queueRequest:request andCallback:callback];
     return request;
+
 }
 
 - (StackMobRequest *)removeIds:(NSArray *)removeIds forSchema:(NSString *)schema andId:(NSString *)primaryId andField:(NSString *)relField withCallback:(StackMobCallback)callback {
-    NSString *fullPath = [NSString stringWithFormat:@"%@/%@/%@/%@", schema, primaryId, relField, [removeIds componentsJoinedByString:@","]];
-    return [self destroy:fullPath withArguments:[NSDictionary dictionary] andCallback:callback];
+    return [self removeIds:removeIds forSchema:schema andId:primaryId andField:relField shouldCascade:NO withCallback:callback];
 }
 
-- (StackMobRequest *)removeId:(NSString *)removeId forSchema:(NSString *)schema andId:(NSString *)primaryId andField:(NSString *)relField withCallback:(StackMobCallback)callback {
-    return [self removeId:[NSArray arrayWithObject:removeId] forSchema:schema andId:primaryId andField:relField withCallback:callback];
+- (StackMobRequest *)removeIds:(NSArray *)removeIds forSchema:(NSString *)schema andId:(NSString *)primaryId andField:(NSString *)relField shouldCascade:(BOOL)isCascade withCallback:(StackMobCallback)callback {
+    NSString *fullPath = [NSString stringWithFormat:@"%@/%@/%@/%@", schema, primaryId, relField, [removeIds componentsJoinedByString:@","]];
+    NSDictionary *headers;
+    if (isCascade == YES) {
+        headers = [NSDictionary dictionaryWithObjectsAndKeys:@"true", @"X-StackMob-CascadeDelete", nil];
+    } else {
+        headers = [NSDictionary dictionary];
+    }
+    return [self destroy:fullPath 
+           withArguments:[NSDictionary dictionary] 
+              andHeaders:headers 
+             andCallback:callback];
+
 }
+
+
+- (StackMobRequest *)removeId:(NSString *)removeId forSchema:(NSString *)schema andId:(NSString *)primaryId andField:(NSString *)relField withCallback:(StackMobCallback)callback {
+    return [self removeId:removeId 
+                forSchema:schema 
+                    andId:primaryId 
+                 andField:relField 
+            shouldCascade:NO 
+             withCallback:callback];
+}
+
+- (StackMobRequest *)removeId:(NSString *)removeId forSchema:(NSString *)schema andId:(NSString *)primaryId andField:(NSString *)relField shouldCascade:(BOOL)isCascade withCallback:(StackMobCallback)callback {
+    return [self removeIds:[NSArray arrayWithObject:removeId] 
+                 forSchema:schema 
+                     andId:primaryId 
+                  andField:relField 
+             shouldCascade:isCascade 
+              withCallback:callback];
+
+}
+
 
 # pragma mark - Private methods
 - (void)queueRequest:(StackMobRequest *)request andCallback:(StackMobCallback)callback
