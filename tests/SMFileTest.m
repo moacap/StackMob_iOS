@@ -44,23 +44,6 @@
     STAssertTrue(result, @"JSON serialization failed");
     [file release];
 }
-/*
-- (void)testRequestJSONSonfiy {
-    NSData *data = [NSData data];
-    NSString *fName = @"test.jpg";
-    NSString *contentType = @"image/jpg";
-    SMFile *file =  [[SMFile alloc] initWithFileName:fName data:data contentType:contentType];
-    NSString *encodedString = [data base64EncodedString];
-    
-    NSString *expectedResult = [NSString stringWithFormat:@"Content-Type: %@\n\
-                                Content-Disposition: attachment; filename=%@\n\
-                                Content-Transfer-Encoding: %@\n\n\
-                                %@", data, fName, contentType, encodedString];
-    
-    bool result = [expectedResult isEqualToString:[file JSON]];
-    STAssertTrue(result, @"JSON serialization failed");
-    [file release];
-}
- */
+
 
 @end
