@@ -109,6 +109,7 @@
 		C63FB3561497EDF4007961C1 /* SMFileTest.h in Headers */ = {isa = PBXBuildFile; fileRef = C63FB3541497EDF4007961C1 /* SMFileTest.h */; };
 		C63FB3581497EF38007961C1 /* SMFileTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C63FB3551497EDF4007961C1 /* SMFileTest.m */; };
 		C63FB3591497F22A007961C1 /* SMFile.m in Sources */ = {isa = PBXBuildFile; fileRef = C63FB3501497EA4E007961C1 /* SMFile.m */; };
+		C6A831E314981267001FB62F /* StackMobLoginTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C6A831E214981267001FB62F /* StackMobLoginTest.m */; };
 		E33D87DB144616CF00FBEB96 /* StackMobVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = E33D87DA144616CF00FBEB96 /* StackMobVersion.h */; };
 		E3897ECA14885AC000E45FB7 /* StackMobBulkRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = E3897EC814885AC000E45FB7 /* StackMobBulkRequest.h */; };
 		E3897ECB14885AC000E45FB7 /* StackMobBulkRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = E3897EC914885AC000E45FB7 /* StackMobBulkRequest.m */; };
@@ -195,6 +196,8 @@
 		C63FB3501497EA4E007961C1 /* SMFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMFile.m; sourceTree = "<group>"; };
 		C63FB3541497EDF4007961C1 /* SMFileTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SMFileTest.h; path = tests/SMFileTest.h; sourceTree = "<group>"; };
 		C63FB3551497EDF4007961C1 /* SMFileTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SMFileTest.m; path = tests/SMFileTest.m; sourceTree = "<group>"; };
+		C6A831E114981267001FB62F /* StackMobLoginTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StackMobLoginTest.h; path = tests/StackMobLoginTest.h; sourceTree = "<group>"; };
+		C6A831E214981267001FB62F /* StackMobLoginTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StackMobLoginTest.m; path = tests/StackMobLoginTest.m; sourceTree = "<group>"; };
 		D2AAC07E0554694100DB518D /* libStackMobiOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libStackMobiOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E33D87DA144616CF00FBEB96 /* StackMobVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StackMobVersion.h; sourceTree = "<group>"; };
 		E3897EC814885AC000E45FB7 /* StackMobBulkRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StackMobBulkRequest.h; sourceTree = "<group>"; };
@@ -402,6 +405,8 @@
 		82CE42D41288E4D200A73E9C /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				C6A831E114981267001FB62F /* StackMobLoginTest.h */,
+				C6A831E214981267001FB62F /* StackMobLoginTest.m */,
 				C63FB3541497EDF4007961C1 /* SMFileTest.h */,
 				C63FB3551497EDF4007961C1 /* SMFileTest.m */,
 				9369485E147228B400575176 /* StackMobPushTests.h */,
@@ -605,6 +610,7 @@
 				E3C7523E14871A19007CFEF1 /* StackMobQueryTests.m in Sources */,
 				C63FB3581497EF38007961C1 /* SMFileTest.m in Sources */,
 				C63FB3591497F22A007961C1 /* SMFile.m in Sources */,
+				C6A831E314981267001FB62F /* StackMobLoginTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

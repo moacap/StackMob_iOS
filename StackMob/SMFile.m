@@ -13,16 +13,15 @@
 @synthesize data;
 @synthesize name;
 @synthesize contentType;
-@synthesize encodingType;
 
 - (id) initWithFileName:(NSString *)name_ data:(NSData *)data_ contentType:(NSString *)contentType_
 {
     self = [super init];
     if(self)
     {
-    data = [data_ retain];
-    name = [name_ retain];
-    contentType = [contentType_ retain];
+        data = [data_ retain];
+        name = [name_ retain];
+        contentType = [contentType_ retain];
     }
     return self;
 }
@@ -39,9 +38,9 @@
             Content-Disposition: attachment; filename=%@\n\
             Content-Transfer-Encoding: %@\n\n\
             %@",
-            self.data,
-            self.name,
             self.contentType,
+            self.name,
+            @"base64",
             [self.data base64EncodedString]];
 }
 
@@ -51,5 +50,4 @@
     [contentType release];
     [super dealloc];
 }
-//fileWithName:@"resume.txt" data:data]
 @end

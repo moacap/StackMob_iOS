@@ -13,7 +13,6 @@
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSString *contentType;
 @property (nonatomic, retain) NSData *data;
-@property (nonatomic, retain) NSString *encodingType;
 
 - (id) initWithFileName:(NSString *)name_ data:(NSData *)data_ contentType:(NSString *)contentType_;
 + (id) fileWithName:(NSString *)name_ data:(NSData *)data_ contentType:(NSString *)contentType_;

@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #import "StackMobRequest.h"
+#import "StackMob.h"
 #import "Reachability.h"
 #import "OAConsumer.h"
 #import "OAMutableURLRequest.h"
@@ -257,8 +258,8 @@
     SMLog(@"Request with url: %@", self.url);
     SMLog(@"Request with HTTP Method: %@", self.httpMethod);
     
-	OAConsumer *consumer = [[OAConsumer alloc] initWithKey:session.apiKey
-                                                    secret:session.apiSecret];
+	OAConsumer *consumer = [[[OAConsumer alloc] initWithKey:session.apiKey
+                                                    secret:session.apiSecret] autorelease];
     
 	OAMutableURLRequest *request = [[OAMutableURLRequest alloc] initWithURL:self.url
 																   consumer:consumer
@@ -281,6 +282,8 @@
         }
     }
     
+    [request addValue:[StackMob stackmob].authCookie forHTTPHeaderField:@"Cookie"];
+    
 	[request prepare];
     [self setBodyForRequest:request];
     
@@ -290,14 +293,14 @@
 	[mConnectionData setLength:0];
 	self.result = nil;
     self.connectionError = nil;
-	self.connection = [[[NSURLConnection alloc] initWithRequest:request delegate:self] retain]; // Why retaining this when already retained by synthesized method?
+	self.connection = [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease]; // Why retaining this when already retained by synthesized method?
     [request release];
 }
 
 - (void)setBodyForRequest:(OAMutableURLRequest *)request {
     if (!([[self httpMethod] isEqualToString: @"GET"] || [[self httpMethod] isEqualToString:@"DELETE"])) {    
         NSData * postData = [self postBody];
-        NSString * postDataString = [[NSString alloc] initWithData:postData encoding:NSUTF8StringEncoding];
+        NSString * postDataString = [[[NSString alloc] initWithData:postData encoding:NSUTF8StringEncoding] autorelease];
         SMLog(@"POST Data: %@", postDataString);
         [request setHTTPBody:postData];	
         NSString *contentType = [NSString stringWithFormat:@"application/json"];
@@ -415,7 +418,8 @@
     SMLog(@"Request URL: %@", self.url);
     SMLog(@"Request HTTP Method: %@", self.httpMethod);
     id result = [self sendSynchronousRequest];
-    *error = self.connectionError;
+    if(error)
+        *error = self.connectionError;
     return result;
 }
 
@@ -425,11 +429,11 @@
 	OAConsumer *consumer = [[OAConsumer alloc] initWithKey:session.apiKey
 													secret:session.apiSecret];
 	
-	OAMutableURLRequest *request = [[OAMutableURLRequest alloc] initWithURL:self.url
+	OAMutableURLRequest *request = [[[OAMutableURLRequest alloc] initWithURL:self.url
 																   consumer:consumer
 																	  token:nil   // we don't need a token
 																	  realm:nil   // should we set a realm?
-														  signatureProvider:nil]; // use the default method, HMAC-SHA1
+														  signatureProvider:nil] autorelease]; // use the default method, HMAC-SHA1
 	[consumer release];
 	[request setHTTPMethod:[self httpMethod]];
 	
@@ -449,7 +453,7 @@
     _requestFinished = NO;
     self.connectionError = nil;
     self.delegate = nil;
-    self.connection = [[[NSURLConnection alloc] initWithRequest:request delegate:self] retain];
+    self.connection = [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
     
     NSDate *loopUntil = [NSDate dateWithTimeIntervalSinceNow:0.1];
     while (!_requestFinished && [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:loopUntil]) {
