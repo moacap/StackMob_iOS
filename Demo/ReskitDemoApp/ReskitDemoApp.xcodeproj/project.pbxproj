@@ -1,0 +1,466 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C648B739146270580007E83E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C648B738146270580007E83E /* UIKit.framework */; };
+		C648B73B146270580007E83E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C648B73A146270580007E83E /* Foundation.framework */; };
+		C648B73D146270580007E83E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C648B73C146270580007E83E /* CoreGraphics.framework */; };
+		C648B743146270580007E83E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C648B741146270580007E83E /* InfoPlist.strings */; };
+		C648B745146270580007E83E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C648B744146270580007E83E /* main.m */; };
+		C648B749146270580007E83E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C648B748146270580007E83E /* AppDelegate.m */; };
+		C648B74C146270580007E83E /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C648B74A146270580007E83E /* MainStoryboard.storyboard */; };
+		C648B74F146270580007E83E /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C648B74E146270580007E83E /* FirstViewController.m */; };
+		C648B751146270580007E83E /* first.png in Resources */ = {isa = PBXBuildFile; fileRef = C648B750146270580007E83E /* first.png */; };
+		C648B753146270580007E83E /* first@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C648B752146270580007E83E /* first@2x.png */; };
+		C648B756146270580007E83E /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C648B755146270580007E83E /* SecondViewController.m */; };
+		C648B758146270580007E83E /* second.png in Resources */ = {isa = PBXBuildFile; fileRef = C648B757146270580007E83E /* second.png */; };
+		C648B75A146270580007E83E /* second@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C648B759146270580007E83E /* second@2x.png */; };
+		C648B762146270580007E83E /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C648B761146270580007E83E /* SenTestingKit.framework */; };
+		C648B763146270580007E83E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C648B738146270580007E83E /* UIKit.framework */; };
+		C648B764146270580007E83E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C648B73A146270580007E83E /* Foundation.framework */; };
+		C648B76C146270580007E83E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C648B76A146270580007E83E /* InfoPlist.strings */; };
+		C648B76F146270580007E83E /* ReskitDemoAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C648B76E146270580007E83E /* ReskitDemoAppTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C648B765146270580007E83E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C648B72B146270580007E83E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C648B733146270580007E83E;
+			remoteInfo = ReskitDemoApp;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		C648B734146270580007E83E /* ReskitDemoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReskitDemoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C648B738146270580007E83E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		C648B73A146270580007E83E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		C648B73C146270580007E83E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		C648B740146270580007E83E /* ReskitDemoApp-Info.plist */ = {isa = PBXFileReference; path = "ReskitDemoApp-Info.plist"; sourceTree = "<group>"; };
+		C648B742146270580007E83E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C648B744146270580007E83E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		C648B746146270580007E83E /* ReskitDemoApp-Prefix.pch */ = {isa = PBXFileReference; path = "ReskitDemoApp-Prefix.pch"; sourceTree = "<group>"; };
+		C648B747146270580007E83E /* AppDelegate.h */ = {isa = PBXFileReference; path = AppDelegate.h; sourceTree = "<group>"; };
+		C648B748146270580007E83E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		C648B74B146270580007E83E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
+		C648B74D146270580007E83E /* FirstViewController.h */ = {isa = PBXFileReference; path = FirstViewController.h; sourceTree = "<group>"; };
+		C648B74E146270580007E83E /* FirstViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FirstViewController.m; sourceTree = "<group>"; };
+		C648B750146270580007E83E /* first.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = first.png; sourceTree = "<group>"; };
+		C648B752146270580007E83E /* first@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "first@2x.png"; sourceTree = "<group>"; };
+		C648B754146270580007E83E /* SecondViewController.h */ = {isa = PBXFileReference; path = SecondViewController.h; sourceTree = "<group>"; };
+		C648B755146270580007E83E /* SecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
+		C648B757146270580007E83E /* second.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = second.png; sourceTree = "<group>"; };
+		C648B759146270580007E83E /* second@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "second@2x.png"; sourceTree = "<group>"; };
+		C648B760146270580007E83E /* ReskitDemoAppTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReskitDemoAppTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C648B761146270580007E83E /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		C648B769146270580007E83E /* ReskitDemoAppTests-Info.plist */ = {isa = PBXFileReference; path = "ReskitDemoAppTests-Info.plist"; sourceTree = "<group>"; };
+		C648B76B146270580007E83E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C648B76D146270580007E83E /* ReskitDemoAppTests.h */ = {isa = PBXFileReference; path = ReskitDemoAppTests.h; sourceTree = "<group>"; };
+		C648B76E146270580007E83E /* ReskitDemoAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReskitDemoAppTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C648B731146270580007E83E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C648B739146270580007E83E /* UIKit.framework in Frameworks */,
+				C648B73B146270580007E83E /* Foundation.framework in Frameworks */,
+				C648B73D146270580007E83E /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C648B75C146270580007E83E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C648B762146270580007E83E /* SenTestingKit.framework in Frameworks */,
+				C648B763146270580007E83E /* UIKit.framework in Frameworks */,
+				C648B764146270580007E83E /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C648B729146270580007E83E = {
+			isa = PBXGroup;
+			children = (
+				C648B73E146270580007E83E /* ReskitDemoApp */,
+				C648B767146270580007E83E /* ReskitDemoAppTests */,
+				C648B737146270580007E83E /* Frameworks */,
+				C648B735146270580007E83E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C648B735146270580007E83E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C648B734146270580007E83E /* ReskitDemoApp.app */,
+				C648B760146270580007E83E /* ReskitDemoAppTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C648B737146270580007E83E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C648B738146270580007E83E /* UIKit.framework */,
+				C648B73A146270580007E83E /* Foundation.framework */,
+				C648B73C146270580007E83E /* CoreGraphics.framework */,
+				C648B761146270580007E83E /* SenTestingKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C648B73E146270580007E83E /* ReskitDemoApp */ = {
+			isa = PBXGroup;
+			children = (
+				C648B747146270580007E83E /* AppDelegate.h */,
+				C648B748146270580007E83E /* AppDelegate.m */,
+				C648B74A146270580007E83E /* MainStoryboard.storyboard */,
+				C648B74D146270580007E83E /* FirstViewController.h */,
+				C648B74E146270580007E83E /* FirstViewController.m */,
+				C648B750146270580007E83E /* first.png */,
+				C648B752146270580007E83E /* first@2x.png */,
+				C648B754146270580007E83E /* SecondViewController.h */,
+				C648B755146270580007E83E /* SecondViewController.m */,
+				C648B757146270580007E83E /* second.png */,
+				C648B759146270580007E83E /* second@2x.png */,
+				C648B73F146270580007E83E /* Supporting Files */,
+			);
+			path = ReskitDemoApp;
+			sourceTree = "<group>";
+		};
+		C648B73F146270580007E83E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C648B740146270580007E83E /* ReskitDemoApp-Info.plist */,
+				C648B741146270580007E83E /* InfoPlist.strings */,
+				C648B744146270580007E83E /* main.m */,
+				C648B746146270580007E83E /* ReskitDemoApp-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C648B767146270580007E83E /* ReskitDemoAppTests */ = {
+			isa = PBXGroup;
+			children = (
+				C648B76D146270580007E83E /* ReskitDemoAppTests.h */,
+				C648B76E146270580007E83E /* ReskitDemoAppTests.m */,
+				C648B768146270580007E83E /* Supporting Files */,
+			);
+			path = ReskitDemoAppTests;
+			sourceTree = "<group>";
+		};
+		C648B768146270580007E83E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C648B769146270580007E83E /* ReskitDemoAppTests-Info.plist */,
+				C648B76A146270580007E83E /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C648B733146270580007E83E /* ReskitDemoApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C648B772146270580007E83E /* Build configuration list for PBXNativeTarget "ReskitDemoApp" */;
+			buildPhases = (
+				C648B730146270580007E83E /* Sources */,
+				C648B731146270580007E83E /* Frameworks */,
+				C648B732146270580007E83E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ReskitDemoApp;
+			productName = ReskitDemoApp;
+			productReference = C648B734146270580007E83E /* ReskitDemoApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+		C648B75F146270580007E83E /* ReskitDemoAppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C648B775146270580007E83E /* Build configuration list for PBXNativeTarget "ReskitDemoAppTests" */;
+			buildPhases = (
+				C648B75B146270580007E83E /* Sources */,
+				C648B75C146270580007E83E /* Frameworks */,
+				C648B75D146270580007E83E /* Resources */,
+				C648B75E146270580007E83E /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C648B766146270580007E83E /* PBXTargetDependency */,
+			);
+			name = ReskitDemoAppTests;
+			productName = ReskitDemoAppTests;
+			productReference = C648B760146270580007E83E /* ReskitDemoAppTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C648B72B146270580007E83E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = C648B72E146270580007E83E /* Build configuration list for PBXProject "ReskitDemoApp" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = C648B729146270580007E83E;
+			productRefGroup = C648B735146270580007E83E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C648B733146270580007E83E /* ReskitDemoApp */,
+				C648B75F146270580007E83E /* ReskitDemoAppTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C648B732146270580007E83E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C648B743146270580007E83E /* InfoPlist.strings in Resources */,
+				C648B74C146270580007E83E /* MainStoryboard.storyboard in Resources */,
+				C648B751146270580007E83E /* first.png in Resources */,
+				C648B753146270580007E83E /* first@2x.png in Resources */,
+				C648B758146270580007E83E /* second.png in Resources */,
+				C648B75A146270580007E83E /* second@2x.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C648B75D146270580007E83E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C648B76C146270580007E83E /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		C648B75E146270580007E83E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C648B730146270580007E83E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C648B745146270580007E83E /* main.m in Sources */,
+				C648B749146270580007E83E /* AppDelegate.m in Sources */,
+				C648B74F146270580007E83E /* FirstViewController.m in Sources */,
+				C648B756146270580007E83E /* SecondViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C648B75B146270580007E83E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C648B76F146270580007E83E /* ReskitDemoAppTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C648B766146270580007E83E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C648B733146270580007E83E /* ReskitDemoApp */;
+			targetProxy = C648B765146270580007E83E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		C648B741146270580007E83E /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C648B742146270580007E83E /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		C648B74A146270580007E83E /* MainStoryboard.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C648B74B146270580007E83E /* en */,
+			);
+			name = MainStoryboard.storyboard;
+			sourceTree = "<group>";
+		};
+		C648B76A146270580007E83E /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C648B76B146270580007E83E /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C648B770146270580007E83E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		C648B771146270580007E83E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C648B773146270580007E83E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ReskitDemoApp/ReskitDemoApp-Prefix.pch";
+				INFOPLIST_FILE = "ReskitDemoApp/ReskitDemoApp-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		C648B774146270580007E83E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ReskitDemoApp/ReskitDemoApp-Prefix.pch";
+				INFOPLIST_FILE = "ReskitDemoApp/ReskitDemoApp-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		C648B776146270580007E83E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ReskitDemoApp.app/ReskitDemoApp";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ReskitDemoApp/ReskitDemoApp-Prefix.pch";
+				INFOPLIST_FILE = "ReskitDemoAppTests/ReskitDemoAppTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		C648B777146270580007E83E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ReskitDemoApp.app/ReskitDemoApp";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ReskitDemoApp/ReskitDemoApp-Prefix.pch";
+				INFOPLIST_FILE = "ReskitDemoAppTests/ReskitDemoAppTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C648B72E146270580007E83E /* Build configuration list for PBXProject "ReskitDemoApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C648B770146270580007E83E /* Debug */,
+				C648B771146270580007E83E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C648B772146270580007E83E /* Build configuration list for PBXNativeTarget "ReskitDemoApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C648B773146270580007E83E /* Debug */,
+				C648B774146270580007E83E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		C648B775146270580007E83E /* Build configuration list for PBXNativeTarget "ReskitDemoAppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C648B776146270580007E83E /* Debug */,
+				C648B777146270580007E83E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C648B72B146270580007E83E /* Project object */;
+}
