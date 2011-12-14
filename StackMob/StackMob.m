@@ -236,6 +236,12 @@ static SMEnvironment environment;
     return request;    
 }
 
+- (StackMobRequest *)getTwitterInfoWithCallback:(StackMobCallback)callback
+{
+    return [self get:@"getTwitterUserInfo" withCallback:callback];
+}
+
+
 # pragma mark - PUSH Notifications
 
 - (StackMobRequest *)registerForPushWithUser:(NSString *)userId token:(NSString *)token andCallback:(StackMobCallback)callback

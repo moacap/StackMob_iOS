@@ -248,6 +248,7 @@
 			isa = PBXGroup;
 			children = (
 				038CB1AB14283272001DEAC9 /* External */,
+				038CB1DE14283272001DEAC9 /* Utils */,
 				038CB1CF14283272001DEAC9 /* StackMob.h */,
 				038CB1D014283272001DEAC9 /* StackMob.m */,
 				038CB1D114283272001DEAC9 /* StackMobAdditions.h */,
@@ -263,7 +264,6 @@
 				038CB1DB14283272001DEAC9 /* StackMobRequest.m */,
 				038CB1DC14283272001DEAC9 /* StackMobSession.h */,
 				038CB1DD14283272001DEAC9 /* StackMobSession.m */,
-				038CB1DE14283272001DEAC9 /* Utils */,
 				E33D87DA144616CF00FBEB96 /* StackMobVersion.h */,
 				E3D728D51448BE5700804149 /* StackMobQuery.h */,
 				E3D728D61448BE5700804149 /* StackMobQuery.m */,

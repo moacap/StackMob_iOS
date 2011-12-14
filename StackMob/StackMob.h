@@ -135,6 +135,7 @@ typedef void (^StackMobCallback)(BOOL success, id result);
  */
 - (StackMobRequest *)getFacebookUserInfoWithCallback:(StackMobCallback)callback;
 
+
 /********************** Twitter methods ***********************/
 
 /*
