@@ -165,6 +165,11 @@ typedef void (^StackMobCallback)(BOOL success, id result);
  */
 - (StackMobRequest *)twitterStatusUpdate:(NSString *)message withCallback:(StackMobCallback)callback;
 
+/*
+ * Get the user info from twitter for the currently logged in user
+ */
+- (StackMobRequest *)getTwitterInfoWithCallback:(StackMobCallback)callback;
+
 /********************** PUSH Notifications ********************/
 
 /* 
