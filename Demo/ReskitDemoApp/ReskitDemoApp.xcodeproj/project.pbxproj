@@ -35,6 +35,20 @@
 			remoteGlobalIDString = C648B733146270580007E83E;
 			remoteInfo = ReskitDemoApp;
 		};
+		C648B7AE1462721D0007E83E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C648B79F1462721D0007E83E /* StackMobiOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
+			remoteInfo = StackMob;
+		};
+		C648B7B01462721D0007E83E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C648B79F1462721D0007E83E /* StackMobiOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 82CE434F1288F0DA00A73E9C;
+			remoteInfo = Tests;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -42,27 +56,28 @@
 		C648B738146270580007E83E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		C648B73A146270580007E83E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C648B73C146270580007E83E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		C648B740146270580007E83E /* ReskitDemoApp-Info.plist */ = {isa = PBXFileReference; path = "ReskitDemoApp-Info.plist"; sourceTree = "<group>"; };
+		C648B740146270580007E83E /* ReskitDemoApp-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ReskitDemoApp-Info.plist"; sourceTree = "<group>"; };
 		C648B742146270580007E83E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C648B744146270580007E83E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		C648B746146270580007E83E /* ReskitDemoApp-Prefix.pch */ = {isa = PBXFileReference; path = "ReskitDemoApp-Prefix.pch"; sourceTree = "<group>"; };
-		C648B747146270580007E83E /* AppDelegate.h */ = {isa = PBXFileReference; path = AppDelegate.h; sourceTree = "<group>"; };
+		C648B746146270580007E83E /* ReskitDemoApp-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ReskitDemoApp-Prefix.pch"; sourceTree = "<group>"; };
+		C648B747146270580007E83E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		C648B748146270580007E83E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		C648B74B146270580007E83E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
-		C648B74D146270580007E83E /* FirstViewController.h */ = {isa = PBXFileReference; path = FirstViewController.h; sourceTree = "<group>"; };
+		C648B74D146270580007E83E /* FirstViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FirstViewController.h; sourceTree = "<group>"; };
 		C648B74E146270580007E83E /* FirstViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FirstViewController.m; sourceTree = "<group>"; };
 		C648B750146270580007E83E /* first.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = first.png; sourceTree = "<group>"; };
 		C648B752146270580007E83E /* first@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "first@2x.png"; sourceTree = "<group>"; };
-		C648B754146270580007E83E /* SecondViewController.h */ = {isa = PBXFileReference; path = SecondViewController.h; sourceTree = "<group>"; };
+		C648B754146270580007E83E /* SecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
 		C648B755146270580007E83E /* SecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
 		C648B757146270580007E83E /* second.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = second.png; sourceTree = "<group>"; };
 		C648B759146270580007E83E /* second@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "second@2x.png"; sourceTree = "<group>"; };
 		C648B760146270580007E83E /* ReskitDemoAppTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReskitDemoAppTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C648B761146270580007E83E /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		C648B769146270580007E83E /* ReskitDemoAppTests-Info.plist */ = {isa = PBXFileReference; path = "ReskitDemoAppTests-Info.plist"; sourceTree = "<group>"; };
+		C648B769146270580007E83E /* ReskitDemoAppTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ReskitDemoAppTests-Info.plist"; sourceTree = "<group>"; };
 		C648B76B146270580007E83E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		C648B76D146270580007E83E /* ReskitDemoAppTests.h */ = {isa = PBXFileReference; path = ReskitDemoAppTests.h; sourceTree = "<group>"; };
+		C648B76D146270580007E83E /* ReskitDemoAppTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReskitDemoAppTests.h; sourceTree = "<group>"; };
 		C648B76E146270580007E83E /* ReskitDemoAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReskitDemoAppTests.m; sourceTree = "<group>"; };
+		C648B79F1462721D0007E83E /* StackMobiOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = StackMobiOS.xcodeproj; path = ../../StackMobiOS.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +126,7 @@
 		C648B737146270580007E83E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C648B79F1462721D0007E83E /* StackMobiOS.xcodeproj */,
 				C648B738146270580007E83E /* UIKit.framework */,
 				C648B73A146270580007E83E /* Foundation.framework */,
 				C648B73C146270580007E83E /* CoreGraphics.framework */,
@@ -166,6 +182,15 @@
 				C648B76A146270580007E83E /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C648B7A01462721D0007E83E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C648B7AF1462721D0007E83E /* libStackMobiOS.a */,
+				C648B7B11462721D0007E83E /* Tests.octest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -225,6 +250,12 @@
 			mainGroup = C648B729146270580007E83E;
 			productRefGroup = C648B735146270580007E83E /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = C648B7A01462721D0007E83E /* Products */;
+					ProjectRef = C648B79F1462721D0007E83E /* StackMobiOS.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				C648B733146270580007E83E /* ReskitDemoApp */,
@@ -232,6 +263,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		C648B7AF1462721D0007E83E /* libStackMobiOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libStackMobiOS.a;
+			remoteRef = C648B7AE1462721D0007E83E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C648B7B11462721D0007E83E /* Tests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = Tests.octest;
+			remoteRef = C648B7B01462721D0007E83E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		C648B732146270580007E83E /* Resources */ = {
@@ -451,6 +499,7 @@
 				C648B774146270580007E83E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C648B775146270580007E83E /* Build configuration list for PBXNativeTarget "ReskitDemoAppTests" */ = {
 			isa = XCConfigurationList;
@@ -459,6 +508,7 @@
 				C648B777146270580007E83E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

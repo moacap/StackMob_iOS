@@ -1186,7 +1186,7 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREFIX_HEADER = StackMobiOS_Prefix.pch;
-				INFOPLIST_FILE = "Tests-Info.plist";
+				INFOPLIST_FILE = "$(TESTPLISTDIR)Tests-Info.plist";
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,
@@ -1217,7 +1217,7 @@
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PREFIX_HEADER = StackMobiOS_Prefix.pch;
-				INFOPLIST_FILE = "Tests-Info.plist";
+				INFOPLIST_FILE = "$(TESTPLISTDIR)Tests-Info.plist";
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,

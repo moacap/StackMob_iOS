@@ -17,6 +17,9 @@ syntax: glob
 
 build/**/*
 
+# Configuration
+configuration/*
+
 # XCode user local
 StackMobiOS.xcodeproj/xcuserdata/**/*
 StackMobiOS.xcodeproj/project.xcworkspace/**/*
