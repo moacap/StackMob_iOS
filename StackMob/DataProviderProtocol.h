@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "StackMobRequest.h"
+#import "StackMobBulkRequest.h"
+
 @class StackMobPushRequest, StackMobRequest;
 @protocol DataProviderProtocol <NSObject>
 
@@ -31,6 +33,13 @@
 - (StackMobRequest *)userRequest;
 - (StackMobRequest *)userRequestForMethod:(NSString *)method withHttpVerb:(SMHttpVerb)httpVerb;
 - (StackMobRequest *)userRequestForMethod:(NSString*)method withObject:(id)object withHttpVerb:(SMHttpVerb)httpVerb;
+
+/*
+ * Create a bulk request to send multiple requests
+ @param object
+ */
+- (StackMobBulkRequest *)bulkRequestForMethod:(NSString *)method withObject:(id)object withHttpVerb:(SMHttpVerb) httpVerb;
+- (StackMobBulkRequest *)bulkRequest;
 
 /*
  * Create a request for an iOS PUSH notification

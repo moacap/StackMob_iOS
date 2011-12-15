@@ -61,4 +61,14 @@
     return [StackMobPushRequest request];
 }
 
+- (StackMobBulkRequest *)bulkRequestForMethod:(NSString *)method withObject:(id)object withHttpVerb:(SMHttpVerb) httpVerb
+{
+    return [StackMobBulkRequest requestForMethod:method withArguments:object withHttpVerb:httpVerb]; 
+}
+
+- (StackMobBulkRequest *)bulkRequest
+{
+    return [StackMobBulkRequest request];
+}
+
 @end

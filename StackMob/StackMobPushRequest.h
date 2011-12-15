@@ -18,4 +18,6 @@
 @interface StackMobPushRequest : StackMobRequest {
 }
 
++ (id)requestForMethod:(NSString*)method withArguments:(NSDictionary*)arguments;
+
 @end

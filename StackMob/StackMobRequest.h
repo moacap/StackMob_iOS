@@ -37,6 +37,7 @@ typedef enum {
 	NSString*				mMethod;
 	NSMutableDictionary*	mArguments;
     id                      mObject;
+    NSMutableDictionary*    mHeaders;
     NSData*                 mBody;
 	NSMutableData*			mConnectionData;
 	id			mResult;
@@ -45,9 +46,9 @@ typedef enum {
 	NSString*				mHttpMethod;
 	NSHTTPURLResponse*		mHttpResponse;
 	
-@protected
+	@protected
     BOOL userBased;
-    StackMobSession *session;
+	StackMobSession *session;
 }
 
 @property(readwrite, retain) id delegate;
@@ -61,6 +62,7 @@ typedef enum {
 @property(readonly) BOOL finished;
 @property(readonly) NSHTTPURLResponse* httpResponse;
 @property(readonly, getter=getStatusCode) NSInteger statusCode;
+@property(readonly, getter=getBaseURL) NSString* baseURL;
 @property(readonly, getter=getURL) NSURL* url;
 @property(nonatomic) BOOL userBased;
 
@@ -72,25 +74,31 @@ typedef enum {
 + (id)requestForMethod:(NSString*)method;
 + (id)requestForMethod:(NSString*)method withHttpVerb:(SMHttpVerb) httpVerb;
 + (id)requestForMethod:(NSString*)method withArguments:(NSDictionary*)arguments withHttpVerb:(SMHttpVerb) httpVerb;
-+ (id)requestForMethod:(NSString*)method withObject:(id)object withHttpVerb:(SMHttpVerb)httpVerb;
 + (id)requestForMethod:(NSString*)method withQuery:(StackMobQuery *)query withHttpVerb:(SMHttpVerb) httpVerb;
++ (id)requestForMethod:(NSString*)method withObject:(id)object withHttpVerb:(SMHttpVerb)httpVerb;
 + (id)requestForMethod:(NSString *)method withData:(NSData *)data;
 
 /* 
  * User based requests 
- * Use these to 
+ * Use these to execute a method on a user object
  */
 + (id)userRequest;
 + (id)userRequestForMethod:(NSString *)method withHttpVerb:(SMHttpVerb)httpVerb;
 + (id)userRequestForMethod:(NSString*)method withArguments:(NSDictionary*)arguments withHttpVerb:(SMHttpVerb)httpVerb;
-+ (id)userRequestForMethod:(NSString*)method withObject:(id)object withHttpVerb:(SMHttpVerb)httpVerb;
 + (id)userRequestForMethod:(NSString *)method withQuery:(StackMobQuery *)query withHttpVerb:(SMHttpVerb)httpVerb;
++ (id)userRequestForMethod:(NSString*)method withObject:(id)object withHttpVerb:(SMHttpVerb)httpVerb;
 
 /*
  * Create a request for an iOS PUSH notification
- @param arguments a dictionary of arguments including :alert, :badge and :sound
+ * @param arguments a dictionary of arguments including :alert, :badge and :sound
  */
 + (id)pushRequestWithArguments:(NSDictionary*)arguments withHttpVerb:(SMHttpVerb) httpVerb;
+
+/**
+ * Convert a NSDictionary to JSON
+ * @param dict the dictionary to convert to JSON
+ */
++ (NSData *)JsonifyNSDictionary:(NSMutableDictionary *)dict withErrorOutput:(NSError **)error;
 
 /*
  * Set parameters for requests
@@ -100,6 +108,12 @@ typedef enum {
 - (void)setValue:(NSString*)value forArgument:(NSString*)argument;
 - (void)setInteger:(NSUInteger)value forArgument:(NSString*)argument;
 - (void)setBool:(BOOL)value forArgument:(NSString*)argument;
+
+/*
+ * Set headers for requests, overwrites all headers set for the request
+ * @param headers, the headers to set
+ */
+- (void)setHeaders:(NSDictionary *)headers;
 
 /*
  * Send a configured request and wait for callback
@@ -117,6 +131,9 @@ typedef enum {
  */
 - (id)sendSynchronousRequestProvidingError:(NSError**)error __attribute__((deprecated));
 - (id)sendSynchronousRequest;
+
+// return the post body as NSData
+- (NSData *)postBody;
 
 /* translate enum to string */
 + (NSString*)stringFromHttpVerb:(SMHttpVerb)httpVerb;

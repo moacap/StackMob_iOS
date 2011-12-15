@@ -16,8 +16,6 @@
 #import "StackMobSession.h"
 #import "StackMobRequest.h"
 #import "DataProviderProtocol.h"
-#import "StackMobQuery.h"
-#import "StackMobConfiguration.h"
 
 typedef enum {
     SMEnvironmentProduction = 0,
@@ -40,6 +38,7 @@ typedef void (^StackMobCallback)(BOOL success, id result);
 @property (nonatomic, retain) StackMobSession *session;
 @property (nonatomic, retain) NSMutableArray *callbacks;
 @property (nonatomic, retain) NSMutableArray *requests;
+@property (nonatomic, retain) NSString *authCookie;
 
 /** 
  * Data bridge which handles network, data mapping, and serialization 
@@ -161,6 +160,7 @@ typedef void (^StackMobCallback)(BOOL success, id result);
  */
 - (StackMobRequest *)getFacebookUserInfoWithCallback:(StackMobCallback)callback;
 
+
 /********************** Twitter methods ***********************/
 
 /*
@@ -191,6 +191,11 @@ typedef void (^StackMobCallback)(BOOL success, id result);
  */
 - (StackMobRequest *)twitterStatusUpdate:(NSString *)message withCallback:(StackMobCallback)callback;
 
+/*
+ * Get the user info from twitter for the currently logged in user
+ */
+- (StackMobRequest *)getTwitterInfoWithCallback:(StackMobCallback)callback;
+
 /********************** PUSH Notifications ********************/
 
 /* 
@@ -200,6 +205,39 @@ typedef void (^StackMobCallback)(BOOL success, id result);
  * @param arguments a Dictionary 
  */
 - (StackMobRequest *)registerForPushWithUser:(NSString *)userId token:(NSString *)token andCallback:(StackMobCallback)callback;
+
+
+/*
+ * Send a push notification broadcast
+ * @param args push request arguments, the dictionary should contain the message, badge and alert (badge and alert optional)
+ */
+- (StackMobRequest *)sendPushBroadcastWithArguments:(NSDictionary *)args andCallback:(StackMobCallback)callback;
+
+/*
+ * Send a push notification to specific tokens
+ * @param args push request arguments, the dictionary should contain the message, badge and alert (badge and alert optional)
+ * @param tokens a list of tokens to which to send args
+ */
+- (StackMobRequest *)sendPushToTokensWithArguments:(NSDictionary *)args withTokens:(NSArray *)tokens andCallback:(StackMobCallback)callback;
+
+/*
+ * Send a push notification to a set of users
+ * @param args push request arguments, the dictionary should contain the message, badge and alert (badge and alert optional)
+ * @param userIds  
+ */
+- (StackMobRequest *)sendPushToUsersWithArguments:(NSDictionary *)args withUserIds:(NSArray *)userIds andCallback:(StackMobCallback)callback;
+
+/*
+ * Get all tokens for each of the given user IDs
+ * @param userIds the users whose tokens to get
+ */
+- (StackMobRequest *)getPushTokensForUsers:(NSArray *)userIds andCallback:(StackMobCallback)callback;
+
+/*
+ * Delete a push token
+ * @param token the token to delete
+ */
+- (StackMobRequest *)deletePushToken:(NSString *)token andCallback:(StackMobCallback)callback;
 
 /********************** CRUD Methods **********************/
 
@@ -221,6 +259,12 @@ typedef void (^StackMobCallback)(BOOL success, id result);
  */
 - (StackMobRequest *)get:(NSString *)path withQuery:(StackMobQuery *)query andCallback:(StackMobCallback)callback;
 
+/*
+ * Get data for object with an argument object
+ * @param query StackMobQuery instance
+ */
+- (StackMobRequest *)get:(NSString *)path withObject:(id)object andCallback:(StackMobCallback)callback;
+
 /* 
  * POST the arguments to the given object model with name of "path".  
  * @param path the name of the object in your stackmob app to be created
@@ -237,11 +281,63 @@ typedef void (^StackMobCallback)(BOOL success, id result);
               andCallback:(StackMobCallback)callback;
 
 /*
- * PUT the arguments to the given object path. 
+ * POST an object.
+ * @param path the name and path of the object to be created
+ * @param object the object to be posted
+ */ 
+- (StackMobRequest *)post:(NSString *)path withObject:(id)object andCallback:(StackMobCallback)callback;
+
+/*
+ * Bulk Insertion
+ * @param bulkArguments - an array of NSDictionary instances to insert
+ */
+- (StackMobRequest *)post:(NSString *)path
+        withBulkArguments:(NSArray *)arguments
+              andCallback:(StackMobCallback)callback;
+
+/*
+ * POST one related object with Relations API Extensions 
+ */
+- (StackMobRequest *)post:(NSString *)path 
+                   withId:(NSString *)primaryId 
+                 andField:(NSString *)relField 
+             andArguments:(NSDictionary *)args
+              andCallback:(StackMobCallback)callback;
+
+/*
+ * POST many related objects with Relations API Extensions
+ */
+- (StackMobRequest *)post:(NSString *)path
+                   withId:(NSString *)primaryId
+                 andField:(NSString *)relField
+             andBulkArguments:(NSArray *)arguments
+              andCallback:(StackMobCallback)callback;
+
+/*
+ * PUT the arguments to the given object path
+ * @param path the name of the object in your Stackmob app
+ * @param objId the id of the object to update
+ * @param arguments a Dictionary of attributes whose  keys correspond to field names of the object in your Stackmob app
+ */
+- (StackMobRequest *)put:(NSString *)path withId:(NSString *)objectId andArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
+
+
+/*
+ * PUT the arguments to the given object path
  * @path the name of the object in your Stackmob app
  * @param arguments a Dictionary of attributes whose  keys correspond to field names of the object in your Stackmob app
  */
-- (StackMobRequest *)put:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
+- (StackMobRequest *)put:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback __attribute__((deprecated));
+
+/*
+ * Atomically update an array or has many relationship
+ * with relations API extensions
+ */
+- (StackMobRequest *)put:(NSString *)path 
+                  withId:(NSString *)primaryId 
+                andField:(NSString *)relField 
+            andArguments:(NSArray *)args 
+             andCallback:(StackMobCallback)callback;
 
 /* 
  * DELETE the object at the given path. 
@@ -252,49 +348,53 @@ typedef void (^StackMobCallback)(BOOL success, id result);
 - (StackMobRequest *)destroy:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback;
 
 
-/********************** NEW CRUD Methods **********************/
-
-/* 
- * Get the object with name "path" and arguments dictionary. 
- * @param object whose property correspond to field names request url
- */
-- (StackMobRequest *)get:(NSString *)path withObject:(id)object andCallback:(StackMobCallback)callback;
-
-/* 
- * Get the object with name "path" with no arguments.  This will return all items of object type. 
- * @param object the name of the object to get in your stackmob app
- */
-- (StackMobRequest *)get:(NSString *)path withCallback:(StackMobCallback)callback;
-
-/* 
- * POST the arguments to the given object model with name of "path".
- * @param path the name of the object in your stackmob app to be created
- * @param object whose property correspond to field names of the object in your Stackmob app
- */
-- (StackMobRequest *)post:(NSString *)path withObject:(id)object andCallback:(StackMobCallback)callback;
-
-/*
- * POST the data for a user.  
- * @param path the name of the object in your stackmob app to be created
- * @param object whose property correspond to field names of the object in your Stackmob app
- */
-- (StackMobRequest *)post:(NSString *)path forUser:(NSString *)user withObject:(id)object
-              andCallback:(StackMobCallback)callback;
-
-/*
- * PUT the data to the given object path. 
- * @path the name of the object in your Stackmob app
- * @param object whose property correspond to field names of the object in your Stackmob app
- */
-- (StackMobRequest *)put:(NSString *)path withObject:(id)object andCallback:(StackMobCallback)callback;
-
 /* 
  * DELETE the object at the given path. 
  * @path the name of the object in your stackmob app
- * @param object a with a primary key which will be used in request to delete object.
- *   the value of which is the item to delete
+ * @param object the obj to be deleted. A set primary key is required.
  */
-- (StackMobRequest *)destroy:(NSString *)path withObject:(id)object andCallback:(StackMobCallback)callback;
+- (StackMobRequest *)destroy:(NSString *)path withObject:(id)object andHeaders:(NSDictionary *)headers andCallback:(StackMobCallback)callback;
+
+/*
+ * automically remove elements from an array or has many relationship
+ */
+- (StackMobRequest *)removeIds:(NSArray *)removeIds 
+                     forSchema:(NSString *)schema 
+                         andId:(NSString *)primaryId 
+                      andField:(NSString *)relField 
+                  withCallback:(StackMobCallback)callback;
+
+/*
+ * automically remove elements from an array or has many relationship
+ * @param shouldCascade if YES the X-StackMob-CascadeDelete header will be set
+ */
+- (StackMobRequest *)removeIds:(NSArray *)removeIds 
+                     forSchema:(NSString *)schema 
+                         andId:(NSString *)primaryId 
+                      andField:(NSString *)relField 
+                 shouldCascade:(BOOL)isCascade
+                  withCallback:(StackMobCallback)callback;
+/*
+ * automically remove an element from an array or has many relationship or unset the value of a has one relationship
+ */
+- (StackMobRequest *)removeId:(NSString *)removeId 
+                     forSchema:(NSString *)schema 
+                         andId:(NSString *)primaryId 
+                      andField:(NSString *)relField 
+                  withCallback:(StackMobCallback)callback;
+
+/*
+ * automically remove an element from an array or has many relationship or unset the value of a has one relationship
+ * @param shouldCascade if YES the X-StackMob-CascadeDelete header will be set
+ */
+- (StackMobRequest *)removeId:(NSString *)removeId 
+                    forSchema:(NSString *)schema 
+                        andId:(NSString *)primaryId 
+                     andField:(NSString *)relField 
+                shouldCascade:(BOOL)isCascade
+                 withCallback:(StackMobCallback)callback;
+
+
 
 /**************** Heroku Methods *****************/
 

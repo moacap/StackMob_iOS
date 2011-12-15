@@ -20,12 +20,14 @@
 #import "StackMobClientData.h"
 #import "StackMobHerokuRequest.h"
 #import "StackMobDataProvider.h"
+#import "StackMobBulkRequest.h"
 
 @interface StackMob (Private)
 - (void)queueRequest:(StackMobRequest *)request andCallback:(StackMobCallback)callback;
 - (void)run;
 - (void)next;
 - (NSDictionary *)loadInfo;
+- (StackMobRequest *)destroy:(NSString *)path withArguments:(NSDictionary *)arguments andHeaders:(NSDictionary *)headers andCallback:(StackMobCallback)callback;
 @end
 
 #define ENVIRONMENTS [NSArray arrayWithObjects:@"production", @"development", nil]
@@ -36,6 +38,7 @@
 @synthesize callbacks;
 @synthesize session;
 @synthesize dataProvider = _dataProvider;
+@synthesize authCookie;
 
 static StackMob *_sharedManager = nil;
 static SMEnvironment environment;
@@ -67,13 +70,13 @@ static SMEnvironment environment;
     if (_sharedManager == nil) {
         _sharedManager = [[super allocWithZone:NULL] init];
         environment = SMEnvironmentProduction;
-        _sharedManager.session = [[StackMobSession sessionForApplication:apiKey
+        _sharedManager.session = [StackMobSession sessionForApplication:apiKey
                                                                   secret:apiSecret
                                                                  appName:appName
                                                                subDomain:subDomain
                                                                   domain:SMDefaultDomain
                                                           userObjectName:userObjectName
-                                                        apiVersionNumber:apiVersion] retain];
+                                                        apiVersionNumber:apiVersion];
         _sharedManager.requests = [NSMutableArray array];
         _sharedManager.callbacks = [NSMutableArray array];
         _sharedManager.dataProvider = dataProvider;
@@ -83,7 +86,6 @@ static SMEnvironment environment;
         
     }
     return _sharedManager;
-
 }
 
 + (void) setSharedManager:(StackMob *)stackMob
@@ -168,6 +170,7 @@ static SMEnvironment environment;
                                                    withObject:arguments
                                                     withHttpVerb:GET]; 
     request.isSecure = YES;
+    
     [self queueRequest:request andCallback:callback];
     
     return request;
@@ -175,7 +178,15 @@ static SMEnvironment environment;
 
 - (StackMobRequest *)logoutWithCallback:(StackMobCallback)callback
 {
-    return [self destroy:session.userObjectName withArguments:NULL andCallback:callback];
+    StackMobRequest *request = [StackMobRequest requestForMethod:[NSString stringWithFormat:@"%@/logout", session.userObjectName]
+                                                   withArguments:[NSDictionary dictionary]
+                                                    withHttpVerb:GET]; 
+    request.isSecure = YES;
+    self.authCookie = nil;
+    [self queueRequest:request andCallback:callback];
+    
+    return request;
+
 }
 
 - (StackMobRequest *)getUserInfowithArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
@@ -265,16 +276,79 @@ static SMEnvironment environment;
     return request;    
 }
 
+- (StackMobRequest *)getTwitterInfoWithCallback:(StackMobCallback)callback
+{
+    return [self get:@"getTwitterUserInfo" withCallback:callback];
+}
+
+
 # pragma mark - PUSH Notifications
 
 - (StackMobRequest *)registerForPushWithUser:(NSString *)userId token:(NSString *)token andCallback:(StackMobCallback)callback
 {
-    NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:userId, @"userId", token, @"token", nil];
-    StackMobPushRequest *request = [StackMobPushRequest request];
-    request.httpMethod = @"POST";
-    request.method = @"device_tokens";
-    SMLog(@"args %@", args);
-    [request setArguments:args];
+    NSDictionary *tokenDict = [NSDictionary dictionaryWithObjectsAndKeys:token, @"token",
+                           @"ios", @"type",
+                           nil];
+    
+    NSDictionary *body = [NSDictionary dictionaryWithObjectsAndKeys:userId, @"userId",
+                          tokenDict, @"token",
+                          nil];
+    
+    StackMobPushRequest *pushRequest = [StackMobPushRequest requestForMethod:@"register_device_token_universal"];
+    SMLog(@"args %@", body);
+    [pushRequest setArguments:body];
+    [self queueRequest:pushRequest andCallback:callback];
+    return pushRequest;
+}
+
+- (StackMobRequest *)sendPushBroadcastWithArguments:(NSDictionary *)args andCallback:(StackMobCallback)callback {
+    //{"kvPairs":{"key1":"val1",...}}
+    NSDictionary *body = [NSDictionary dictionaryWithObjectsAndKeys:args, @"kvPairs", nil];
+    StackMobPushRequest *request = [StackMobPushRequest requestForMethod:@"push_broadcast_universal" withArguments:body];
+    [self queueRequest:request andCallback:callback];
+    return request;
+}
+
+- (StackMobRequest *)sendPushToTokensWithArguments:(NSDictionary *)args withTokens:(NSArray *)tokens andCallback:(StackMobCallback)callback
+{
+    //{"payload":{"kvPairs":{"recipients":"asdf","alert":"asdfasdf"}},"tokens":[{"type":"iOS","token":"ASDF"}]}
+    NSDictionary *payload = [NSDictionary dictionaryWithObjectsAndKeys:args, @"kvPairs", nil];
+    NSMutableArray * tokensArray = [NSMutableArray array];
+    for(NSString * tkn in tokens) {
+        NSDictionary * tknDict = [NSDictionary dictionaryWithObjectsAndKeys:tkn, @"token", @"ios", @"type", nil];
+        [tokensArray addObject:tknDict];
+    }
+
+    NSDictionary *body = [NSDictionary dictionaryWithObjectsAndKeys:tokensArray, @"tokens", payload, @"payload", nil];
+    StackMobPushRequest *request = [StackMobPushRequest requestForMethod:@"push_tokens_universal" withArguments:body];
+    [self queueRequest:request andCallback:callback];
+    return request;
+}
+
+- (StackMobRequest *)sendPushToUsersWithArguments:(NSDictionary *)args withUserIds:(NSArray *)userIds andCallback:(StackMobCallback)callback
+{
+    //{kvPairs: {"asdas":"asdasd"}, "userIds":["user1", "user2"]}
+    NSDictionary *body = [NSDictionary dictionaryWithObjectsAndKeys:args, @"kvPairs", userIds, @"userIds", nil];
+    StackMobPushRequest *request = [StackMobPushRequest requestForMethod:@"push_users_universal" withArguments:body];
+    [self queueRequest:request andCallback:callback];
+    return request;
+}
+
+- (StackMobRequest *)getPushTokensForUsers:(NSArray *)userIds andCallback:(StackMobCallback)callback
+{
+    //?userIds=user1,user2,user3
+    NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:userIds, @"userIds", nil];
+    StackMobPushRequest *request = [StackMobPushRequest requestForMethod:@"get_tokens_for_users_universal" withArguments:args];
+    request.httpMethod = @"GET";
+    [self queueRequest:request andCallback:callback];
+    return request;
+}
+
+- (StackMobRequest *)deletePushToken:(NSString *)token andCallback:(StackMobCallback)callback
+{
+    //{"token":"asdasdASASasd", "type":"android|ios"}
+    NSDictionary *body = [NSDictionary dictionaryWithObjectsAndKeys:token, @"token", @"ios", @"type", nil];
+    StackMobPushRequest *request = [StackMobPushRequest requestForMethod:@"remove_token_universal" withArguments:body];
     [self queueRequest:request andCallback:callback];
     return request;
 }
@@ -363,7 +437,22 @@ static SMEnvironment environment;
 
 - (StackMobRequest *)post:(NSString *)path forUser:(NSString *)user withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback
 {
-    return [self post:path forUser:user withObject:arguments andCallback:callback];
+    NSDictionary *modifiedArguments = [NSMutableDictionary dictionaryWithDictionary:arguments];
+    [modifiedArguments setValue:user forKey:session.userObjectName];
+    StackMobRequest *request = [self.dataProvider requestForMethod:[NSString stringWithFormat:@"%@/%@", session.userObjectName, path]
+                                                     withObject:modifiedArguments
+                                                      withHttpVerb:POST];
+    [self queueRequest:request andCallback:callback];
+    return request;
+}
+
+- (StackMobRequest *)post:(NSString *)path forUser:(NSString *)user withObject:(id)object andCallback:(StackMobCallback)callback
+{
+    StackMobRequest *request = [self.dataProvider requestForMethod:[NSString stringWithFormat:@"%@/%@", session.userObjectName, path]
+                                                   withObject:object
+                                                    withHttpVerb:POST];
+    [self queueRequest:request andCallback:callback];
+    return request;
 }
 
 - (StackMobRequest *)post:(NSString *)path withObject:(id)object andCallback:(StackMobCallback)callback
@@ -375,48 +464,100 @@ static SMEnvironment environment;
     return request;
 }
 
-- (StackMobRequest *)post:(NSString *)path forUser:(NSString *)user withObject:(id)object
-              andCallback:(StackMobCallback)callback
-{
-    id modifiedObject = object;
-    if([object isKindOfClass:[NSDictionary class]])
-    {
-        modifiedObject = [NSMutableDictionary dictionaryWithDictionary:object];
-        [modifiedObject setValue:user forKey:session.userObjectName];
-    }
+- (StackMobRequest *)post:(NSString *)path withBulkArguments:(NSArray *)arguments andCallback:(StackMobCallback)callback {
+    StackMobBulkRequest *request = [self.dataProvider bulkRequestForMethod:path withObject:arguments withHttpVerb:POST];
+    [self queueRequest:request andCallback:callback];
+    
+    return request;
+}
 
-    StackMobRequest *request = [self.dataProvider requestForMethod:[NSString stringWithFormat:@"%@/%@", session.userObjectName, path]
-                                                     withObject:modifiedObject
-                                                      withHttpVerb:POST];
+- (StackMobRequest *)post:(NSString *)path withId:(NSString *)primaryId andField:(NSString *)relField andArguments:(NSDictionary *)args andCallback:(StackMobCallback)callback {
+    NSString *fullPath = [NSString stringWithFormat:@"%@/%@/%@", path, primaryId, relField];
+    return [self post:fullPath withArguments:args andCallback:callback];
+}
+
+- (StackMobRequest *)post:(NSString *)path withId:(NSString *)primaryId andField:(NSString *)relField andBulkArguments:(NSArray *)arguments andCallback:(StackMobCallback)callback {
+    NSString *fullPath = [NSString stringWithFormat:@"%@/%@/%@", path, primaryId, relField];
+    return [self post:fullPath withBulkArguments:arguments andCallback:callback];
+}
+
+- (StackMobRequest *)put:(NSString *)path withId:(NSString *)objectId andArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback {
+    NSString *fullPath = [NSString stringWithFormat:@"%@/%@", path, objectId];
+
+    StackMobRequest *request = [StackMobRequest requestForMethod:fullPath withArguments:arguments withHttpVerb:PUT];
     [self queueRequest:request andCallback:callback];
     return request;
 }
 
 - (StackMobRequest *)put:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback{
-    return [self put:path withObject:arguments andCallback:callback];
+    StackMobRequest *request = [self.dataProvider requestForMethod:path
+                                                   withObject:arguments
+                                                    withHttpVerb:PUT];
+    [self queueRequest:request andCallback:callback];
+    return request;
 }
 
-- (StackMobRequest *)put:(NSString *)path withObject:(id)object andCallback:(StackMobCallback)callback;
-{
-    StackMobRequest *request = [self.dataProvider requestForMethod:path
-                                                     withObject:object
-                                                      withHttpVerb:PUT];
-     [self queueRequest:request andCallback:callback];
-     return request;
+- (StackMobRequest *)put:(NSString *)path withId:(id)primaryId andField:(NSString *)relField andArguments:(NSArray *)args andCallback:(StackMobCallback)callback {
+    NSString *fullPath = [NSString stringWithFormat:@"%@/%@/%@", path, primaryId, relField];
+    StackMobBulkRequest *request = [StackMobBulkRequest requestForMethod:fullPath withArguments:args];
+    request.httpMethod = [StackMobRequest stringFromHttpVerb:PUT];
 
+    [self queueRequest:request andCallback:callback];
+    
+    return request;
 }
 
 - (StackMobRequest *)destroy:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback{
-    return [self destroy:path withObject:arguments andCallback:callback];
+    return [self destroy:path withObject:arguments andHeaders:[NSDictionary dictionary]  andCallback:callback];
 }
 
-- (StackMobRequest *)destroy:(NSString *)path withObject:(id)object andCallback:(StackMobCallback)callback
+- (StackMobRequest *)destroy:(NSString *)path withObject:(id)object andHeaders:(NSDictionary *)headers andCallback:(StackMobCallback)callback
 {
     StackMobRequest *request = [self.dataProvider requestForMethod:path
                                                      withObject:object
                                                       withHttpVerb:DELETE];
+    [request setHeaders:headers];
     [self queueRequest:request andCallback:callback];
     return request;
+}
+
+- (StackMobRequest *)removeIds:(NSArray *)removeIds forSchema:(NSString *)schema andId:(NSString *)primaryId andField:(NSString *)relField withCallback:(StackMobCallback)callback {
+    return [self removeIds:removeIds forSchema:schema andId:primaryId andField:relField shouldCascade:NO withCallback:callback];
+}
+
+- (StackMobRequest *)removeIds:(NSArray *)removeIds forSchema:(NSString *)schema andId:(NSString *)primaryId andField:(NSString *)relField shouldCascade:(BOOL)isCascade withCallback:(StackMobCallback)callback {
+    NSString *fullPath = [NSString stringWithFormat:@"%@/%@/%@/%@", schema, primaryId, relField, [removeIds componentsJoinedByString:@","]];
+    NSDictionary *headers;
+    if (isCascade == YES) {
+        headers = [NSDictionary dictionaryWithObjectsAndKeys:@"true", @"X-StackMob-CascadeDelete", nil];
+    } else {
+        headers = [NSDictionary dictionary];
+    }
+    return [self destroy:fullPath 
+           withArguments:[NSDictionary dictionary] 
+              andHeaders:headers 
+             andCallback:callback];
+
+}
+
+
+- (StackMobRequest *)removeId:(NSString *)removeId forSchema:(NSString *)schema andId:(NSString *)primaryId andField:(NSString *)relField withCallback:(StackMobCallback)callback {
+    return [self removeId:removeId 
+                forSchema:schema 
+                    andId:primaryId 
+                 andField:relField 
+            shouldCascade:NO 
+             withCallback:callback];
+}
+
+- (StackMobRequest *)removeId:(NSString *)removeId forSchema:(NSString *)schema andId:(NSString *)primaryId andField:(NSString *)relField shouldCascade:(BOOL)isCascade withCallback:(StackMobCallback)callback {
+    return [self removeIds:[NSArray arrayWithObject:removeId] 
+                 forSchema:schema 
+                     andId:primaryId 
+                  andField:relField 
+             shouldCascade:isCascade 
+              withCallback:callback];
+
 }
 
 
@@ -483,6 +624,15 @@ static SMEnvironment environment;
 
 #pragma mark - StackMobRequestDelegate
 
+- (void) setAuthCookieIfFound:(StackMobRequest *)request
+{
+    NSHTTPURLResponse *response = request.httpResponse;
+    NSDictionary *fields = [response allHeaderFields];
+    NSString *cookie = [fields valueForKey:@"Set-Cookie"];
+    if(cookie)
+        self.authCookie = cookie;
+}
+
 - (void)requestCompleted:(StackMobRequest*)request {
     if([self.requests containsObject:request]){
         NSInteger idx = [self.requests indexOfObject:request];
@@ -491,6 +641,9 @@ static SMEnvironment environment;
         if(callback != [NSNull null]){
             StackMobCallback mCallback = (StackMobCallback)callback;
             BOOL wasSuccessful = [request getStatusCode] < 300 && [request getStatusCode] > 199;
+            
+            // hack for release
+            [self setAuthCookieIfFound:request];
             mCallback(wasSuccessful, [request result]);
             Block_release(mCallback);
         }else{

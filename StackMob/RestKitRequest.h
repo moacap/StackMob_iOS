@@ -6,9 +6,9 @@
 //  Copyright (c) 2011 StackMob, Inc. All rights reserved.
 //
 
-#import "StackMobRequest.h"
+#import "StackMobBulkRequest.h"
 
-@interface RestKitRequest : StackMobRequest <RKOAuthClientDelegate>
+@interface RestKitRequest : StackMobBulkRequest <RKOAuthClientDelegate>
 {
     RKObjectManager *_objectManager;
     RKOAuthClient *authClient;

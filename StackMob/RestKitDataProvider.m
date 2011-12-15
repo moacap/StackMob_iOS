@@ -137,6 +137,17 @@
 {
     return [StackMobPushRequest request];
 }
+
+- (StackMobBulkRequest *)bulkRequestForMethod:(NSString *)method withObject:(id)object withHttpVerb:(SMHttpVerb) httpVerb
+{
+    return (StackMobBulkRequest *)[self requestForMethod:method withObject:object withHttpVerb:httpVerb];
+}
+
+- (StackMobBulkRequest *)bulkRequest
+{
+    return (StackMobBulkRequest *)[self request];
+}
+
 - (void) dealloc
 {
     [restKitConfiguration release];

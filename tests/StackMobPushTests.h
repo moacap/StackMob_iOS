@@ -14,7 +14,6 @@
 
 #define USE_APPLICATION_UNIT_TEST 0
 
-#import <SenTestingKit/SenTestingKit.h>
 #import <UIKit/UIKit.h>
 #import "StackMob.h"
 #import "StackMobTestUtils.h"
@@ -23,16 +22,23 @@
 //#import "application_headers" as required
 
 
-@interface APIRequestTests : StackMobTestCase {
+@interface StackMobPushTests : StackMobTestCommon {
+    NSDictionary * pushPayload;
+    NSArray * pushUserTargets;
+    NSArray * pushTokenTargets;
+    NSString * pushUser;
+    NSString * pushToken;
 
 }
 
-- (void) testURLGeneration;
-- (void) testGet;           
-- (void) testPost; 
-- (void) testBulkPost;
-- (void) testRelatedPost;
-- (void) testRelatedPut;
-- (void) testRelatedDelete;
-- (void) testAPIList; 
+- (void)assertResultIsQueued:(NSDictionary *)result;
+- (void)registerToken;
+
+- (void)setUp;
+- (void)tearDown;
+
+- (void)testRegisterDeviceToken;
+- (void)testGetDeviceTokens;
+- (void)testSendPushBroadcastWithArguments;
 @end
+
