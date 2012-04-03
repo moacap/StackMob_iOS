@@ -19,8 +19,9 @@
 #import "StackMobAdditions.h"
 #import "StackMobClientData.h"
 #import "StackMobHerokuRequest.h"
-#import "StackMobDataProvider.h"
+#import "STMDataProvider.h"
 #import "StackMobBulkRequest.h"
+#import "STMDynamicDataProvider.h"
 
 @interface StackMob (Private)
 - (void)queueRequest:(StackMobRequest *)request andCallback:(StackMobCallback)callback;
@@ -52,6 +53,16 @@ static SMEnvironment environment;
     return self;
 }
 
++ (StackMob *)setApplicationConfiguration:(StackMobConfiguration *)configuration
+{
+    return [self setApplication:configuration.publicKey 
+                         secret:configuration.privateKey 
+                        appName:configuration.appName 
+                      subDomain:configuration.subdomain 
+                 userObjectName:configuration.userObjectName
+               apiVersionNumber:configuration.apiVersion 
+                   dataProvider:configuration.dataProvider];
+}
 
 + (StackMob *)setApplication:(NSString *)apiKey secret:(NSString *)apiSecret 
                      appName:(NSString *)appName subDomain:(NSString *)subDomain 
@@ -65,7 +76,7 @@ static SMEnvironment environment;
 + (StackMob *)setApplication:(NSString *)apiKey secret:(NSString *)apiSecret 
                      appName:(NSString *)appName subDomain:(NSString *)subDomain 
               userObjectName:(NSString *)userObjectName apiVersionNumber:(NSNumber *)apiVersion
-                 dataProvider:(id<DataProviderProtocol> )dataProvider
+                 dataProvider:(id<STMDataProvider> )dataProvider
 {
     if (_sharedManager == nil) {
         _sharedManager = [[super allocWithZone:NULL] init];
@@ -82,7 +93,7 @@ static SMEnvironment environment;
         _sharedManager.dataProvider = dataProvider;
         
         if(!dataProvider)
-            _sharedManager.dataProvider = [[[StackMobDataProvider alloc]init] autorelease];
+            _sharedManager.dataProvider = [[[STMDynamicDataProvider alloc]init] autorelease];
         
     }
     return _sharedManager;
@@ -104,7 +115,7 @@ static SMEnvironment environment;
         _sharedManager = [[super allocWithZone:NULL] init];
         NSDictionary *appInfo = [_sharedManager loadInfo];
         if(appInfo){
-            NSLog(@"Loading applicatino info from StackMob.plist is being deprecated for security purposes.");
+            NSLog(@"Loading application info from StackMob.plist is being deprecated for security purposes.");
             NSLog(@"Please define your application info in your app's prefix.pch");
             _sharedManager.session = [StackMobSession sessionForApplication:[appInfo objectForKey:@"publicKey"]
                                                                       secret:[appInfo objectForKey:@"privateKey"]
@@ -124,15 +135,13 @@ static SMEnvironment environment;
                                                                       domain:STACKMOB_APP_DOMAIN
                                                               userObjectName:STACKMOB_USER_OBJECT_NAME
                                                            apiVersionNumber:[NSNumber numberWithInt:STACKMOB_API_VERSION]];
-#else
-#warning "No configuration found"
 #endif
 
         }
         _sharedManager.requests = [NSMutableArray array];
         _sharedManager.callbacks = [NSMutableArray array];
         
-        _sharedManager.dataProvider = [[[StackMobDataProvider alloc]init] autorelease];
+        _sharedManager.dataProvider = [[[STMDynamicDataProvider alloc]init] autorelease];
     }
     return _sharedManager;
 }
@@ -415,7 +424,7 @@ static SMEnvironment environment;
 - (StackMobRequest *)get:(NSString *)path withCallback:(StackMobCallback)callback
 {
     StackMobRequest *request = [self.dataProvider requestForMethod:path
-                                                        withObject:NULL
+                                                        withObject:nil
                                                       withHttpVerb:GET];
     [self queueRequest:request andCallback:callback];
     return request;
@@ -481,10 +490,16 @@ static SMEnvironment environment;
     return [self post:fullPath withBulkArguments:arguments andCallback:callback];
 }
 
+- (StackMobRequest *)put:(NSString *)path withObject:(id)object andCallback:(StackMobCallback)callback {
+    StackMobRequest *request = [self.dataProvider requestForMethod:path withObject:object withHttpVerb:PUT];
+    [self queueRequest:request andCallback:callback];
+    return request;
+}
+
 - (StackMobRequest *)put:(NSString *)path withId:(NSString *)objectId andArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback {
     NSString *fullPath = [NSString stringWithFormat:@"%@/%@", path, objectId];
 
-    StackMobRequest *request = [StackMobRequest requestForMethod:fullPath withArguments:arguments withHttpVerb:PUT];
+    StackMobRequest *request = [self.dataProvider requestForMethod:fullPath withArguments:arguments withHttpVerb:PUT];
     [self queueRequest:request andCallback:callback];
     return request;
 }
@@ -509,6 +524,11 @@ static SMEnvironment environment;
 
 - (StackMobRequest *)destroy:(NSString *)path withArguments:(NSDictionary *)arguments andCallback:(StackMobCallback)callback{
     return [self destroy:path withObject:arguments andHeaders:[NSDictionary dictionary]  andCallback:callback];
+}
+
+- (StackMobRequest *)destroy:(NSString *)path withObject:(id)object andCallback:(StackMobCallback)callback
+{
+    return [self destroy:path withObject:object andHeaders:[NSDictionary dictionary]  andCallback:callback];
 }
 
 - (StackMobRequest *)destroy:(NSString *)path withObject:(id)object andHeaders:(NSDictionary *)headers andCallback:(StackMobCallback)callback

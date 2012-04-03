@@ -10,10 +10,11 @@
 //  See Also: http://developer.apple.com/iphone/library/documentation/Xcode/Conceptual/iphone_development/135-Unit_Testing_Applications/unit_testing_applications.html
 
 #import <SenTestingKit/SenTestingKit.h>
-#import "StackMobTestCase.h"
+#import "StackMobTestCommon.h"
 
-@class RestKitConfiguration;
-@interface RestKitProviderTests : StackMobTestCase
+@class STMRestKitConfiguration;
+@interface RestKitProviderTests : StackMobTestCommon
 
-- (RestKitConfiguration *) config;
+@property (nonatomic, assign) StackMobSession *session;
+- (STMRestKitConfiguration *) config;
 @end

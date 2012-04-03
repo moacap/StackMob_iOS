@@ -11,19 +11,20 @@
 #import "StackMob.h"
 #import "RestKitDataProvider.h"
 #import "UserResponseData.h"
-#import "RestKitConfiguration.h"
+#import "STMRestKitConfiguration.h"
 //#import "RestKit/RestKit.h"
 #import <UIKit/UIKit.h>
 //#import "application_headers" as required
 
 @implementation RestKitProviderTests
+@synthesize session;
 
 // All code under test is in the iOS Application
 - (void)testUserPost
 {
     NSLog(@"IN TEST POST");
        
-    UserResponseData *userData = [[UserResponseData new] autorelease];
+    UserModel *userData = [[UserModel new] autorelease];
     
     userData.firstname = @"Ty";
     userData.lastname = @"Amell";
@@ -32,7 +33,7 @@
     StackMobRequest *request = [[StackMob stackmob] post:@"user" withObject:userData andCallback:^(BOOL success, id result){
         if(success){
             NSMutableDictionary *info = [NSMutableDictionary dictionary];
-            UserResponseData *userResponse = result;
+            UserModel *userResponse = result;
             [info setObject:userResponse.firstname forKey:@"firstname"];
             [info setObject:userResponse.lastname forKey:@"lastname"];
             [info setObject:userResponse.email forKey:@"email"];
@@ -69,7 +70,7 @@
 	if (!session) 
 	{
         [StackMob setSharedManager:nil];
-        RestkitDataProvider *provider = [RestkitDataProvider new];
+        STMRestkitDataProvider *provider = [STMRestkitDataProvider new];
         provider.restKitConfiguration = [self config];
         StackMob *stackMob = [StackMob setApplication:kAPIKey secret:kAPISecret appName:kAppName subDomain:kSubDomain userObjectName:@"user" apiVersionNumber:[NSNumber numberWithInt:kVersion]
                                          dataProvider:[provider autorelease]];
@@ -79,24 +80,24 @@
 	}
 }
 
-- (RestKitConfiguration *) config
+- (STMRestKitConfiguration *) config
 {
-    RestKitConfiguration *c = [RestKitConfiguration new];
+    STMRestKitConfiguration *c = [STMRestKitConfiguration new];
     RKObjectRouter *r = [[RKObjectRouter new] autorelease];
     //c.inferMappingsFromObjectTypes = YES;
-    [r routeClass:[UserResponseData class] toResourcePath:@"/user" forMethod:RKRequestMethodPOST];
+    [r routeClass:[UserModel class] toResourcePath:@"/user" forMethod:RKRequestMethodPOST];
     
     RKObjectMappingProvider *provider = [[RKObjectMappingProvider new] autorelease];
     
     
-    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[UserResponseData class] block:^(RKObjectMapping *m){
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[UserModel class] block:^(RKObjectMapping *m){
         [m mapAttributes:@"firstname",@"lastname",@"email", @"lastmoddate",@"username",@"createddate",nil]; 
     }];
                                
     // No "wrapped" namesapce objects
     [provider setMapping:mapping forKeyPath:@""];
     RKObjectMapping *inverseMapping = [mapping inverseMapping];
-    [provider setSerializationMapping:inverseMapping forClass:[UserResponseData class]];
+    [provider setSerializationMapping:inverseMapping forClass:[UserModel class]];
     
     c.router = r;
     c.mappingProvider = provider;

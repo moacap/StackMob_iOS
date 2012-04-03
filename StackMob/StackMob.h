@@ -15,7 +15,7 @@
 #import <Foundation/Foundation.h>
 #import "StackMobSession.h"
 #import "StackMobRequest.h"
-#import "DataProviderProtocol.h"
+#import "STMDataProvider.h"
 
 typedef enum {
     SMEnvironmentProduction = 0,
@@ -24,7 +24,7 @@ typedef enum {
 
 
 typedef void (^StackMobCallback)(BOOL success, id result);
-@class StackMobDataProvider;
+@class STMDynamicDataProvider;
 
 @interface StackMob : NSObject <SMRequestDelegate>{
     NSMutableArray *callbacks;
@@ -32,7 +32,7 @@ typedef void (^StackMobCallback)(BOOL success, id result);
     StackMobSession *session;
     StackMobRequest *currentRequest;
     BOOL _running;
-    id<DataProviderProtocol> _dataProvider;
+    id<STMDataProvider> _dataProvider;
 }
 
 @property (nonatomic, retain) StackMobSession *session;
@@ -44,7 +44,7 @@ typedef void (^StackMobCallback)(BOOL success, id result);
  * Data bridge which handles network, data mapping, and serialization 
  * features.
  */
-@property(nonatomic,retain) id<DataProviderProtocol> dataProvider;
+@property(nonatomic,retain) id<STMDataProvider> dataProvider;
 
 /*
  * Manually configure your session.  Subsequent requests for the StackMob
@@ -65,7 +65,15 @@ typedef void (^StackMobCallback)(BOOL success, id result);
 + (StackMob *)setApplication:(NSString *)apiKey secret:(NSString *)apiSecret 
                      appName:(NSString *)appName subDomain:(NSString *)subDomain 
               userObjectName:(NSString *)userObjectName apiVersionNumber:(NSNumber *)apiVersion
-                  dataProvider:(id<DataProviderProtocol>)dataProvider;
+                  dataProvider:(id<STMDataProvider>)dataProvider;
+
+
+/*
+ * Manually configure your session using a configuration object.  Subsequent requests for the StackMob
+ * singleton can use [StackMob stackmob].
+ */
+
++ (StackMob *)setApplicationConfiguration:(StackMobConfiguration *)configuration;
 
 /** Sets the stackmob shared object. Set to nil to reset stackmob singleton. */
 + (void) setSharedManager:(StackMob *)stackMob;
@@ -339,6 +347,9 @@ typedef void (^StackMobCallback)(BOOL success, id result);
             andArguments:(NSArray *)args 
              andCallback:(StackMobCallback)callback;
 
+
+- (StackMobRequest *)put:(NSString *)path withObject:(id)object andCallback:(StackMobCallback)callback;
+
 /* 
  * DELETE the object at the given path. 
  * @path the name of the object in your stackmob app
@@ -352,8 +363,16 @@ typedef void (^StackMobCallback)(BOOL success, id result);
  * DELETE the object at the given path. 
  * @path the name of the object in your stackmob app
  * @param object the obj to be deleted. A set primary key is required.
+ * @param headers additional headers to be passed along with request
  */
 - (StackMobRequest *)destroy:(NSString *)path withObject:(id)object andHeaders:(NSDictionary *)headers andCallback:(StackMobCallback)callback;
+
+/* 
+ * DELETE the object at the given path. 
+ * @path the name of the object in your stackmob app
+ * @param object the obj to be deleted. A set primary key is required.
+ */
+- (StackMobRequest *)destroy:(NSString *)path withObject:(id)object andCallback:(StackMobCallback)callback;
 
 /*
  * automically remove elements from an array or has many relationship

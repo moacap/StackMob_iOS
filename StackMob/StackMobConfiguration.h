@@ -12,19 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#if DEBUG
-    #define SMLog(format, ...) {NSLog(format, ##__VA_ARGS__);}
-    #define StackMobDebug(format, ...) {NSLog([[NSString stringWithFormat:@"[%s, %@, %d] ", __PRETTY_FUNCTION__, [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__] stringByAppendingFormat:format, ##__VA_ARGS__]);}
-#else
-    #define SMLog(format, ...) {NSLog(format, ##__VA_ARGS__);}
-    #define StackMobDebug(format, ...) {NSLog([[NSString stringWithFormat:@"[%s, %@, %d] ", __PRETTY_FUNCTION__, [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__] stringByAppendingFormat:format, ##__VA_ARGS__]);}
-#endif
+@protocol STMDataProviderProtocol;
 
-#define STACKMOB_PUBLIC_KEY         @"YOUR_PUBLIC_KEY"
-#define STACKMOB_PRIVATE_KEY        @"YOUR_PRIVATE_KEY"
-#define STACKMOB_APP_NAME           @"YOUR_APP_NAME"
-#define STACKMOB_APP_SUBDOMAIN      @"YOUR_SUBDOMAIN"
-#define STACKMOB_APP_DOMAIN         @"stackmob.com"
-#define STACKMOB_USER_OBJECT_NAME   @"YOUR_USER_OBJECT_NAME"
+@interface StackMobConfiguration : NSObject 
+@property (nonatomic, retain) NSString *publicKey;
+@property (nonatomic, retain) NSString *privateKey;
+@property (nonatomic, retain) NSString *appName;
+@property (nonatomic, retain) NSString *subdomain;
+@property (nonatomic, retain) NSString *domain;
+@property (nonatomic, retain) NSString *userObjectName;
+@property (nonatomic, retain) NSNumber *apiVersion;
+@property (nonatomic, retain) id dataProvider;
 
-#define STACKMOB_API_VERSION        0
+@end
